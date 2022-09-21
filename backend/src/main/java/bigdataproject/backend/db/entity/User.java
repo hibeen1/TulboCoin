@@ -1,4 +1,4 @@
-package bigdataproject.backend.model;
+package bigdataproject.backend.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,9 +20,9 @@ public class User {
     private long user_seq;
 
     @Column(name = "id", unique = true, nullable = false)
-    private String user_Id;
+    private String userId;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @JsonIgnore
@@ -34,6 +34,6 @@ public class User {
     @Column(name = "balance")
     private long balance;
 
-    @Column(name = "image-path")
-    private String image_path;
+    @Column(name = "image_path")
+    private String imagePath;
 }
