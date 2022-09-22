@@ -2,20 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { BrowserRouter, Router } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer, { rootSaga } from './modules';
 import { Provider } from 'react-redux'
-import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 
 
-const customHistory = createBrowserHistory();
-const sagaMiddleware = createSagaMiddleware({
-  context: {
-    history: customHistory
-  }
-}); // 사가 미들웨어를 만듭니다.
+const sagaMiddleware = createSagaMiddleware(); // 사가 미들웨어를 만듭니다.
 
 
 const store = createStore(rootReducer,
@@ -30,7 +24,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter history={customHistory}>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
