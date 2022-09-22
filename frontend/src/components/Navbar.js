@@ -18,7 +18,7 @@ function Navbar() {
 
   return (
     <>
-      <hearder className={classes.header}>
+      <header className={classes.header}>
         <Link to="/">
           <img style={{ width: "7vw", height: "7vh" }} src={Logo} alt="" />
         </Link>
@@ -52,7 +52,7 @@ function Navbar() {
             </>
           )}
         </ul>
-      </hearder>
+      </header>
     </>
   );
 }
