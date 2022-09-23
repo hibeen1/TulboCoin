@@ -2,38 +2,75 @@ import { memo, useEffect, useState } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 
 const CoinSummary = memo(function CoinSummary({ detailCoinData }) {
-  const { marketCodes } = useFetchMarketCode();
+  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
+  // const { socket, isConnected, socketData } = useUpbitWebSocket(
+  const { socketData } = useUpbitWebSocket({ market: detailCoinData }, "ticker", webSocketOptions);
+  console.log(socketData);
   return (
     <div>
-      <h1>
-        {marketCodes.map(
-          (ele) =>
-            ele.market === detailCoinData.code && (
-              <div>
-                {ele.korean_name}({detailCoinData.code})
-              </div>
-            )
-        )}
-      </h1>
-      <h3>
-        전일대비 : {detailCoinData.signed_change_rate > 0 && "+"}
-        {(detailCoinData.signed_change_rate * 100).toFixed(2)}% <br />
-        {detailCoinData.signed_change_price > 0 && "+"}
-        {detailCoinData.signed_change_price}
+      <h1>{socketData}</h1>
+      {/* <h3>
+        전일대비 : {socketData.signed_change_rate > 0 ? "+" : null}
+        {(socketData.signed_change_rate * 100).toFixed(2)}% <br />
+        {socketData.signed_change_price > 0 ? "+" : null}
+        {socketData.signed_change_price}
       </h3>
-      <p>고가 : {detailCoinData.high_price}</p>
-      <p>저가 : {detailCoinData.low_price}</p>
-      <p>거래대금 : {(detailCoinData.acc_trade_price_24h * 1).toFixed(0)}</p>
-      <p>거래량 : {(detailCoinData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+      <p>고가 : {socketData.high_price}</p>
+      <p>저가 : {socketData.low_price}</p>
+      <p>거래대금 : {(socketData.acc_trade_price_24h * 1).toFixed(0)}</p>
+      <p>거래량 : {(socketData.acc_trade_volume_24h * 1).toFixed(0)}</p> */}
     </div>
   );
 });
 
+// const NewCoinSummary = memo(function NewCoinSummary({ socketData }) {
+//   const { marketCodes } = useFetchMarketCode();
+//   return (
+//     <div>
+//       <table>
+//         <thead>
+//           <tr>
+//             <th>코인</th>
+//             <th>전일대비</th>
+//             <th>고가</th>
+//             <th>저가</th>
+//             <th>거래대금</th>
+//             <th>거래량</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {socketData.map((data) => (
+//             <tr key={data.code}>
+//               {marketCodes.map(
+//                 (ele) =>
+//                   ele.market === data.code && (
+//                     <td>
+//                       {ele.korean_name}({ele.market})
+//                     </td>
+//                   )
+//               )}
+//               <td>
+//                 전일대비 : {data.signed_change_rate > 0 ? "+" : null}
+//                 {(data.signed_change_rate * 100).toFixed(2)}% <br />
+//                 {data.signed_change_price > 0 ? "+" : null}
+//                 {data.signed_change_price}
+//               </td>
+//               <td>고가 : {data.high_price}</td>
+//               <td>저가 : {data.low_price}</td>
+//               <td>거래대금 : {(data.acc_trade_price_24h * 1).toFixed(0)}</td>
+//               <td>거래량 : {(data.acc_trade_volume_24h * 1).toFixed(0)}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// });
 const Coin = memo(function Coin({ socketData }) {
   const [selectedCoin, setSelectedCoin] = useState([]);
-  function selectDetailCoin(data) {
-    setSelectedCoin(data);
-    console.log(`${data}`);
+  function selectDetailCoin(code) {
+    console.log(code);
+    setSelectedCoin(code);
   }
   const { marketCodes } = useFetchMarketCode();
   const convertMillonWon = (value) => {
@@ -53,11 +90,12 @@ const Coin = memo(function Coin({ socketData }) {
             <th>현재가</th>
             <th>전일대비</th>
             <th>거래대금</th>
+            <th>확인용</th>
           </tr>
         </thead>
         <tbody>
           {socketData.map((data) => (
-            <tr key={data.code} onClick={() => selectDetailCoin(data)}>
+            <tr key={data.code} onClick={() => selectDetailCoin(data.code)}>
               {marketCodes.map(
                 (ele) =>
                   ele.market === data.code && (
@@ -76,6 +114,7 @@ const Coin = memo(function Coin({ socketData }) {
                 {/* Math.ceil - 올림, toLocaleString -> 현지화 하는거 여기서는 ko-KR 이니까 한국기준으로 */}
                 {Math.ceil(convertMillonWon(data.acc_trade_price_24h)).toLocaleString("ko-KR")}백만
               </td>
+              <td>{data.market_state}</td>
             </tr>
           ))}
         </tbody>
@@ -120,6 +159,7 @@ function CoinPage() {
       <button onClick={connectButtonHandler}>{"연결종료"}</button> */}
       {/* <h3>Ticker</h3> */}
       {socketData ? <Coin socketData={socketData} /> : <div>Ticker Loading...</div>}
+      {/* {socketData ? <NewCoinSummary socketData={socketData} /> : <div>Ticker Loading...</div>} */}
       {/* {marketCodes.map((element) =>
         element.market.includes("KRW") ? (
           <div>
