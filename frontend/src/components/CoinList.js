@@ -1,24 +1,28 @@
 import { memo, useEffect, useState } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 
-const CoinSummary = memo(function CoinSummary({ detailCoinData }) {
-  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  // const { socket, isConnected, socketData } = useUpbitWebSocket(
-  const { socketData } = useUpbitWebSocket({ market: detailCoinData }, "ticker", webSocketOptions);
-  console.log(socketData);
+const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
+  let targetSocketData = []
+  for(let i = 0; i <socketData.length; i+=1) {
+    if (socketData[i].code === detailCoinData) {
+      targetSocketData = socketData[i]
+      break
+    }
+  }
+  console.log(targetSocketData)
   return (
     <div>
-      <h1>{socketData}</h1>
-      {/* <h3>
-        전일대비 : {socketData.signed_change_rate > 0 ? "+" : null}
-        {(socketData.signed_change_rate * 100).toFixed(2)}% <br />
-        {socketData.signed_change_price > 0 ? "+" : null}
-        {socketData.signed_change_price}
+      <h1>{targetSocketData.code}</h1>
+      <h3>
+        전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
+        {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
+        {targetSocketData.signed_change_price > 0 ? "+" : null}
+        {targetSocketData.signed_change_price}
       </h3>
-      <p>고가 : {socketData.high_price}</p>
-      <p>저가 : {socketData.low_price}</p>
-      <p>거래대금 : {(socketData.acc_trade_price_24h * 1).toFixed(0)}</p>
-      <p>거래량 : {(socketData.acc_trade_volume_24h * 1).toFixed(0)}</p> */}
+      <p>고가 : {targetSocketData.high_price}</p>
+      <p>저가 : {targetSocketData.low_price}</p>
+      <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
+      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
     </div>
   );
 });
@@ -67,9 +71,8 @@ const CoinSummary = memo(function CoinSummary({ detailCoinData }) {
 //   );
 // });
 const Coin = memo(function Coin({ socketData }) {
-  const [selectedCoin, setSelectedCoin] = useState([]);
+  const [selectedCoin, setSelectedCoin] = useState();
   function selectDetailCoin(code) {
-    console.log(code);
     setSelectedCoin(code);
   }
   const { marketCodes } = useFetchMarketCode();
@@ -81,7 +84,7 @@ const Coin = memo(function Coin({ socketData }) {
   return (
     <div>
       <div>
-        {socketData ? <CoinSummary detailCoinData={selectedCoin} /> : <div>Ticker Loading...</div>}
+        {selectedCoin ? <CoinSummary socketData={socketData} detailCoinData={selectedCoin} /> : <div>Ticker Loading...</div>}
       </div>
       <table>
         <thead>
@@ -132,7 +135,7 @@ function CoinPage() {
     // 변경시 호출
     if (!isLoading && marketCodes) {
       setTargetMarketCode(marketCodes.filter((ele) => ele.market.includes("KRW")));
-      console.log("여기입니다", marketCodes);
+      // console.log("여기입니다", marketCodes);
     }
     // 2번째 인자 [isLoading, marketCodes]  -> 상태변경을 감지할 애들
   }, [isLoading, marketCodes]);
@@ -143,7 +146,7 @@ function CoinPage() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   // const { socket, isConnected, socketData } = useUpbitWebSocket(
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
-
+  
   // 연결 컨트롤 버튼 이벤트 핸들러
   // const connectButtonHandler = (evt) => {
   //   if (isConnected && socket) {
