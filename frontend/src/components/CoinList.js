@@ -9,7 +9,6 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
       break
     }
   }
-  console.log(targetSocketData)
   return (
     <div>
       <h1>{targetSocketData.code}</h1>
@@ -71,7 +70,7 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 //   );
 // });
 const Coin = memo(function Coin({ socketData }) {
-  const [selectedCoin, setSelectedCoin] = useState();
+  const [selectedCoin, setSelectedCoin] = useState('KRW-BTC');
   function selectDetailCoin(code) {
     setSelectedCoin(code);
   }
