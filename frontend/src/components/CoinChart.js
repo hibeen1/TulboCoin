@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import { init, dispose } from "klinecharts";
 
 import classes from "./CoinChart.module.css";
-import Layout from "../Layout";
+// import Layout from "../../Layout";
 import getInitialDataList from "../utils/getInitialDataList";
 import getLanguageOption from "../utils/getLanguageOption";
 import useNewData from "../hooks/useNewData";
+const timetypes = [
+  { key: "minutes/1", text: "1분" },
+  { key: "minutes/5", text: "5분" },
+  { key: "days", text: "1일" },
+  { key: "months", text: "한달" },
+];
 const types = [
   { key: "candle_solid", text: "캔들" },
   { key: "candle_stroke", text: "투명 캔들" },
@@ -40,7 +46,19 @@ const CoinChart = () => {
   }, [newData]);
 
   return (
-    <Layout title="Bitcoin(ETH-KRW) 실시간 가격 조회">
+    <div className={classes.container}>
+      <div className={classes.title}>
+        <p>ETH-KRW 실시간 가격 조회</p>
+      </div>
+      <div className={classes.menu}>
+        {timetypes.map(({ key, text }) => {
+          return (
+            <button key={key} onClick={(_) => {}}>
+              {text}
+            </button>
+          );
+        })}
+      </div>
       <div id="coin-chart" className={classes.chart} />
       <div className={classes.menu}>
         {types.map(({ key, text }) => {
@@ -60,7 +78,7 @@ const CoinChart = () => {
           );
         })}
       </div>
-    </Layout>
+    </div>
   );
 };
 
