@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { init, dispose } from "klinecharts";
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { selectTime } from "../store/coin";
+import { useFetchMarketCode } from "use-upbit-api";
 import classes from "./CoinChart.module.css";
 // import Layout from "../../Layout";
 import getInitialDataList from "../utils/getInitialDataList";
@@ -19,15 +22,23 @@ const types = [
   { key: "area", text: "Mountain" },
 ];
 const CoinChart = () => {
+  const dispatch = useDispatch();
+  const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
+  const selectedTime = useSelector((state) => state.coinReducer.selectedTime);
+  console.log(selectedCoin);
+  const { marketCodes } = useFetchMarketCode();
   let chart;
   const [initialized, setInitialized] = useState(false);
   const newData = useNewData();
+  function selectDetailTime(key) {
+    dispatch(selectTime(key));
+  }
 
   useEffect(() => {
     chart = init("coin-chart");
     chart.setStyleOptions(getLanguageOption());
     const fetchData = async () => {
-      const dataList = await getInitialDataList(1);
+      const dataList = await getInitialDataList(selectedCoin, selectedTime);
       chart.applyNewData(dataList);
       setInitialized(true);
     };
@@ -36,7 +47,7 @@ const CoinChart = () => {
     return () => {
       dispose("chart");
     };
-  }, []);
+  }, [selectedCoin, selectedTime]);
 
   useEffect(() => {
     chart = init("coin-chart");
@@ -48,12 +59,19 @@ const CoinChart = () => {
   return (
     <div className={classes.container}>
       <div className={classes.title}>
-        <p>ETH-KRW 실시간 가격 조회</p>
+        {marketCodes.map(
+          (ele) =>
+            ele.market === selectedCoin && (
+              <>
+                {ele.korean_name}({selectedCoin}) 실시간 가격 조회
+              </>
+            )
+        )}
       </div>
       <div className={classes.menu}>
         {timetypes.map(({ key, text }) => {
           return (
-            <button key={key} onClick={(_) => {}}>
+            <button key={key} onClick={() => selectDetailTime(key)}>
               {text}
             </button>
           );
