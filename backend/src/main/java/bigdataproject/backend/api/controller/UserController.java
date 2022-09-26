@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.response.UserRes;
 import bigdataproject.backend.api.service.UserService;
 import bigdataproject.backend.db.entity.User;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,17 @@ public class UserController {
 //    전체 user 정보 조회
     @GetMapping()
     @ApiOperation(value = "유저 조회", notes = "현재 가입된 모든 유저 조회.")
-    public List<User> selectAllUsers() {
-        return userService.getAllUsers();
+    public List<UserRes> selectAllUsers() {
+
+        List<User> userList = userService.getAllUsers();
+
+        List<UserRes> userResList = new ArrayList<>();
+
+        for (User user : userList){
+            UserRes res = UserRes.of(user);
+            userResList.add(res);
+        }
+        return userResList;
     }
 
 

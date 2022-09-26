@@ -1,10 +1,8 @@
-package bigdataproject.backend.response;
+package bigdataproject.backend.api.response;
 
 import bigdataproject.backend.db.entity.Wallet;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

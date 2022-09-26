@@ -5,6 +5,7 @@ import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
+    @Transactional
     public User createUser(UserRegisterReq userRegisterInfo) {
         User user = new User();
         user.setUserId(userRegisterInfo.getUserId());
