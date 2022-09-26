@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom'
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer, { rootSaga } from './modules';
+import rootReducer, { rootSaga } from './store';
 import { Provider } from 'react-redux'
 import createSagaMiddleware from 'redux-saga';
 
