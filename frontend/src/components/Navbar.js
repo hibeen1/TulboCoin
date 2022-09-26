@@ -32,6 +32,9 @@ function Navbar() {
           <li>
             <Link to="honor/*">명예의전당</Link>
           </li>
+          <li>
+            <Link to="test">테스트</Link>
+          </li>
           {isLoggedin ? (
             <>
               <li>

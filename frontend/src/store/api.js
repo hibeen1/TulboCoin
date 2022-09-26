@@ -1,4 +1,9 @@
 import axios from "axios";
 
-export const signupApi = async (body) => 
-  await axios.post('/users', body)
+export const signupApi = async (body) => {
+  return await axios.post('/users', body)
+}
+
+export const fetchAllUsersApi = async () => {
+  return await axios.get('/users')
+}
