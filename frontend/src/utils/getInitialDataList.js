@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const getInitialDataList = (unit) => {
+const getInitialDataList = (selectedCoin, selectedTime) => {
   return axios
-    .get(`https://api.upbit.com/v1/candles/minutes/1`, {
+    .get(`https://api.upbit.com/v1/candles/${selectedTime}`, {
       params: {
-        market: "KRW-ETH",
+        market: `${selectedCoin}`,
         // toISOString() 메서드로 출력되는 시간은 UTC 기준으로 출력됩니다. 이를 대한민국 서울 시간에 맞추기 위해서 3240 * 10000 수식을 현재 시간에 더해주어야 합니다.
         to: new Date(+new Date() + 3240 * 10000)
           .toISOString()

@@ -1,9 +1,15 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 const UPBIT_URL = "wss://api.upbit.com/websocket/v1";
+
 const useNewData = () => {
+  const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const [result, setResult] = useState();
   const [timer, setTimer] = useState(false);
-  const data = [{ ticket: "test" }, { type: "ticker", codes: ["KRW-ETH"], isOnlyRealtime: true }];
+  const data = [
+    { ticket: "test" },
+    { type: "ticker", codes: [`${selectedCoin}`], isOnlyRealtime: true },
+  ];
   const ws = useRef(null);
 
   useEffect(() => {
