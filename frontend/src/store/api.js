@@ -9,5 +9,5 @@ export const fetchAllUsersApi = async () => {
 }
 
 export const fetchUserApi = async (params) => {
-  return await axios.get(`users/my-info/${params}`)
+  return await axios.get(`users/info/seq/${params}`)
 }
