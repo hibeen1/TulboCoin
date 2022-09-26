@@ -1,6 +1,8 @@
 package bigdataproject.backend.config;
 
 
+import bigdataproject.backend.api.service.UserService;
+import bigdataproject.backend.common.auth.JwtAuthenticationFilter;
 import bigdataproject.backend.common.auth.TulUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UserService userService;
     @Autowired
     TulUserDetailService tulUserDetailService;
 
@@ -52,8 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
                 .authorizeRequests()
-                .antMatchers("users/my-info").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .antMatchers("users/my-info").authenticated()//인증이 필요한 URL과 필요하지 않은 URL에 대하여 설
                 .anyRequest().permitAll()
                 .and().cors();
     }

@@ -5,6 +5,7 @@ import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class UserServiceImpl implements  UserService{
     @Autowired
     UserRepositorySupport userRepositorySupport;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -31,7 +35,7 @@ public class UserServiceImpl implements  UserService{
     public User createUser(UserRegisterReq userRegisterInfo) {
         User user = new User();
         user.setUserId(userRegisterInfo.getUserId());
-        user.setPassword(userRegisterInfo.getPassword());
+        user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
         user.setBalance(userRegisterInfo.getBalance());
         user.setImagePath(userRegisterInfo.getImagePath());
         user.setEmail(userRegisterInfo.getEmail());

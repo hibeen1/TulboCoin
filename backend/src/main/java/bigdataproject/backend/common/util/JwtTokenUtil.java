@@ -6,12 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+@Component
 public class JwtTokenUtil {
     private static String secretKey;
     private static Integer expirationTime;
@@ -22,6 +24,7 @@ public class JwtTokenUtil {
 
     @Autowired
     public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expirationTime) {
+        System.out.println("expirationTime jwttokenUtil 생성자"+expirationTime);
         this.secretKey = secretKey;
         this.expirationTime = expirationTime;
     }
@@ -39,7 +42,10 @@ public class JwtTokenUtil {
     }
 
     public static String getToken(String userId) {
-        Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+        System.out.println("여긴?" + userId);
+        System.out.println(expirationTime);
+        Date expires = JwtTokenUtil.getTokenExpiration();
+        System.out.println("있음?"+expires);
         return JWT.create()
                 .withSubject(userId)
                 .withExpiresAt(expires)
@@ -57,7 +63,7 @@ public class JwtTokenUtil {
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
 
-    public static Date getTokenExpiration(int expirationTime) {
+    public static Date getTokenExpiration() {
         Date now = new Date();
         return new Date(now.getTime() + expirationTime);
     }
