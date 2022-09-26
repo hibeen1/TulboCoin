@@ -1,14 +1,15 @@
 package bigdataproject.backend.db.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Getter
-@Setter
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class Wallet {
 
     @Id
