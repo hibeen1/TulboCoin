@@ -3,6 +3,7 @@ package bigdataproject.backend.api.service;
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.UserRepository;
+import bigdataproject.backend.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class UserServiceImpl implements  UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    UserRepositorySupport userRepositorySupport;
 
 
 
@@ -45,6 +49,12 @@ public class UserServiceImpl implements  UserService{
     @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public User getUserByUserId(String userId) {
+        User user = userRepositorySupport.findUserByUserId(userId).get();
+        return user;
     }
 
 }

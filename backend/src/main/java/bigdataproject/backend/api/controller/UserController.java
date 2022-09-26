@@ -35,12 +35,20 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 // userSeq로 user의 정보 read
-    @GetMapping("my-info/{userSeq}")
+    @GetMapping("my-info/seq/{userSeq}")
     @ApiOperation(value = "userSeq로 회원 조회", notes = "userSeq로 회원 조회하고 해당 유저 정보 반환")
     public ResponseEntity<User> getUserInfo(@PathVariable Long userSeq) {
         User user = userService.getUserByUserSeq(userSeq);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
+    @GetMapping("my-info/id/{userId}")
+    @ApiOperation(value = "userId로 회원 조회", notes = "userId로 회원 조회하고 해당 유저 정보 반환")
+    public ResponseEntity<User> getUserInfoById(@PathVariable String userId) {
+        User user = userService.getUserByUserId(userId);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
 
 //    회원 삭제
     @DeleteMapping("my-info/{userSeq}")
