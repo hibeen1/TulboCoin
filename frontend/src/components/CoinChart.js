@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { init, dispose } from "klinecharts";
+import { useSelector } from "react-redux";
 
 import classes from "./CoinChart.module.css";
 // import Layout from "../../Layout";
@@ -19,6 +20,8 @@ const types = [
   { key: "area", text: "Mountain" },
 ];
 const CoinChart = () => {
+  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+  console.log('선택된 코인은', selectedCoin)
   let chart;
   const [initialized, setInitialized] = useState(false);
   const newData = useNewData();
