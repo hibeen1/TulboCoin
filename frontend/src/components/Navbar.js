@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "../logo.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../modules/account";
+import { logout } from "../store/account";
 import classes from "./Navbar.module.css";
 
 function Navbar() {

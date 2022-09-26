@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import LoginComponent from '../components/LoginComponent';
-import { login, loginAsync } from '../modules/account';
+// import { login } from '../store/account';
+import { loginAsync } from '../store/accountSaga';
 
 function LoginContainer() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.

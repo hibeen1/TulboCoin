@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch } from 'react-redux'
-import { signupAsync } from '../modules/account';
+import { signupAsync } from '../store/accountSaga';
 
 function SignupPage() {
   const [ signupForm, setSignupForm ] = useState({

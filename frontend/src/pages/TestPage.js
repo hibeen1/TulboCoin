@@ -1,32 +1,36 @@
-import { useEffect, useState } from "react"
-import { useDispatch } from 'react-redux'
-import { testAsync } from '../modules/test'
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserAsync } from '../store/accountSaga';
 
 function TestPage() {
+  const [ userSeq, setUserSeq ] = useState('')
   const dispatch = useDispatch()
-  const [ isLoading, setIsLoading] = useState(true)
-  const [ pageInfo, setpageInfo ] = useState([])
-  useEffect(() => {
-    setIsLoading(true)
-    setpageInfo(dispatch(testAsync()))
-    setIsLoading(false)
-    console.log(pageInfo)
-    // 변경시 호출
-    // setpageInfo(fetchedPageInfo)
-    // console.log(fetchedPageInfo)
-    // 2번째 인자 [isLoading, marketCodes]  -> 상태변경을 감지할 애들
-  }, []);
+  const user = useSelector(state => state.account.user)
+  const onFetchUser = (e) => {
+    e.preventDefault()
+    dispatch(fetchUserAsync(userSeq))
+  }
+
+  const handleInputChange = (e) => {
+    setUserSeq(e.target.value)
+  }
+
   return <>
-    <h1>테스트페이지</h1>
-    {isLoading ? <p>로딩중...</p>
-    : <ul>
-        {pageInfo.map((user) => (
-          <li key={user.userId}>
-            {user.userId}
-          </li>
-          ))
-        }
-      </ul>
+  <h1>테스트페이지</h1>
+    <form>
+      <label htmlFor="userseq">검색할 user seq</label>
+      <input type="text" id="userseq" textholder="userseq" onChange={handleInputChange} />
+      <button onClick={onFetchUser}>검색하기</button>
+    </form>
+    {user && 
+      <>
+        <p>{user.userId}</p>
+        <p>{user.email}</p>
+        <p>{user.balance}</p>
+        <p>{user.imagePath}</p>
+        <p>{user.password}</p>
+        <p>{user.userSeq}</p>
+      </>
     }
   </>
 }
