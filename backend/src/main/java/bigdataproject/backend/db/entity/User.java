@@ -35,12 +35,15 @@ public class User {
 
 
     @Column(name = "balance")
-    private long balance;
+    private double balance;
 
     @Column(name = "image_path")
     private String imagePath;
 
     @OneToMany(mappedBy = "user")
     private List<Wallet> walletList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Buy> buyList = new ArrayList<>();
 
 }
