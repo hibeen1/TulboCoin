@@ -44,7 +44,7 @@ const useNewData = () => {
         timestamp: Math.floor(timestamp / 24 / 60 / 60 / 1000) * 24 * 60 * 60 * 1000,
         turnover: ((opening_price + low_price + high_price + trade_price) / 4) * trade_volume,
       });
-      console.log("여기는???", opening_price, low_price, high_price);
+      console.log("여기는???", opening_price, low_price, high_price, timestamp);
     };
     ws.current.onerror = (event) => {
       console.log("Error발새애애앵", event);
