@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import LoginComponent from '../components/LoginComponent';
+// import LoginComponent from '../components/LoginComponent';
 import { login, loginAsync } from '../modules/account';
 
 function LoginContainer() {
@@ -15,14 +15,17 @@ function LoginContainer() {
   const onLogin = () => dispatch(loginAsync());
   
 
-  return (
-    <LoginComponent
+  return <>
+    <h1>로그인페이지입니다</h1>
+    <button onClick={onLogin}>로그인버튼</button>
+    {/* <LoginComponent
       // 상태와
       isLoggedin={isLoggedin}
       // 액션을 디스패치 하는 함수들을 props로 넣어줍니다.
       onLogin={onLogin}
-    />
-  );
+    /> */}
+  </>
+  
 }
 
 export default LoginContainer;
