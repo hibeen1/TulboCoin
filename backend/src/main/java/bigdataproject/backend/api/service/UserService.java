@@ -9,4 +9,11 @@ public interface UserService {
     List<User> getAllUsers();
 
     User createUser(UserRegisterReq userRegisterInfo);
+
+    User getUserByUserSeq(Long userSeq);
+
+    void deleteUser(User user);
+
 }
+
+//    User updateUserSeq(String userId, UserRegisterReq updateInfo);

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +19,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long user_seq;
+    @Column(name = "user_seq")
+    private Long userSeq;
 
     @Column(name = "id", unique = true, nullable = false)
     private String userId;
@@ -36,4 +39,8 @@ public class User {
 
     @Column(name = "image_path")
     private String imagePath;
+
+    @OneToMany(mappedBy = "user")
+    private List<Wallet> walletList = new ArrayList<>();
+
 }
