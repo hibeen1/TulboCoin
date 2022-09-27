@@ -9,8 +9,18 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import MypagePage from './pages/MypagePage'
 import TestPage from './pages/TestPage';
+import { useDispatch } from "react-redux";
+import { catchLogin } from './store/accountSaga'
+import { useEffect } from 'react';
+
 
 function App() {
+  
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(catchLogin())
+  }, [])
+
   return (<>
     <Navbar />
     <Routes>

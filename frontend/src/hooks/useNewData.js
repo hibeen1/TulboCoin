@@ -34,7 +34,7 @@ const useNewData = () => {
       console.log("DISCONNECTED");
     };
     ws.current.onmessage = async (event) => {
-      console.log("여기ㅣㅣㅣㅣㅣㅣ", event);
+      // console.log("여기ㅣㅣㅣㅣㅣㅣ", event);
       const text = await new Response(event.data).text();
       const message = JSON.parse(text);
       const { opening_price, low_price, high_price, trade_price, timestamp, trade_volume } =
@@ -50,7 +50,7 @@ const useNewData = () => {
         timestamp: Math.floor(timestamp / 24 / 60 / 60 / 1000) * 24 * 60 * 60 * 1000,
         turnover: ((opening_price + low_price + high_price + trade_price) / 4) * trade_volume,
       });
-      console.log("여기는???", opening_price, low_price, high_price, timestamp);
+      // console.log("여기는???", opening_price, low_price, high_price, timestamp);
     };
     ws.current.onerror = (event) => {
       console.log("Error발새애애앵", event);
@@ -60,7 +60,7 @@ const useNewData = () => {
       ws.current.close();
     };
   }, []);
-  console.log("결과는", result);
+  // console.log("결과는", result);
   return result;
 };
 export default useNewData;

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { init, dispose } from "klinecharts";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import { useDispatch } from "react-redux";
 import { selectTime } from "../store/coin";
 import { useFetchMarketCode } from "use-upbit-api";
+=======
+
+>>>>>>> c0b9694b9f061d90ef368e65a66e64563495a998
 import classes from "./CoinChart.module.css";
 // import Layout from "../../Layout";
 import getInitialDataList from "../utils/getInitialDataList";
@@ -22,11 +26,16 @@ const types = [
   { key: "area", text: "Mountain" },
 ];
 const CoinChart = () => {
+<<<<<<< HEAD
   const dispatch = useDispatch();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedTime = useSelector((state) => state.coinReducer.selectedTime);
-  console.log(selectedCoin);
+  // console.log(selectedCoin);
   const { marketCodes } = useFetchMarketCode();
+=======
+  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+  console.log('선택된 코인은', selectedCoin)
+>>>>>>> c0b9694b9f061d90ef368e65a66e64563495a998
   let chart;
   const [initialized, setInitialized] = useState(false);
   const newData = useNewData();
@@ -42,7 +51,7 @@ const CoinChart = () => {
       chart.applyNewData(dataList);
       setInitialized(true);
     };
-    console.log(chart);
+    // console.log(chart);
     fetchData();
     return () => {
       dispose("chart");
