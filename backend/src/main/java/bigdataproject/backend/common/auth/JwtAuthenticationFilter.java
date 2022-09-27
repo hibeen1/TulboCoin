@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private UserService userService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+//      Spring Security의 필터들이 인증을 수행하는 방법에 대한 명세를 정의해 놓은 인터페이스
         super(authenticationManager);
         this.userService = userService;
     }

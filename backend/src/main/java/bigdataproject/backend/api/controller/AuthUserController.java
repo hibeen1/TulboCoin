@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserLoginPostReq;
+import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.response.UserInfoRes;
 import bigdataproject.backend.api.response.UserLoginPostRes;
 import bigdataproject.backend.api.response.UserRes;
@@ -75,6 +76,24 @@ public class AuthUserController {
         }
         return ResponseEntity.status(200).body(UserInfoRes.of(200, "회원 정보를 가져왔습니다", UserRes.of(user)));
     }
+
+
+//    로그인한 회원 본인의 정보 수정
+    @PutMapping ("my-info")
+    @ApiOperation(value = "회원 본인 정보 수정", notes = "로그인한 회원 본인의 정보를 수정한다.")
+    public ResponseEntity<UserInfoRes> updateMyInfo( Authentication authentication,@RequestBody UserRegisterReq updateInfo) {
+        TulUserDetails userDetails = (TulUserDetails) authentication.getDetails();
+        String userId = userDetails.getUsername();
+
+        if (userId.equals(updateInfo.getUserId())) {
+            User user = userService.updateUserInfo(userId, updateInfo);
+            if (user == null)
+                return ResponseEntity.status(403).body(UserInfoRes.of(405, "무결성 오류입니다.", null));
+            return ResponseEntity.status(200).body(UserInfoRes.of(200, "회원 정보를 수정했습니다", UserRes.of(user)));
+        }
+        return ResponseEntity.status(400).body(UserInfoRes.of(400, "잘못된 요청입니다.", null));
+    }
+
 }
 
 
