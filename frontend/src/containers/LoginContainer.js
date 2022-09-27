@@ -1,8 +1,9 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import LoginComponent from '../components/LoginComponent';
-// import { login } from '../store/account';
 import { loginAsync } from '../store/accountSaga';
+import { useNavigate } from 'react-router-dom';
+
 
 function LoginContainer() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
@@ -13,20 +14,38 @@ function LoginContainer() {
   const dispatch = useDispatch();
   // 각 액션들을 디스패치하는 함수들을 만드세요
   // const onLogin = () => dispatch(login());
-  const onLogin = () => dispatch(loginAsync());
-  
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate('/')
+    }
+  }, [isLoggedin])
 
+  const [ loginForm, setLoginForm ] = useState({
+    userId: '',
+    password: '',
+  })
+  const handleOnChange = (e) => {
+    setLoginForm({
+      ...loginForm,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    dispatch(loginAsync(loginForm));
+  }
   return <>
     <h1>로그인페이지입니다</h1>
-    <button onClick={onLogin}>로그인버튼</button>
-    {/* <LoginComponent
-      // 상태와
-      isLoggedin={isLoggedin}
-      // 액션을 디스패치 하는 함수들을 props로 넣어줍니다.
-      onLogin={onLogin}
-    /> */}
+    <form onSubmit={handleOnSubmit}>
+      <label htmlFor="userId">아이디</label>
+      <input type="text" name="userId" id="userId" onChange={handleOnChange} /><br />
+      <label htmlFor="password">비밀번호</label>
+      <input type="password" name="password" id="password" onChange={handleOnChange} /><br />
+      <button>로그인</button>
+    </form>
   </>
-  
 }
 
 export default LoginContainer;

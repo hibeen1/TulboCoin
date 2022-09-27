@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserAsync } from '../store/accountSaga';
+import { fetchUserApi } from '../store/api'
 
 function TestPage() {
   const [ userSeq, setUserSeq ] = useState('')
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.account.user)
-  const onFetchUser = (e) => {
+  const [ user, setUser ] = useState({})
+
+
+  const onFetchUser = async (e) => {
     e.preventDefault()
-    dispatch(fetchUserAsync(userSeq))
+    const tmp = await fetchUserApi(userSeq)
+    setUser(tmp.data)
+    console.log(user)
   }
 
   const handleInputChange = (e) => {
@@ -24,12 +28,13 @@ function TestPage() {
     </form>
     {user && 
       <>
-        <p>{user.userId}</p>
+        {/* <p>{user.userId}</p>
         <p>{user.email}</p>
         <p>{user.balance}</p>
         <p>{user.imagePath}</p>
         <p>{user.password}</p>
-        <p>{user.userSeq}</p>
+        <p>{user.userSeq}</p> */}
+        <p>{JSON.stringify(user)}</p>
       </>
     }
   </>

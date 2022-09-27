@@ -25,7 +25,7 @@ const CoinChart = () => {
   const dispatch = useDispatch();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedTime = useSelector((state) => state.coinReducer.selectedTime);
-  console.log(selectedCoin);
+  // console.log(selectedCoin);
   const { marketCodes } = useFetchMarketCode();
   let chart;
   const [initialized, setInitialized] = useState(false);
@@ -42,7 +42,7 @@ const CoinChart = () => {
       chart.applyNewData(dataList);
       setInitialized(true);
     };
-    console.log(chart);
+    // console.log(chart);
     fetchData();
     return () => {
       dispose("chart");
