@@ -1,7 +1,9 @@
 package bigdataproject.backend.api.response;
 
+import bigdataproject.backend.common.model.response.BaseResponseBody;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
 

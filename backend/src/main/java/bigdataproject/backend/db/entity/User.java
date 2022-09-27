@@ -1,5 +1,6 @@
 package bigdataproject.backend.db.entity;
 
+import bigdataproject.backend.api.response.WalletRes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,4 +51,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Buy> buyList = new ArrayList<>();
 
+
 }
+
+
