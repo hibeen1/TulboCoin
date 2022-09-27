@@ -30,4 +30,6 @@ public class Wallet {
     @Column(name = "wallet_coin_average")
     private Double coinAverage;
 
+
+
 }
