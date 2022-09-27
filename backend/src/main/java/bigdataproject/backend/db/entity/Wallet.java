@@ -21,7 +21,7 @@ public class Wallet {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(name = "wallet_coin_name")
+    @Column(name = "wallet_coin_name", nullable = false)
     private String coinName;
 
     @Column(name = "wallet_coin_amount")
