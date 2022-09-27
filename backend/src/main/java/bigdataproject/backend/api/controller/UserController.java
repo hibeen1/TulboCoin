@@ -71,20 +71,5 @@ public class UserController {
         return new ResponseEntity<>(userSeq + "번 회원 정보가 삭제되었습니다", HttpStatus.valueOf(200));
     }
 
-//로그인한 회원 본인의 정보 조회
-    @GetMapping("my-info")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
-    public ResponseEntity<?> getMyInfo(Authentication authentication) {
-        if (authentication == null) {
-            return new ResponseEntity<>("토큰이 없습니다", HttpStatus.valueOf(403));
-        }
-        TulUserDetails userDetails = (TulUserDetails)authentication.getDetails();
-        String userId = userDetails.getUsername();
-        User user = userService.getUserByUserId(userId);
-        if (user != null) {
-            return new ResponseEntity<User>(user, HttpStatus.valueOf(200));
-        }
-        return new ResponseEntity<>("잘못된 요청입니다", HttpStatus.valueOf(400));
 
-    }
 }
