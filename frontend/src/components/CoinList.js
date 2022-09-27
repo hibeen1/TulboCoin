@@ -1,12 +1,8 @@
 import { memo, useEffect, useState } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
 import { selectCoin } from "../store/coin";
-=======
-import { coinSelect } from "../store/coin"
 
->>>>>>> c0b9694b9f061d90ef368e65a66e64563495a998
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   const { marketCodes } = useFetchMarketCode();
   let targetSocketData = [];
@@ -43,19 +39,11 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 });
 
 const Coin = memo(function Coin({ socketData }) {
-<<<<<<< HEAD
   const dispatch = useDispatch();
   const [selectedCoin, setSelectedCoin] = useState("KRW-BTC");
   function selectDetailCoin(code) {
     setSelectedCoin(code);
     dispatch(selectCoin(code));
-=======
-  const dispatch = useDispatch()
-  const [selectedCoin, setSelectedCoin] = useState("KRW-BTC");
-  function selectDetailCoin(code) {
-    setSelectedCoin(code);
-    dispatch(coinSelect(code))
->>>>>>> c0b9694b9f061d90ef368e65a66e64563495a998
   }
   const { marketCodes } = useFetchMarketCode();
   const convertMillonWon = (value) => {
