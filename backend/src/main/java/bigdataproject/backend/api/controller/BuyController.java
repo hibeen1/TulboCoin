@@ -27,6 +27,7 @@ public class BuyController {
     @ApiOperation(value = "매수", notes = "매수 기록 저장 및 지갑 정보 수정")
     public ResponseEntity<BuyRes> postBuy(@RequestBody BuyReq buyReq){
         log.info("postBuy 호출");
+        log.info(buyReq.getBuyCoinName() + "controller에서 buyReq의 코인이름");
         HttpStatus status;
         BuyRes buyRes = buyService.postBuyRecord(buyReq);
         if (buyRes == null){

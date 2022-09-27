@@ -9,11 +9,13 @@ import bigdataproject.backend.db.repository.BuyRepository;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BuyServiceImpl implements BuyService{
@@ -56,6 +58,7 @@ public class BuyServiceImpl implements BuyService{
                 .buyCoinAmount(buyReq.getBuyCoinAmount())
                 .buyCoinPrice(buyReq.getBuyCoinPrice())
                 .build();
+        log.info(buyReq.getBuyCoinName() + "매수요청 코인이름");
         buyRepository.save(newBuy);
 
         //산 코인이 wallet에 존재하는지 안하는지 확인후
@@ -65,6 +68,11 @@ public class BuyServiceImpl implements BuyService{
                 user,
                 buyReq.getBuyCoinName());
 
+        if(wallet != null){
+            log.info(wallet.getCoinName() + "지갑 코인이름");
+        }else {
+            log.info("wallet = null");
+        }
         double buyTotal = buyReq.getBuyCoinAmount()*buyReq.getBuyCoinPrice();;
         double walletTotal;
         double newAmount;
@@ -75,6 +83,7 @@ public class BuyServiceImpl implements BuyService{
             newAmount = buyReq.getBuyCoinAmount();
             Wallet newWallet = Wallet.builder()
                     .user(userRepository.findById(buyReq.getUserSeq()).get())
+                    .coinName(buyReq.getBuyCoinName())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)
                     .build();
@@ -86,6 +95,7 @@ public class BuyServiceImpl implements BuyService{
             Wallet modifiedWallet = Wallet.builder()
                     .walletSeq(wallet.getWalletSeq())
                     .user(wallet.getUser())
+                    .coinName(wallet.getCoinName())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)
                     .build();
