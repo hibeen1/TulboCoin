@@ -14,6 +14,9 @@ public interface UserService {
 
     void deleteUser(User user);
 
+
+    User getUserByUserId(String userId);
+
 }
 
 //    User updateUserSeq(String userId, UserRegisterReq updateInfo);
