@@ -46,4 +46,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Buy> buyList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Sell> sellList = new ArrayList<>();
 }
