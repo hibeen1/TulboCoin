@@ -3,6 +3,7 @@ package bigdataproject.backend.api.controller;
 import bigdataproject.backend.api.request.UserLoginPostReq;
 import bigdataproject.backend.api.response.UserLoginPostRes;
 import bigdataproject.backend.api.service.UserService;
+import bigdataproject.backend.common.auth.TulUserDetails;
 import bigdataproject.backend.common.model.response.BaseResponseBody;
 import bigdataproject.backend.common.util.JwtTokenUtil;
 import bigdataproject.backend.db.entity.User;
@@ -11,7 +12,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +48,23 @@ public class AuthUserController {
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null, null));
+    }
+
+    //로그인한 회원 본인의 정보 조회
+    @GetMapping("my-info")
+    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+    public ResponseEntity<?> getMyInfo(Authentication authentication) {
+        if (authentication == null) {
+            return new ResponseEntity<>("토큰이 없습니다", HttpStatus.valueOf(403));
+        }
+        TulUserDetails userDetails = (TulUserDetails)authentication.getDetails();
+        String userId = userDetails.getUsername();
+        User user = userService.getUserByUserId(userId);
+        if (user != null) {
+            return new ResponseEntity<User>(user, HttpStatus.valueOf(200));
+        }
+        return new ResponseEntity<>("잘못된 요청입니다", HttpStatus.valueOf(400));
+
     }
 }
 

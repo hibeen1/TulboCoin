@@ -18,14 +18,28 @@ public class UserLoginPostRes extends BaseResponseBody {
     String accessToken;
 
     @ApiModelProperty(name="유저 정보", example="...")
-    User user;
+//    User user;
+    Long userSeq;
+
+    String userId;
+
+    String imagePath;
+
+    String email;
+
+
+
+
 
     public static UserLoginPostRes of(Integer statusCode, String message, String accessToken, User user) {
         UserLoginPostRes res = new UserLoginPostRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setAccessToken(accessToken);
-        res.setUser(user);
+        res.setUserSeq(user.getUserSeq());
+        res.setUserId(user.getUserId());
+        res.setEmail(user.getEmail());
+        res.setImagePath(user.getImagePath());
         return res;
     }
 }
