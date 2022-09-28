@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.BuyReq;
+import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.BuyRes;
 import bigdataproject.backend.db.entity.Buy;
 import bigdataproject.backend.db.entity.User;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,6 +28,17 @@ public class BuyServiceImpl implements BuyService{
     private final BuyRepository buyRepository;
 
     private final WalletRepository walletRepository;
+
+    @Override
+    public List<BuyRecordRes> getBuyRecord(User user) {
+        List<Buy> buyList = buyRepository.findAllByUser(user);
+        List<BuyRecordRes> buyRecordResList = new ArrayList<>();
+        for (Buy buy : buyList){
+            BuyRecordRes buyRecordRes = BuyRecordRes.of(buy);
+            buyRecordResList.add(buyRecordRes);
+        }
+        return buyRecordResList;
+    }
 
     @Override
     @Transactional

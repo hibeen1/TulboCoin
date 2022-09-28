@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class UserController {
     @Autowired
     UserService userService;
@@ -56,10 +56,15 @@ public class UserController {
 
     @GetMapping("info/id/{userId}")
     @ApiOperation(value = "userId로 회원 조회", notes = "userId로 회원 조회하고 해당 유저 정보 반환")
-    public ResponseEntity<User> getUserInfoById(@PathVariable String userId) {
+    public ResponseEntity<?> getUserInfoById(@PathVariable String userId) {
         User user = userService.getUserByUserId(userId);
+
+        if (user == null){
+            return new ResponseEntity<>("해당 user가 존재하지 않습니다", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
 
 
 //    회원 삭제

@@ -17,6 +17,8 @@ public interface UserService {
 
     User getUserByUserId(String userId);
 
+    User updateUserInfo(String userId, UserRegisterReq updateInfo);
+
 }
 
 //    User updateUserSeq(String userId, UserRegisterReq updateInfo);
