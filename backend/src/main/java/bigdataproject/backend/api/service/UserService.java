@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.request.UserUpdateReq;
 import bigdataproject.backend.db.entity.User;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface UserService {
 
     User getUserByUserId(String userId);
 
-    User updateUserInfo(String userId, UserRegisterReq updateInfo);
+    User updateUserInfo(String userId, UserUpdateReq updateInfo);
 
     Boolean checkIdDuplicated (String Id);
 
