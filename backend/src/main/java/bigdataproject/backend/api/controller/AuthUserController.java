@@ -71,7 +71,7 @@ public class AuthUserController {
             return ResponseEntity.status(403).body(UserInfoRes.of(403, "토큰이 없습니다", null));
         }
 
-        if (user.getUserId() == userId) {
+        if (!user.getUserId().equals(userId)) {
             return ResponseEntity.status(403).body(UserInfoRes.of(403, "회원 정보가 일치하지 않습니다", null));
         }
         return ResponseEntity.status(200).body(UserInfoRes.of(200, "회원 정보를 가져왔습니다", UserRes.of(user)));
