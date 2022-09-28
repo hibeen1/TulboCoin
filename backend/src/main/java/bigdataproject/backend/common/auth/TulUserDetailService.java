@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+//유저를 불러와서 UserDetails 로 리턴해주는 service
 @Component
 public class TulUserDetailService implements UserDetailsService {
     @Autowired

@@ -18,7 +18,7 @@ public class UserRes {
     String email;
     double balance;
     String imagePath;
-    List<WalletRes> walletList;
+//    List<WalletRes> walletList;
 
     public static UserRes of(User user){
         UserRes res = new UserRes();
@@ -27,12 +27,12 @@ public class UserRes {
         res.setEmail(user.getEmail());
         res.setBalance(user.getBalance());
         res.setImagePath(user.getImagePath());
-        List<WalletRes> newWalletList = new ArrayList<>();
-        for(Wallet wallet : user.getWalletList()){
-            WalletRes walletRes = WalletRes.of(wallet);
-            newWalletList.add(walletRes);
-        }
-        res.setWalletList(newWalletList);
+//        List<WalletRes> newWalletList = new ArrayList<>();
+//        for(Wallet wallet : user.getWalletList()){
+//            WalletRes walletRes = WalletRes.of(wallet);
+//            newWalletList.add(walletRes);
+//        }
+//        res.setWalletList(newWalletList);
         return res;
     }
 }

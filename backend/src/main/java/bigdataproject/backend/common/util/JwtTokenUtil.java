@@ -42,10 +42,10 @@ public class JwtTokenUtil {
     }
 
     public static String getToken(String userId) {
-        System.out.println("여긴?" + userId);
+//        System.out.println("여긴?" + userId);
         System.out.println(expirationTime);
         Date expires = JwtTokenUtil.getTokenExpiration();
-        System.out.println("있음?"+expires);
+//        System.out.println("있음?"+expires);
         return JWT.create()
                 .withSubject(userId)
                 .withExpiresAt(expires)

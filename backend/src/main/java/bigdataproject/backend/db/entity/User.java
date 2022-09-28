@@ -45,10 +45,10 @@ public class User {
     @Column(name = "image_path")
     private String imagePath;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wallet> walletList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Buy> buyList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
