@@ -1,7 +1,10 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.SellReq;
+import bigdataproject.backend.api.response.BuyRecordRes;
+import bigdataproject.backend.api.response.SellRecordRes;
 import bigdataproject.backend.api.response.SellRes;
+import bigdataproject.backend.db.entity.Buy;
 import bigdataproject.backend.db.entity.Sell;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
@@ -13,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,14 +33,7 @@ public class SellServiceImpl implements SellService{
 
     @Override
     @Transactional
-    public SellRes postSellRecord(SellReq sellReq) {
-        User user;
-        Optional<User> o = userRepository.findById(sellReq.getUserSeq());
-        if (!o.isPresent()){
-            return null;
-        }else {
-            user = o.get();
-        }
+    public SellRes postSellRecord(User user, SellReq sellReq) {
 
         Sell newSell = Sell.builder()
                 .user(user)
@@ -57,12 +55,28 @@ public class SellServiceImpl implements SellService{
         } else {
             wallet.setCoinAmount(wallet.getCoinAmount()-sellReq.getSellCoinAmount());
             user.setBalance(user.getBalance()+(sellReq.getSellCoinPrice()*sellReq.getSellCoinAmount()));
-            walletRepository.save(wallet);
             userRepository.save(user);
+            if (wallet.getCoinAmount() == 0){
+                walletRepository.delete(wallet);
+            }else {
+                walletRepository.save(wallet);
+            }
         }
 
         SellRes sellRes = SellRes.of(newSell);
 
         return sellRes;
+    }
+
+    @Override
+    public List<SellRecordRes> getSellRecord(User user) {
+        List<Sell> sellList = sellRepository.findAllByUser(user);
+        List<SellRecordRes> sellRecordResList = new ArrayList<>();
+        for (Sell sell : sellList){
+            SellRecordRes sellRecordRes = SellRecordRes.of(sell);
+            sellRecordResList.add(sellRecordRes);
+        }
+        return sellRecordResList;
+
     }
 }
