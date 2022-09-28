@@ -2,7 +2,76 @@ import { memo, useEffect, useState } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { useDispatch } from "react-redux";
 import { selectCoin } from "../store/coin";
+import { buyAsync } from "../store/coinSaga";
 
+const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
+  // console.log(detailCoinData);
+  const { marketCodes } = useFetchMarketCode();
+  let targetSocketData = [];
+  for (let i = 0; i < socketData.length; i += 1) {
+    if (socketData[i].code === detailCoinData) {
+      targetSocketData = socketData[i];
+      break;
+    }
+  }
+
+  const [buyForm, setBuyForm] = useState({
+    buyCoinAmount: 1,
+    buyCoinName: detailCoinData,
+    buyCoinPrice: targetSocketData.trade_price,
+    userSeq: 41,
+  });
+
+  const handleChange = (e) => {
+    setBuyForm({
+      ...buyForm,
+      [e.target.name]: Number(e.target.value),
+    });
+  };
+
+  const dispatch = useDispatch();
+  const handleBuy = function (e) {
+    const { buyCoinAmount, buyCoinName, buyCoinPrice, userSeq } = buyForm;
+    const body = { buyCoinAmount, buyCoinName, buyCoinPrice, userSeq };
+    setBuyForm({
+      ...buyForm,
+      buyCoinName: detailCoinData,
+      buyCoinPrice: buyCoinAmount * targetSocketData.trade_price,
+    });
+    dispatch(buyAsync(body));
+  };
+  return (
+    <div>
+      <form>
+        <div>
+          <label>주문가능</label>
+          <label>0KRW(내가 가진 돈)</label>
+        </div>
+        <div>
+          <label>매수가격(KRW)</label> <br />
+          <label>{targetSocketData.trade_price}</label>
+        </div>
+        <div>
+          <label htmlFor="buyCoinAmount">주문수량</label>
+          <input
+            id="buyCoinAmount"
+            type="number"
+            name="buyCoinAmount"
+            onChange={handleChange}
+            placeholder="1"
+          />
+        </div>
+        <div>
+          <p htmlFor="buyCoinPrice">주문총액</p>
+          <p id="buyCoinPrice" name="buyCoinPrice" onChange={handleChange}>
+            {buyForm.buyCoinAmount * targetSocketData.trade_price}
+          </p>
+        </div>
+      </form>
+      <button onClick={handleBuy}>매수</button>
+    </div>
+  );
+});
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   const { marketCodes } = useFetchMarketCode();
   let targetSocketData = [];
@@ -55,7 +124,10 @@ const Coin = memo(function Coin({ socketData }) {
     <div>
       <div>
         {selectedCoin ? (
-          <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
+          <>
+            <CoinBuy socketData={socketData} detailCoinData={selectedCoin} />
+            <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
+          </>
         ) : (
           <div>Ticker Loading...</div>
         )}
