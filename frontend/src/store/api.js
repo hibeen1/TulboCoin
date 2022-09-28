@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const signupApi = async (body) => {
-  return await axios.post('/users', body)
-}
+  return await axios.post("/users", body);
+};
 
 export const fetchUserApi = async () => {
   return await axios.get(`auth/my-info`, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
