@@ -1,9 +1,11 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.BuyReq;
+import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.BuyRes;
 import bigdataproject.backend.api.service.BuyService;
 import bigdataproject.backend.db.entity.User;
+import bigdataproject.backend.db.repository.UserRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("buy")
@@ -23,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 public class BuyController {
 
     private final BuyService buyService;
+
+    private final UserRepository userRepository;
 
 
     @PostMapping()
@@ -45,4 +51,22 @@ public class BuyController {
         return new ResponseEntity<BuyRes>(buyRes, status);
     }
 
+    @GetMapping("/{userSeq}")
+    @ApiOperation(value = "매수 기록", notes = "매수 기록 불러오기")
+    public ResponseEntity<List<BuyRecordRes>> getBuyRecord(@PathVariable Long userSeq){
+        HttpStatus status;
+//        log.info(String.valueOf(userSeq));
+        Optional<User> o = userRepository.findById(userSeq);
+//        log.info(String.valueOf(o));
+        if (!o.isPresent()){
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(null, status);
+        }
+        User user = o.get();
+        List<BuyRecordRes> buyRecordResList = buyService.getBuyRecord(user);
+
+        status = HttpStatus.OK;
+
+        return new ResponseEntity<List<BuyRecordRes>>(buyRecordResList, status);
+    }
 }
