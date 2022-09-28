@@ -1,14 +1,16 @@
 package bigdataproject.backend.db.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class Wallet {
 
     @Id
@@ -20,7 +22,7 @@ public class Wallet {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(name = "wallet_coin_name")
+    @Column(name = "wallet_coin_name", nullable = false)
     private String coinName;
 
     @Column(name = "wallet_coin_amount")
@@ -28,5 +30,7 @@ public class Wallet {
 
     @Column(name = "wallet_coin_average")
     private Double coinAverage;
+
+
 
 }

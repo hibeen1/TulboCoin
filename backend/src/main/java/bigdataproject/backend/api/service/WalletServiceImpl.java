@@ -19,10 +19,11 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public List<Wallet> getAllWallets(Long userSeq) {
-        User user = userRepository.findById(userSeq).get();
-        if (user == null){
+        if (!userRepository.findById(userSeq).isPresent()){
             return null;
+        } else {
+            User user = userRepository.findById(userSeq).get();
+            return walletRepository.findAllByUser(user);
         }
-        return walletRepository.findAllByUser(user);
     }
 }
