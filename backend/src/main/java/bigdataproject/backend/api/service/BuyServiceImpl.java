@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.BuyReq;
+import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.BuyRes;
 import bigdataproject.backend.db.entity.Buy;
 import bigdataproject.backend.db.entity.User;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -27,19 +30,19 @@ public class BuyServiceImpl implements BuyService{
     private final WalletRepository walletRepository;
 
     @Override
-    @Transactional
-    public BuyRes postBuyRecord(BuyReq buyReq) {
-//        Optional<User> o = userRepository.findById((buyReq.getUserSeq()));
-//        if (o.isPresent()) {
-//
-//        } else {
-//            User user = o.get();
-//        }
-        //유저가 없을 경우
-        if (!userRepository.findById(buyReq.getUserSeq()).isPresent()){
-            return null;
+    public List<BuyRecordRes> getBuyRecord(User user) {
+        List<Buy> buyList = buyRepository.findAllByUser(user);
+        List<BuyRecordRes> buyRecordResList = new ArrayList<>();
+        for (Buy buy : buyList){
+            BuyRecordRes buyRecordRes = BuyRecordRes.of(buy);
+            buyRecordResList.add(buyRecordRes);
         }
-        User user = userRepository.findById(buyReq.getUserSeq()).get();
+        return buyRecordResList;
+    }
+
+    @Override
+    @Transactional
+    public BuyRes postBuyRecord(User user, BuyReq buyReq) {
 
         //해당 유저의 balance와 구매 금액 비교
         if (user.getBalance() < buyReq.getBuyCoinPrice()*buyReq.getBuyCoinAmount()){
@@ -82,7 +85,7 @@ public class BuyServiceImpl implements BuyService{
             walletTotal = 0;
             newAmount = buyReq.getBuyCoinAmount();
             Wallet newWallet = Wallet.builder()
-                    .user(userRepository.findById(buyReq.getUserSeq()).get())
+                    .user(user)
                     .coinName(buyReq.getBuyCoinName())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)

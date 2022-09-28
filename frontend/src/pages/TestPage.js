@@ -28,12 +28,6 @@ function TestPage() {
     </form>
     {user && 
       <>
-        {/* <p>{user.userId}</p>
-        <p>{user.email}</p>
-        <p>{user.balance}</p>
-        <p>{user.imagePath}</p>
-        <p>{user.password}</p>
-        <p>{user.userSeq}</p> */}
         <p>{JSON.stringify(user)}</p>
       </>
     }

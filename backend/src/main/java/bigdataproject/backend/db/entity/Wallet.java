@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Getter
+@Setter
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,5 +30,7 @@ public class Wallet {
 
     @Column(name = "wallet_coin_average")
     private Double coinAverage;
+
+
 
 }

@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.request.UserUpdateReq;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.UserRepositorySupport;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,9 +61,31 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User getUserByUserId(String userId) {
-        User user = userRepositorySupport.findUserByUserId(userId).get();
-        return user;
+        Optional<User> user = userRepositorySupport.findUserByUserId(userId);
+
+        if(!user.isPresent()) {
+            return null;}
+        return user.get();
     }
 
+    @Override
+    public User updateUserInfo(String userId, UserUpdateReq updateInfo) {
+        Optional<User> updatedUser = userRepositorySupport.findUserByUserId(userId);
+        if (updatedUser.isPresent()) {
+            updatedUser.get().setBalance(updateInfo.getBalance());
+            updatedUser.get().setImagePath(updateInfo.getImagePath());
+            updatedUser.get().setEmail(updateInfo.getEmail());
+        }
+        userRepository.save(updatedUser.get());
+        return updatedUser.get();
+    }
+
+    @Override
+    public Boolean checkIdDuplicated(String userId) {
+        if (userRepository.countByUserId(userId) == 0) {
+            return true;
+        }
+        return false;
+    }
 }
 

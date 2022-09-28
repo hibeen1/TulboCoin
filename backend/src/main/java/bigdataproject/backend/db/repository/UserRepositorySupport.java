@@ -1,10 +1,13 @@
 package bigdataproject.backend.db.repository;
 
 
+import bigdataproject.backend.common.model.response.BaseResponseBody;
 import bigdataproject.backend.db.entity.QUser;
 import bigdataproject.backend.db.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

@@ -2,26 +2,28 @@
 // put : 특정 액션 디스패치
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
-import { call, delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { signupApi, fetchUserApi, loginApi } from './api'
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { signupApi, fetchUserApi, loginApi, putUserApi } from './api'
 
-import { login, logout, fetchUser, changeIsLoggedIn } from './account';
+import { logout, fetchUser, changeIsLoggedIn, token } from './account';
 
 
 // 액션의 타입
+const CATCH_LOGIN = 'CATCH_LOGIN' // token이 있는지 확인해서 로그인 여부 변경
 const LOGIN_ASYNC = 'LOGIN_ASYNC';
 const LOGOUT_ASYNC = 'LOGOUT_ASYNC'
 const SIGNUP_ASYNC = 'SIGNUP_ASYNC'
+const PUT_USER_ASYNC = 'PUT_USER_ASYNC' // 유저 정보 수정
 const FETCH_USER_ASYNC = 'FETCH_USER_ASYNC'
-const CATCH_LOGIN = 'CATCH_LOGIN' // token이 있는지 확인해서 로그인 여부 변경
 
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
 export const logoutAsync = () => ({ type: LOGOUT_ASYNC })
 export const signupAsync = body => ({ type: SIGNUP_ASYNC, meta: body })
-export const fetchUserAsync = (userId) => ({ type: FETCH_USER_ASYNC, meta: userId })
 export const catchLogin = () => ({ type: CATCH_LOGIN })
+export const putUserAsync = (form) => ({ type: PUT_USER_ASYNC, meta: form })
+export const fetchUserAsync = () => ({ type: FETCH_USER_ASYNC })
 
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
@@ -39,11 +41,12 @@ function* loginSaga(action) {
   try{
     const response = yield call(loginApi, body)
     if (response.status === 200) {
-      console.log(response.data)
-      yield put(login(response.data)); // put은 특정 액션을 디스패치 해줍니다.
+      yield put(token(response.data))
+      yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
-    console.log(error)
+    alert(error.response.data.message)
+    // console.log(error.data.message)
   }
   yield put(catchLogin())
 }
@@ -66,23 +69,39 @@ function* signupSaga(action) {
     }
   } catch (error) {
     console.log(error)
+    alert(error.response.data.message)
   }
 }
 // 회원가입 끝
 
-// 유저정보 받아오기
-function* fetchUserSaga(action) {
-  const userId = action.meta
+// 내 정보 수정
+function* putUserSaga(action) {
+  const body = action.meta
+  console.log(body)
   try{
-    const response = yield call(fetchUserApi, userId)
+    const response = yield call(putUserApi, body)
+    if (response.status === 200) {
+      yield put(fetchUserAsync())
+    }
+  } catch (error) {
+    alert(error.response.data.message)
+    // console.log(error)
+  }
+}
+// 내 정보 수정 끝
+
+// 내 정보 받아오기
+function* fetchUserSaga() {
+  try{
+    const response = yield call(fetchUserApi)
     if (response.status === 200) {
       yield put(fetchUser(response.data))
     }
   } catch (error) {
-    console.log(error)
+    alert(error.response.data.message)
   }
 }
-// 유저정보 받아오기 끝
+// 내 정보 받아오기 끝
 
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
@@ -91,4 +110,5 @@ export function* accountSaga() {
   yield takeLatest(FETCH_USER_ASYNC, fetchUserSaga); // 가장 마지막으로 디스패치된 FETCH_USER_ASYNC 액션만을 처리
   yield takeLatest(CATCH_LOGIN, catchLoginSaga)
   yield takeLatest(LOGOUT_ASYNC, logoutSaga)
+  yield takeLatest(PUT_USER_ASYNC, putUserSaga) // 유저정보 수정
 }
