@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("wallet")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequiredArgsConstructor
 public class WalletController {
 

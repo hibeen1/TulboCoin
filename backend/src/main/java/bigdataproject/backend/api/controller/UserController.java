@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class UserController {
     @Autowired
     UserService userService;
@@ -56,10 +56,15 @@ public class UserController {
 
     @GetMapping("info/id/{userId}")
     @ApiOperation(value = "userId로 회원 조회", notes = "userId로 회원 조회하고 해당 유저 정보 반환")
-    public ResponseEntity<User> getUserInfoById(@PathVariable String userId) {
+    public ResponseEntity<?> getUserInfoById(@PathVariable String userId) {
         User user = userService.getUserByUserId(userId);
+
+        if (user == null){
+            return new ResponseEntity<>("해당 user가 존재하지 않습니다", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
 
 
 //    회원 삭제
@@ -71,20 +76,5 @@ public class UserController {
         return new ResponseEntity<>(userSeq + "번 회원 정보가 삭제되었습니다", HttpStatus.valueOf(200));
     }
 
-//로그인한 회원 본인의 정보 조회
-    @GetMapping("my-info")
-    @ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
-    public ResponseEntity<?> getMyInfo(Authentication authentication) {
-        if (authentication == null) {
-            return new ResponseEntity<>("토큰이 없습니다", HttpStatus.valueOf(403));
-        }
-        TulUserDetails userDetails = (TulUserDetails)authentication.getDetails();
-        String userId = userDetails.getUsername();
-        User user = userService.getUserByUserId(userId);
-        if (user != null) {
-            return new ResponseEntity<User>(user, HttpStatus.valueOf(200));
-        }
-        return new ResponseEntity<>("잘못된 요청입니다", HttpStatus.valueOf(400));
 
-    }
 }

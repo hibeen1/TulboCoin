@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("buy")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequiredArgsConstructor
 @Slf4j
 public class BuyController {
