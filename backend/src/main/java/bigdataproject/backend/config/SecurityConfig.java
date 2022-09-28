@@ -49,6 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+
+    // jwt 토큰을 사용해주기 위해, 기존 방식의 로그인을 막음
+    // http, csrf 접근 막음
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -58,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
                 .authorizeRequests()
-                .antMatchers("users/my-info").authenticated()//인증이 필요한 URL과 필요하지 않은 URL에 대하여 설
+                .antMatchers("users/my-info").authenticated()//인증이 필요한 URL과 필요하지 않은 URL에 대하여 설명
                 .anyRequest().permitAll()
                 .and().cors();
     }
