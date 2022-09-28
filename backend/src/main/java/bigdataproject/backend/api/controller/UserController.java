@@ -1,19 +1,27 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.response.UserInfoRes;
 import bigdataproject.backend.api.response.UserRes;
 import bigdataproject.backend.api.service.UserService;
 import bigdataproject.backend.common.auth.TulUserDetails;
+import bigdataproject.backend.common.model.response.BaseResponseBody;
+import bigdataproject.backend.common.model.response.BaseResponseBodyAndError;
 import bigdataproject.backend.db.entity.User;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("users")
@@ -42,7 +50,18 @@ public class UserController {
 //회원가입(user create)
     @PostMapping()
     @ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입")
-    public ResponseEntity<User> createUser(@RequestBody UserRegisterReq userRegisterInfo) {
+    public ResponseEntity<?> createUser(@Validated @RequestBody UserRegisterReq userRegisterInfo, BindingResult bindingResult) {
+
+//        유효성 검사
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+            return ResponseEntity.status(401).body(BaseResponseBodyAndError.of(401, "Invalid", errors));
+        }
+//        아이디 중복 검사
+        String userId = userRegisterInfo.getUserId();
+        if (!userService.checkIdDuplicated(userId)) {
+            return ResponseEntity.status(400).body(UserInfoRes.of(400, "이미 가입된 아이디입니다.", null));
+        }
         User user = userService.createUser(userRegisterInfo);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
@@ -65,16 +84,26 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    @GetMapping("check/{userId}")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    @ApiOperation(value = "아이디 중복 체크", notes = "중복이면 false, 유효하면 true")
+    public ResponseEntity<Boolean> checkId(@PathVariable("userId") String userId) {
+        return new ResponseEntity<Boolean>(userService.checkIdDuplicated(userId), HttpStatus.OK);
+
+    }
 
 
 //    회원 삭제
-    @DeleteMapping("info/{userSeq}")
-    @ApiOperation(value = "해당 userSeq 가진 유저 삭제", notes = "해당 userSeq 유저 삭제")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userSeq){
-        User user = userService.getUserByUserSeq(userSeq);
-        userService.deleteUser(user);
-        return new ResponseEntity<>(userSeq + "번 회원 정보가 삭제되었습니다", HttpStatus.valueOf(200));
-    }
+//    @DeleteMapping("info/{userSeq}")
+//    @ApiOperation(value = "해당 userSeq 가진 유저 삭제", notes = "해당 userSeq 유저 삭제")
+//    public ResponseEntity<?> deleteUser(@PathVariable Long userSeq){
+//        User user = userService.getUserByUserSeq(userSeq);
+//        userService.deleteUser(user);
+//        return new ResponseEntity<>(userSeq + "번 회원 정보가 삭제되었습니다", HttpStatus.valueOf(200));
+//    }
 
 
 }

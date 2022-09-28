@@ -19,6 +19,8 @@ public interface UserService {
 
     User updateUserInfo(String userId, UserRegisterReq updateInfo);
 
+    Boolean checkIdDuplicated (String Id);
+
 }
 
 //    User updateUserSeq(String userId, UserRegisterReq updateInfo);

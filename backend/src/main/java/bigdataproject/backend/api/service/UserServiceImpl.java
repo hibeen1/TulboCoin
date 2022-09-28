@@ -78,5 +78,13 @@ public class UserServiceImpl implements  UserService{
         userRepository.save(updatedUser.get());
         return updatedUser.get();
     }
+
+    @Override
+    public Boolean checkIdDuplicated(String userId) {
+        if (userRepository.countByUserId(userId) == 0) {
+            return true;
+        }
+        return false;
+    }
 }
 
