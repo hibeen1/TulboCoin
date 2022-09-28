@@ -24,7 +24,7 @@ const useNewData = () => {
     // 10분 지나면 종료 처리
     setTimeout(() => {
       setTimer(true);
-    }, 10 * 60 * 1000);
+    }, 1000 * 60 * 1000);
 
     ws.current = new WebSocket(UPBIT_URL);
     ws.current.onopen = () => {
