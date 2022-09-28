@@ -3,6 +3,7 @@ import Logo from "../logo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../store/accountSaga";
 import classes from "./Navbar.module.css";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
@@ -10,12 +11,15 @@ function Navbar() {
   const { isLoggedin } = useSelector((state) => ({
     isLoggedin: state.account.isLoggedin,
   }));
+  const navigate = useNavigate()
 
   // useDispatch 는 리덕스 스토어의 dispatch 를 함수에서 사용 할 수 있게 해주는 Hook 입니다.
   const dispatch = useDispatch();
   // 각 액션들을 디스패치하는 함수들을 만드세요
-  const onLogout = () => dispatch(logoutAsync());
-
+  const onLogout = () => {
+    dispatch(logoutAsync());
+    navigate('/')
+  }
   return (
     <>
       <header className={classes.header}>
@@ -32,9 +36,9 @@ function Navbar() {
           <li>
             <Link to="honor/*">명예의전당</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="test">테스트</Link>
-          </li>
+          </li> */}
           {isLoggedin ? (
             <>
               <li>
