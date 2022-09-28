@@ -42,18 +42,7 @@ public class BuyServiceImpl implements BuyService{
 
     @Override
     @Transactional
-    public BuyRes postBuyRecord(BuyReq buyReq) {
-//        Optional<User> o = userRepository.findById((buyReq.getUserSeq()));
-//        if (o.isPresent()) {
-//
-//        } else {
-//            User user = o.get();
-//        }
-        //유저가 없을 경우
-        if (!userRepository.findById(buyReq.getUserSeq()).isPresent()){
-            return null;
-        }
-        User user = userRepository.findById(buyReq.getUserSeq()).get();
+    public BuyRes postBuyRecord(User user, BuyReq buyReq) {
 
         //해당 유저의 balance와 구매 금액 비교
         if (user.getBalance() < buyReq.getBuyCoinPrice()*buyReq.getBuyCoinAmount()){
@@ -96,7 +85,7 @@ public class BuyServiceImpl implements BuyService{
             walletTotal = 0;
             newAmount = buyReq.getBuyCoinAmount();
             Wallet newWallet = Wallet.builder()
-                    .user(userRepository.findById(buyReq.getUserSeq()).get())
+                    .user(user)
                     .coinName(buyReq.getBuyCoinName())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)

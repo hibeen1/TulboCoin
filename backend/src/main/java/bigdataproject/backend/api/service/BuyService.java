@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BuyService {
     List<BuyRecordRes> getBuyRecord(User user);
-    BuyRes postBuyRecord(BuyReq buyReq);
+    BuyRes postBuyRecord(User user, BuyReq buyReq);
 }
