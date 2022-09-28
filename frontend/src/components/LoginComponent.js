@@ -5,7 +5,7 @@ import { loginAsync } from '../store/accountSaga';
 import { useNavigate } from 'react-router-dom';
 
 
-function LoginContainer() {
+function LoginComponent() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
   // state의 값은 store.getState() 함수를 호출했을 때 나타나는 결과물과 동일합니다.
   const isLoggedin = useSelector(state => state.account.isLoggedin);
@@ -17,7 +17,7 @@ function LoginContainer() {
   const navigate = useNavigate()
   useEffect(() => {
     if (isLoggedin) {
-      navigate('/')
+      navigate('/', true)
     }
   }, [isLoggedin])
 
@@ -48,4 +48,4 @@ function LoginContainer() {
   </>
 }
 
-export default LoginContainer;
+export default LoginComponent;
