@@ -10,7 +10,6 @@ function SignupPage() {
     email: '',
     balance: 10000000,
     imagePath: '1',
-    idCheck: false
   })
   const dispatch = useDispatch()
 
@@ -21,14 +20,6 @@ function SignupPage() {
     email: ''
   })
 
-  const handleIdChange = (e) => {
-    setSignupForm({
-      ...signupForm,
-      [e.target.name] : e.target.value,
-      userIdCheck: false
-    })
-  }
-
   const handleChange = (e) => {
     setSignupForm({
       ...signupForm,
@@ -37,13 +28,24 @@ function SignupPage() {
   }
 
   const eng = /[a-g]/g
-  const ENG = /[A-Z]/g
   const num = /[0-9]/g
   const special = /[`~!@#$%^&*()_+-=/?<>|\\]/g
   const passwordCheck = () => {
     if (signupForm.password.length < 8) {
       return false
-    } else if (!!!signupForm.password.match(eng) || !!!signupForm.password.match(ENG) || !!!signupForm.password.match(special) || !!!signupForm.password.match(num)) {
+    } else if (signupForm.password.length > 15) {
+      return false
+    } else if (!!!signupForm.password.match(eng) || !!!signupForm.password.match(special) || !!!signupForm.password.match(num)) {
+      return false
+    } else {
+      return true
+    }
+  }
+  
+  const userIdCheck = () => {
+    if (signupForm.userId.length < 2 || signupForm.userId > 10) {
+      return false
+    } else if (!!signupForm.userId.match(special)) {
       return false
     } else {
       return true
@@ -58,12 +60,12 @@ function SignupPage() {
       passwordCheck: '',
       email: ''
     }
-    if (!signupForm.idCheck) {
-      error.userId = '아이디 중복검사를 해주세요'
+    if (!userIdCheck()) {
+      error.userId = '아이디는 2~10글자의 영어, 숫자, 한글만 사용 가능합니다.'
     }
     if (!passwordCheck()) {
-        error.password = '비밀번호는 8자리 이상, 영어 대문자와 특수문자가 반드시 포함되어야 합니다'
-      }
+        error.password = '비밀번호는 8자리 이상 15자리 이하이고, 영어와 숫자, 특수문자가 반드시 포함되어야 합니다'
+    }
     if (signupForm.password !== signupForm.passwordCheck) {
       error.passwordCheck = '비밀번호를 똑같이 한번 더 입력해 주세요'
     }
@@ -88,10 +90,9 @@ function SignupPage() {
 
   return <>
     <h1>회원가입페이지입니다.</h1>
-    <p>{signupForm.idCheck}</p>
     <form>
       <label htmlFor="userId">아이디 : </label>
-      <input id="userId" type="text" name="userId" onChange={handleIdChange} /><br />
+      <input id="userId" type="text" name="userId" onChange={handleChange} /><br />
       {error.userId && <p>{error.userId}</p>}
       
       <label htmlFor="email">이메일 : </label>
