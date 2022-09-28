@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SellReq {
-    Long userSeq;
     String sellCoinName;
     Double sellCoinAmount;
     int sellCoinPrice;

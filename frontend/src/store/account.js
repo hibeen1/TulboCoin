@@ -1,14 +1,14 @@
 // 액션의 타입
-const LOGIN = 'LOGIN'
 const LOGOUT = 'LOGOUT'
 const FETCH_USER = 'FETCH_USER'
 const CHANGE_IS_LOGGED_IN = 'CHANGE_IS_LOGGEN_IN'
+const TOKEN = 'TOKEN'
 
 // 액션 생성 함수 만들기
 export const changeIsLoggedIn = (data) => ({ type: CHANGE_IS_LOGGED_IN, meta: data })
-export const login = (data) => ({ type: LOGIN, meta: data })
-export const logout = () => ({ type: LOGOUT })
-export const fetchUser = (user) => ({ type: FETCH_USER, meta: user})
+export const token = (data) => ({ type: TOKEN, meta: data }) // localStorage에 토큰 저장하기
+export const fetchUser = (data) => ({ type: FETCH_USER, meta: data }) // localStorage에 유저 정보 저장하기
+export const logout = () => ({ type: LOGOUT }) // localStorage에서 유저 정보 + 토큰 삭제하기
 
 // 초기 값
 const initialState = {
@@ -25,8 +25,12 @@ export default function account(state = initialState, action) {
         ...state,
         isLoggedin: action.meta,
       }
-    case LOGIN:
+    case TOKEN:
       localStorage.setItem('token', action.meta.accessToken)
+      return {
+        ...state
+      }
+    case FETCH_USER:
       localStorage.setItem('user', JSON.stringify(action.meta.user))
       return {
         ...state
@@ -37,11 +41,6 @@ export default function account(state = initialState, action) {
       return {
         ...state
       };
-    case FETCH_USER:
-      return {
-        ...state,
-        user: action.meta
-      }
     default:
       return state;
   }
