@@ -8,6 +8,7 @@ function MypagePage() {
   const navigate = useNavigate()
   const isLoggedin = useSelector(state => state.account.isLoggedin)
   const [ user, setUser ] = useState({})
+  const [ wallet, setWallet ] = useState([])
   const [ isChangeForm, setIsChangeForm ] = useState(false)
   const imagePath = 
     [
@@ -22,6 +23,7 @@ function MypagePage() {
   useEffect(() => {
     if (isLoggedin) {
       setUser(JSON.parse(localStorage.getItem('user')))
+      setWallet(JSON.parse(localStorage.getItem('wallet')))
       setForm({
         email: JSON.parse(localStorage.getItem('user')).email,
         imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
@@ -30,6 +32,7 @@ function MypagePage() {
       navigate(-1)
     }
   }, [])
+  console.log(wallet)
 
   useEffect(() => {
     setChecked(user.imagePath)
@@ -97,6 +100,16 @@ function MypagePage() {
           <button onClick={handleBalanceReset}>잔액 초기화하기</button>
         </div>
         <button onClick={handlePageToForm}>수정하기</button>
+        <p>나의 보유 코인</p>
+        <hr />
+        {/* <p>{JSON.stringify(wallet)}</p> */}
+        {wallet.map(coin => (<>
+            <p>코인 이름 : {coin.coinName}</p>
+            <p>코인 수량 : {coin.coinAmount}</p>
+            <p>코인 평균 매수 가격 : {coin.coinAverage}</p>
+            <hr />
+          </>
+        ))}
       </>
     }
     <button onClick={handleDelete}>회원탈퇴</button>
