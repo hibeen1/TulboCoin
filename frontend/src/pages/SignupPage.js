@@ -91,21 +91,6 @@ function SignupPage() {
     }
   };
 
-  return (
-    <>
-      <h1>회원가입페이지입니다.</h1>
-      <p>{signupForm.idCheck}</p>
-      <form>
-        <label htmlFor="userId">아이디 : </label>
-        <input id="userId" type="text" name="userId" onChange={handleIdChange} />
-        <br />
-        {error.userId && <p>{error.userId}</p>}
-
-        <label htmlFor="email">이메일 : </label>
-        <input id="email" type="text" name="email" onChange={handleChange} />
-        <br />
-        {error.email && <p>{error.email}</p>}
-
   return <>
     <h1>회원가입페이지입니다.</h1>
     <form>
@@ -117,14 +102,12 @@ function SignupPage() {
       <input id="email" type="text" name="email" onChange={handleChange} /><br />
       {error.email && <p>{error.email}</p>}
 
-        <label htmlFor="password-check">비밀번호 확인 : </label>
-        <input id="password-check" type="password" name="passwordCheck" onChange={handleChange} />
-        <br />
-        {error.passwordCheck && <p>{error.passwordCheck}</p>}
-      </form>
-      <button onClick={handleSubmit}>회원가입</button>
-    </>
-  );
+      <label htmlFor="password-check">비밀번호 확인 : </label>
+      <input id="password-check" type="password" name="passwordCheck" onChange={handleChange} /><br />
+      {error.passwordCheck && <p>{error.passwordCheck}</p>}
+    </form>
+    <button onClick={handleSubmit}>회원가입</button>
+  </>
 }
 
 export default SignupPage;

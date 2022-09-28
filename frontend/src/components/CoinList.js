@@ -19,7 +19,6 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
     buyCoinAmount: 1,
     buyCoinName: detailCoinData,
     buyCoinPrice: targetSocketData.trade_price,
-    userSeq: 41,
   });
 
   const handleChange = (e) => {
@@ -31,8 +30,8 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
 
   const dispatch = useDispatch();
   const handleBuy = function (e) {
-    const { buyCoinAmount, buyCoinName, buyCoinPrice, userSeq } = buyForm;
-    const body = { buyCoinAmount, buyCoinName, buyCoinPrice, userSeq };
+    const { buyCoinAmount, buyCoinName, buyCoinPrice } = buyForm;
+    const body = { buyCoinAmount, buyCoinName, buyCoinPrice };
     setBuyForm({
       ...buyForm,
       buyCoinName: detailCoinData,
