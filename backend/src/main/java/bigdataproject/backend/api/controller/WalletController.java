@@ -3,6 +3,7 @@ package bigdataproject.backend.api.controller;
 import bigdataproject.backend.api.service.UserService;
 import bigdataproject.backend.api.service.WalletService;
 import bigdataproject.backend.common.auth.TulUserDetails;
+import bigdataproject.backend.common.model.response.BaseResponseBody;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
 import bigdataproject.backend.api.response.WalletRes;
@@ -35,12 +36,12 @@ public class WalletController {
             @ApiResponse(code = 404, message = "없는 유저 번호"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<List<WalletRes>> getWallet(Authentication authentication){
+    public ResponseEntity<?> getWallet(Authentication authentication){
         HttpStatus status;
 
         if (authentication == null){
             status = HttpStatus.UNAUTHORIZED;
-            return new ResponseEntity<>(null, status);
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(401, "토큰 없거나 만료되었습니다"), status);
         }
 
         TulUserDetails userDetails = (TulUserDetails) authentication.getDetails();
@@ -48,14 +49,14 @@ public class WalletController {
         User user = userService.getUserByUserId(userId);
 
         if (user == null){
-            status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(null, status);
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(404, "없는 유저입니다"), status);
         }
 
         List<Wallet> walletList = walletService.getAllWallets(user.getUserSeq());
         if (walletList == null){
             status = HttpStatus.NOT_FOUND;
-            return new ResponseEntity<>(null, status);
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(404, "없는 지갑입니다"), status);
         }
         List<WalletRes> res = new ArrayList<>();
         for(Wallet wallet : walletList){
