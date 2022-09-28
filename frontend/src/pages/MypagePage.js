@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from 'react-redux'
 import { putUserAsync } from '../store/accountSaga'
-import { useNavigate } from 'react-router-dom'
 
 function MypagePage() {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [ user, setUser ] = useState({})
   const [ isChangeForm, setIsChangeForm ] = useState(false)
   const imagePath = 
@@ -18,7 +16,6 @@ function MypagePage() {
     ]
   const [ checked, setChecked ] = useState()
   const [ form, setForm ] = useState()
-
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')))
     setForm({
@@ -26,6 +23,14 @@ function MypagePage() {
       imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
     })
   }, [])
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem('user')))
+    setForm({
+      email: JSON.parse(localStorage.getItem('user')).email,
+      imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
+    })
+  }, [isChangeForm])
+
   useEffect(() => {
     setChecked(user.imagePath)
   }, [user])
@@ -46,20 +51,24 @@ function MypagePage() {
     })
   }
 
-  const handleChangeInfo = () => {
-    dispatch(putUserAsync({...form, userId: user.userId}))
-    navigate('/mypage')
+  const handleChangeInfo = (e) => {
+    e.preventDefault()
+    dispatch(putUserAsync({imagePath: checked, email: form.email, userId: user.userId, balance: user.balance}))
+    setTimeout(() => {
+      handlePageToForm()
+    }, 300);
   }
-  
+
   const handleBalanceReset = () => {
-    dispatch(putUserAsync({'balance': 10000000, userId: user.userId}))
-    navigate('/mypage')
+    dispatch(putUserAsync({'balance': 10000000, userId: user.userId, imagePath: user.imagePath, email: user.email}))
+
   }
+
 
   return <>
     <h1>마이페이지입니다.</h1>
     {isChangeForm ? <>
-        <form>
+        <form onSubmit={handleChangeInfo}>
           <p>프로필 사진</p>
           {imagePath.map((item) => (
             <label key={item.value} htmlFor={item.name}>
@@ -71,14 +80,14 @@ function MypagePage() {
           <br />
           <label htmlFor="email">이메일 : </label>
           <input type="text" name="email" value={form.email} onChange={handleForm} /><br />
+          <button>수정하기</button>
         </form>
-        <button onClick={handleChangeInfo}>수정하기</button>
         <button onClick={handlePageToForm}>취소</button>
       </>
       : <>
         <div>
-          <p>아이디 : {user.userId}</p>
-          <p>프로필 사진 : {user.imagePath}</p>
+          <p>아이디 : {JSON.parse(localStorage.getItem('user')).userId}</p>
+          <p>프로필 사진 : {JSON.parse(localStorage.getItem('user')).imagePath}</p>
           <p>이메일 : {user.email}</p>
           <p>잔액 : {user.balance} KRW</p>
           <button onClick={handleBalanceReset}>잔액 초기화하기</button>

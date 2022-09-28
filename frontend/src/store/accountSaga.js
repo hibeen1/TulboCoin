@@ -45,7 +45,8 @@ function* loginSaga(action) {
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
-    console.log(error.data.message)
+    alert(error.response.data.message)
+    // console.log(error.data.message)
   }
   yield put(catchLogin())
 }
@@ -67,7 +68,8 @@ function* signupSaga(action) {
       alert('회원가입 성공')
     }
   } catch (error) {
-    console.log(error.data.message)
+    console.log(error)
+    alert(error.response.data.message)
   }
 }
 // 회원가입 끝
@@ -75,14 +77,15 @@ function* signupSaga(action) {
 // 내 정보 수정
 function* putUserSaga(action) {
   const body = action.meta
+  console.log(body)
   try{
     const response = yield call(putUserApi, body)
     if (response.status === 200) {
-      console.log(response)
-      yield put(fetchUserSaga())
+      yield put(fetchUserAsync())
     }
   } catch (error) {
-    console.log(error)
+    alert(error.response.data.message)
+    // console.log(error)
   }
 }
 // 내 정보 수정 끝
@@ -95,7 +98,7 @@ function* fetchUserSaga() {
       yield put(fetchUser(response.data))
     }
   } catch (error) {
-    console.log(error)
+    alert(error.response.data.message)
   }
 }
 // 내 정보 받아오기 끝
