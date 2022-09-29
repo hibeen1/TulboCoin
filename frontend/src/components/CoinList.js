@@ -1,5 +1,6 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, useMemo } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
+import MaterialReactTable from 'material-react-table';
 import { useDispatch } from "react-redux";
 import { selectCoin } from "../store/coin";
 import { buyAsync } from "../store/coinSaga";
@@ -115,7 +116,45 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
+  const [ data, setData ] = useState()
   const [selectedCoin, setSelectedCoin] = useState("KRW-BTC");
+  
+  
+  useEffect(() => {
+    const newData = socketData.map((coin) => {
+      return {
+        // name: `${coin.coinName}(${coin.coinCode})`,
+        name: `(${coin.code})`,
+        code: coin.code,
+        trade_price: coin.trade_price
+      }
+    });
+    setData(newData)
+  }, [socketData])
+  // 테이블 컬럼
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: 'name', //simple recommended way to define a column
+        header: '코인 이름',
+        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      },
+      {
+        accessorKey: 'trade_price', //simple recommended way to define a column
+        header: '현재 가격',
+        enableColumnFilter: false,
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      // {
+      //   accessorKey: 'percent', //simple recommended way to define a column
+      //   header: '수익률',
+      //   enableColumnFilter: false,
+      // },
+    ],
+    [],
+  );
+  // 테이블 컬럼 끝
+    
   function selectDetailCoin(code) {
     setSelectedCoin(code);
     dispatch(selectCoin(code));
@@ -138,40 +177,22 @@ const Coin = memo(function Coin({ socketData }) {
           <div>Ticker Loading...</div>
         )}
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>코인</th>
-            <th>현재가</th>
-            <th>전일대비</th>
-            <th>거래대금</th>
-          </tr>
-        </thead>
-        <tbody>
-          {socketData.map((data) => (
-            <tr key={data.code} onClick={() => selectDetailCoin(data.code)}>
-              {marketCodes.map(
-                (ele) =>
-                  ele.market === data.code && (
-                    <td>
-                      {ele.korean_name}({ele.market})
-                    </td>
-                  )
-              )}
-              <td>{data.trade_price}</td>
-              <td>
-                {data.signed_change_rate > 0 && "+"}
-                {/* 소수점 2째자리 까지 표현 */}
-                {(data.signed_change_rate * 100).toFixed(2)}%
-              </td>
-              <td>
-                {/* Math.ceil - 올림, toLocaleString -> 현지화 하는거 여기서는 ko-KR 이니까 한국기준으로 */}
-                {Math.ceil(convertMillonWon(data.acc_trade_price_24h)).toLocaleString("ko-KR")}백만
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {data &&
+        <MaterialReactTable
+          muiTableBodyRowProps={({ row }) => ({
+            onClick: (event) => {
+              selectDetailCoin(row.original.code)
+            }
+          })}
+          columns={columns}
+          data={data}
+          enableFullScreenToggle={false}
+          enableGlobalFilter={false} //turn off a feature
+          enableDensityToggle={false}
+          enableHiding={false}
+          initialState={{ density: 'compact' }}
+        />
+      }
     </div>
   );
 });

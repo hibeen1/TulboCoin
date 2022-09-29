@@ -49,7 +49,6 @@ function* loginSaga(action) {
     }
   } catch (error) {
     alert(error.response.data.message)
-    // console.log(error.data.message)
   }
   yield put(catchLogin())
 }
@@ -71,7 +70,6 @@ function* signupSaga(action) {
       alert('회원가입 성공')
     }
   } catch (error) {
-    console.log(error)
     alert(error.response.data.message)
   }
 }
@@ -80,7 +78,6 @@ function* signupSaga(action) {
 // 내 정보 수정
 function* putUserSaga(action) {
   const body = action.meta
-  console.log(body)
   try{
     const response = yield call(putUserApi, body)
     if (response.status === 200) {
@@ -96,7 +93,6 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
-  console.log('fetchUserAsync가 작동')
   try{
     const response = yield call(fetchUserApi)
     if (response.status === 200) {
