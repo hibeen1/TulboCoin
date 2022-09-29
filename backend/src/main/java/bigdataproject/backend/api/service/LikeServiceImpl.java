@@ -8,6 +8,7 @@ import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.CoinRepository;
 import bigdataproject.backend.db.repository.LikeCoinRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikeServiceImpl implements LikeService{
 
     private final LikeCoinRepository likeCoinRepository;
@@ -54,5 +56,17 @@ public class LikeServiceImpl implements LikeService{
         LikeCoinRes likeCoinRes = LikeCoinRes.of(likeCoin);
 
         return likeCoinRes;
+    }
+
+    @Override
+    public Boolean deleteLikeCoin(User user, CoinReq coinReq) {
+        Coin coin = coinRepository.findByCoinName(coinReq.getCoinName());
+        LikeCoin likeCoin = likeCoinRepository.findLikeCoinByUserAndCoin(user, coin);
+        log.info(likeCoin.toString());
+        if (likeCoin == null){
+            return false;
+        }
+        likeCoinRepository.delete(likeCoin);
+        return true;
     }
 }

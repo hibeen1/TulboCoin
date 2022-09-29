@@ -11,4 +11,6 @@ public interface LikeService {
     List<LikeCoinRes> getLikeCoinList(User user);
 
     LikeCoinRes postLikeCoin(User user, CoinReq coinReq);
+
+    Boolean deleteLikeCoin(User user, CoinReq coinReq);
 }

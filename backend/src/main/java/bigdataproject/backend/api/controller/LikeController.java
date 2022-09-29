@@ -76,4 +76,33 @@ public class LikeController {
         status = HttpStatus.OK;
         return new ResponseEntity<LikeCoinRes>(res, status);
     }
+
+    @DeleteMapping()
+    @ApiOperation(value = "좋아요한 코인 취소", notes = "해당 코인을 내 즐겨찾기에서 삭제함")
+    public ResponseEntity<?> deleteLikeCoin(Authentication authentication, @RequestBody CoinReq coinReq){
+        HttpStatus status;
+
+        if (authentication == null) {
+            status = HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(401, "토큰 없거나 만료되었습니다"), status);
+        }
+
+        TulUserDetails userDetails = (TulUserDetails) authentication.getDetails();
+        String userId = userDetails.getUsername();
+        User user = userService.getUserByUserId(userId);
+
+        if (user == null) {
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(404, "없는 유저입니다"), status);
+        }
+
+        Boolean isDelSuccess = likeService.deleteLikeCoin(user, coinReq);
+        if (isDelSuccess == false){
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(400, "즐겨찾기에 없는 코인입니다"), status);
+        }
+
+        status = HttpStatus.OK;
+        return new ResponseEntity<>(null, status);
+    }
 }
