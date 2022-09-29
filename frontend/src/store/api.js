@@ -36,14 +36,28 @@ export const buyApi = async (body) => {
 };
 // 매수 요청 끝
 
+// 매도 요청
+export const sellApi = async (body) => {
+  return await axios.post(`/sell`, body, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+};
+// 매도 요청 끝
+
 // 회원탈퇴
 export const deleteApi = async () => {
-  return await axios.delete('/auth/my-info', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-}
+  return await axios.delete("/auth/my-info", {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};
 // 회원탈퇴 끝
 
 // 지갑정보 요청
 export const fetchWalletApi = async () => {
-  return await axios.get('/wallet', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-}
+  return await axios.get("/wallet", {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};
 // 지갑정보 요청 끝

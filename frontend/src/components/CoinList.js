@@ -3,7 +3,86 @@ import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { useDispatch } from "react-redux";
 import { selectCoin } from "../store/coin";
 import { buyAsync } from "../store/coinSaga";
+import { sellAsync } from "../store/coinSaga";
 import { fetchUserAsync } from "../store/accountSaga";
+import { fetchWalletAsync } from "../store/accountSaga";
+
+const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
+  let targetSocketData = [];
+  for (let i = 0; i < socketData.length; i += 1) {
+    if (socketData[i].code === detailCoinData) {
+      targetSocketData = socketData[i];
+      break;
+    }
+  }
+  const [sellForm, setSellForm] = useState({
+    sellCoinAmount: 0,
+    sellCoinName: detailCoinData,
+    sellCoinPrice: targetSocketData.trade_price,
+  });
+
+  const handleChange = (e) => {
+    console.log(e);
+    console.log(e.target.name);
+    console.log(e.target.value);
+    setSellForm({
+      ...sellForm,
+      [e.target.name]: Number(e.target.value),
+    });
+  };
+
+  useEffect(() => {
+    setSellForm({
+      ...sellForm,
+      sellCoinName: detailCoinData,
+      sellCoinPrice: targetSocketData.trade_price,
+    });
+  }, [socketData, detailCoinData]);
+
+  const dispatch = useDispatch();
+  const handleSell = function (e) {
+    const { sellCoinAmount, sellCoinName, sellCoinPrice } = sellForm;
+    const body = { sellCoinAmount, sellCoinName, sellCoinPrice };
+    // console.log(body);
+    dispatch(sellAsync(body));
+    setTimeout(() => {
+      dispatch(fetchWalletAsync());
+      dispatch(fetchUserAsync());
+    }, 300);
+    // dispatch(fetchWalletAsync());
+    // dispatch(fetchUserAsync());
+  };
+  return (
+    <div>
+      <form>
+        {/* <p>{JSON.stringify(buyForm)}</p> */}
+        <div>
+          <label>판매가능수량</label>
+          <div>
+            {JSON.parse(localStorage.getItem("wallet")).map((coin) =>
+              coin.coinName === detailCoinData ? coin.coinAmount : null
+            )}
+          </div>
+        </div>
+        <div>
+          <label>매도가격(KRW)</label> <br />
+          <label>{targetSocketData.trade_price}</label>
+        </div>
+        <div>
+          <label htmlFor="sellCoinAmount">판매수량</label>
+          <input id="sellCoinAmount" type="number" name="sellCoinAmount" onChange={handleChange} />
+        </div>
+        <div>
+          <p htmlFor="sellCoinPrice">판매총액</p>
+          <p id="sellCoinPrice" name="sellCoinPrice" onChange={handleChange}>
+            {sellForm.sellCoinAmount * targetSocketData.trade_price}
+          </p>
+        </div>
+      </form>
+      <button onClick={handleSell}>매도</button>
+    </div>
+  );
+});
 
 const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
   // console.log(detailCoinData);
@@ -42,8 +121,13 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
     const body = { buyCoinAmount, buyCoinName, buyCoinPrice };
     // console.log(body);
     dispatch(buyAsync(body));
+    setTimeout(() => {
+      dispatch(fetchWalletAsync());
+      dispatch(fetchUserAsync());
+    }, 300);
     // 유저정보 요청보내기
-    dispatch(fetchUserAsync());
+    // dispatch(fetchWalletAsync());
+    // dispatch(fetchUserAsync());
   };
   return (
     <div>
@@ -59,13 +143,7 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
         </div>
         <div>
           <label htmlFor="buyCoinAmount">주문수량</label>
-          <input
-            id="buyCoinAmount"
-            type="number"
-            name="buyCoinAmount"
-            onChange={handleChange}
-            placeholder="1"
-          />
+          <input id="buyCoinAmount" type="number" name="buyCoinAmount" onChange={handleChange} />
         </div>
         <div>
           <p htmlFor="buyCoinPrice">주문총액</p>
@@ -94,6 +172,12 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
           (ele) =>
             ele.market === targetSocketData.code && (
               <div>
+                <img
+                  src={`https://static.upbit.com/logos/${detailCoinData.split("-")[1]}.png`}
+                  alt=""
+                  width={64}
+                  height={64}
+                />
                 {ele.korean_name}({targetSocketData.code})
               </div>
             )
@@ -131,6 +215,7 @@ const Coin = memo(function Coin({ socketData }) {
       <div>
         {selectedCoin ? (
           <>
+            <CoinSell socketData={socketData} detailCoinData={selectedCoin} />
             <CoinBuy socketData={socketData} detailCoinData={selectedCoin} />
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
           </>
@@ -154,6 +239,13 @@ const Coin = memo(function Coin({ socketData }) {
                 (ele) =>
                   ele.market === data.code && (
                     <td>
+                      <img
+                        src={`https://static.upbit.com/logos/${data.code.split("-")[1]}.png`}
+                        alt=""
+                        width={32}
+                        height={32}
+                      />
+                      {/* <img src="https://static.upbit.com/logos/BTC.png" alt="" /> */}
                       {ele.korean_name}({ele.market})
                     </td>
                   )
