@@ -21,16 +21,12 @@ function MypagePage() {
   const [ checked, setChecked ] = useState()
   const [ form, setForm ] = useState()
   useEffect(() => {
-    if (isLoggedin) {
-      setUser(JSON.parse(localStorage.getItem('user')))
-      setWallet(JSON.parse(localStorage.getItem('wallet')))
-      setForm({
-        email: JSON.parse(localStorage.getItem('user')).email,
-        imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
-      })
-    } else {
-      navigate(-1)
-    }
+    setUser(JSON.parse(localStorage.getItem('user')))
+    setWallet(JSON.parse(localStorage.getItem('wallet')))
+    setForm({
+      email: JSON.parse(localStorage.getItem('user')).email,
+      imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
+    })
   }, [])
   console.log(wallet)
 
@@ -57,17 +53,14 @@ function MypagePage() {
   const handleChangeInfo = (e) => {
     e.preventDefault()
     dispatch(putUserAsync({imagePath: checked, email: form.email, userId: user.userId, balance: user.balance}))
-    navigate('/')
   }
   
   const handleBalanceReset = () => {
     dispatch(putUserAsync({'balance': 10000000, userId: user.userId, imagePath: user.imagePath, email: user.email}))
-    navigate('/')
   }
   
   const handleDelete = () => {
     dispatch(deleteUserAsync())
-    navigate('/')
   }
 
   return <>
@@ -112,7 +105,7 @@ function MypagePage() {
         ))}
       </>
     }
-    <button onClick={handleDelete}>회원탈퇴</button>
+    <button onClick={handleDelete} on>회원탈퇴</button>
     </>
   }
   </>

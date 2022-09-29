@@ -45,6 +45,7 @@ export default function account(state = initialState, action) {
     case LOGOUT:
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      localStorage.removeItem('wallet')
       return {
         ...state
       };

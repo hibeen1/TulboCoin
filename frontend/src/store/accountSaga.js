@@ -2,9 +2,8 @@
 // put : 특정 액션 디스패치
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import { signupApi, fetchUserApi, loginApi, putUserApi, deleteApi, fetchWalletApi } from './api'
-
 import { logout, fetchUser, changeIsLoggedIn, token, fetchWallet } from './account';
 
 // 액션의 타입
@@ -86,6 +85,7 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body)
     if (response.status === 200) {
       yield put(fetchUserAsync())
+      yield delay(window.location.reload(), 1000)
     }
   } catch (error) {
     alert(error.response.data.message)
@@ -96,6 +96,7 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
+  console.log('fetchUserAsync가 작동')
   try{
     const response = yield call(fetchUserApi)
     if (response.status === 200) {
@@ -114,6 +115,8 @@ function* deleteUserSaga() {
       const response = yield call(deleteApi)
       if (response.status === 200) {
         yield put(logoutAsync())
+        yield alert('회원탈퇴되었습니다')
+        yield window.location.replace('/')
       }
     } catch (error) {
       alert(error.response.data.message)
