@@ -52,7 +52,9 @@ public class LikeServiceImpl implements LikeService{
                 .user(user)
                 .coin(coin)
                 .build();
-        likeCoinRepository.save(likeCoin);
+        if (likeCoinRepository.findLikeCoinByUserAndCoin(user, coin) == null){
+            likeCoinRepository.save(likeCoin);
+        }
         LikeCoinRes likeCoinRes = LikeCoinRes.of(likeCoin);
 
         return likeCoinRes;

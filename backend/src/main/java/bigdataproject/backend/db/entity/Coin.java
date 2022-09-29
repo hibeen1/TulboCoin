@@ -26,5 +26,5 @@ public class Coin {
     private String coinCode;
 
     @OneToMany(mappedBy = "coin", cascade = CascadeType.ALL)
-    private List<LikeCoin> likeUserList = new ArrayList<>();
+    private List<LikeCoin> likeUserList;
 }
