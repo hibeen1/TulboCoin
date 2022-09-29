@@ -3,6 +3,64 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginAsync } from '../store/accountSaga';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const LoginPageBlock = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+width: 30vw;
+height: 40vh;
+flex-direction: column;
+  
+`
+
+const StyledInput = styled.input`
+border-radius: 40px;
+height: 8vh;
+border: 1px solid #7A7A7A;
+::placeholder {
+    font-size: 1.2rem;    
+    color: #7A7A7A;
+  }
+
+
+`
+
+const StyledButton = styled.button`
+  border-radius: 40px;
+  height: 8vh;
+  color: #ffffff;
+  background-color: #3A53C0;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`
+
+const Styledlabel = styled.label`
+  font-size: 2.5vmin;
+  color: #697ed9;
+  margin-left: 3px;
+`
+
+const StyledContext = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+`
+
+const StyledText = styled.div`
+margin-bottom: 3vh;
+font-size: 3vmin;
+color: #7A7A7A;
+cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+
+`;
 
 
 function LoginComponent() {
@@ -43,14 +101,26 @@ function LoginComponent() {
     dispatch(loginAsync(loginForm));
   }
   return <>
-    <h1>로그인페이지입니다</h1>
+  <LoginPageBlock>
+    <h1>Tulbo Coin</h1>
     <form onSubmit={handleOnSubmit}>
-      <label htmlFor="userId">아이디</label>
-      <input type="text" name="userId" id="userId" onChange={handleOnChange} /><br />
-      <label htmlFor="password">비밀번호</label>
-      <input type="password" name="password" id="password" onChange={handleOnChange} /><br />
-      <button>로그인</button>
+      <StyledContext>
+        <div>
+        <Styledlabel htmlFor="userId">아이디</Styledlabel>
+        <br></br>
+        <StyledInput type="text" name="userId" id="userId" onChange={handleOnChange} /><br />
+        <Styledlabel htmlFor="password">비밀번호</Styledlabel>
+        <br></br>
+        <StyledInput type="password" name="password" id="password" onChange={handleOnChange} /><br />
+        <br></br>
+        </div>
+        <StyledText>아직 계정이 없나요?</StyledText>
+        <StyledText></StyledText>
+
+        <StyledButton>떠나볼까요?</StyledButton>
+      </StyledContext>
     </form>
+  </LoginPageBlock>
   </>
 }
 

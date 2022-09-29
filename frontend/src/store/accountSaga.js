@@ -46,6 +46,7 @@ function* loginSaga(action) {
       yield put(token(response.data))
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
       yield put(fetchWalletAsync())
+      yield delay(window.location.replace('/sise'), 1000)
     }
   } catch (error) {
     alert(error.response.data.message)
