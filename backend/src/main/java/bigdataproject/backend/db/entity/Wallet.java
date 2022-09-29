@@ -25,6 +25,9 @@ public class Wallet {
     @Column(name = "wallet_coin_name")
     private String coinName;
 
+    @Column(name = "wallet_coin_code")
+    private String coinCode;
+
     @Column(name = "wallet_coin_amount")
     private Double coinAmount;
 

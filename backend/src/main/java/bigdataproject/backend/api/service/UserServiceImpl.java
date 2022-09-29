@@ -2,15 +2,17 @@ package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.request.UserUpdateReq;
+import bigdataproject.backend.api.response.LikeCoinRes;
+import bigdataproject.backend.db.entity.LikeCoin;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,9 @@ public class UserServiceImpl implements  UserService{
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    LikeCoinRepository likeCoinRepository;
 
 
 

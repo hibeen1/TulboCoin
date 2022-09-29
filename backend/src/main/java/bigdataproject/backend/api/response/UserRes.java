@@ -1,6 +1,8 @@
 package bigdataproject.backend.api.response;
 
 import bigdataproject.backend.common.model.response.BaseResponseBody;
+import bigdataproject.backend.db.entity.Coin;
+import bigdataproject.backend.db.entity.LikeCoin;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
 import com.fasterxml.jackson.databind.ser.Serializers;
@@ -20,6 +22,7 @@ public class UserRes {
     double balance;
     String imagePath;
     LocalDateTime investStartTime;
+    List<LikeCoinRes> likeCoinList;
 //    List<WalletRes> walletList;
 
     public static UserRes of(User user){
@@ -30,6 +33,12 @@ public class UserRes {
         res.setBalance(user.getBalance());
         res.setImagePath(user.getImagePath());
         res.setInvestStartTime(user.getInvestStartTime());
+        List<LikeCoinRes> likeCoinResList = new ArrayList<>();
+        for (LikeCoin likeCoin : user.getLikeCoinList()){
+            LikeCoinRes likeCoinRes = LikeCoinRes.of(likeCoin);
+            likeCoinResList.add(likeCoinRes);
+        }
+        res.setLikeCoinList(likeCoinResList);
 //        List<WalletRes> newWalletList = new ArrayList<>();
 //        for(Wallet wallet : user.getWalletList()){
 //            WalletRes walletRes = WalletRes.of(wallet);

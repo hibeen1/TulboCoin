@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -49,6 +50,9 @@ public class User {
 
     @Column(name = "invest_start_time")
     private LocalDateTime investStartTime;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<LikeCoin> likeCoinList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wallet> walletList = new ArrayList<>();

@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.response.LikeCoinRes;
 import bigdataproject.backend.api.response.UserInfoRes;
 import bigdataproject.backend.api.response.UserRes;
 import bigdataproject.backend.api.service.UserService;
