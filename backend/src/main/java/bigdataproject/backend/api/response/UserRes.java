@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class UserRes {
     String email;
     double balance;
     String imagePath;
+    LocalDateTime investStartTime;
 //    List<WalletRes> walletList;
 
     public static UserRes of(User user){
@@ -27,6 +29,7 @@ public class UserRes {
         res.setEmail(user.getEmail());
         res.setBalance(user.getBalance());
         res.setImagePath(user.getImagePath());
+        res.setInvestStartTime(user.getInvestStartTime());
 //        List<WalletRes> newWalletList = new ArrayList<>();
 //        for(Wallet wallet : user.getWalletList()){
 //            WalletRes walletRes = WalletRes.of(wallet);

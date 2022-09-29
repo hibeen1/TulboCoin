@@ -22,6 +22,7 @@ public interface UserService {
 
     Boolean checkIdDuplicated (String Id);
 
+    User reset(User user);
 }
 
 //    User updateUserSeq(String userId, UserRegisterReq updateInfo);
