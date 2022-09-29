@@ -99,7 +99,7 @@ public class AuthUserController {
         if (userId.equals(updateInfo.getUserId())) {
             User user = userService.updateUserInfo(userId, updateInfo);
             if (user == null)
-                return ResponseEntity.status(403).body(UserInfoRes.of(405, "무결성 오류입니다.", null));
+                return ResponseEntity.status(403).body(UserInfoRes.of(405, "인증이 만료되었습니다. 다시 로그인 해주세요.", null));
             return ResponseEntity.status(200).body(UserInfoRes.of(200, "회원 정보를 수정했습니다", UserRes.of(user)));
         }
         return ResponseEntity.status(400).body(UserInfoRes.of(400, "잘못된 요청입니다.", null));
