@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.response.HistoryRes;
 import bigdataproject.backend.api.response.LikeCoinRes;
 import bigdataproject.backend.api.response.UserInfoRes;
 import bigdataproject.backend.api.response.UserRes;
@@ -8,6 +9,7 @@ import bigdataproject.backend.api.service.UserService;
 import bigdataproject.backend.common.auth.TulUserDetails;
 import bigdataproject.backend.common.model.response.BaseResponseBody;
 import bigdataproject.backend.common.model.response.BaseResponseBodyAndError;
+import bigdataproject.backend.db.entity.History;
 import bigdataproject.backend.db.entity.User;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -120,6 +122,25 @@ public class UserController {
         status = HttpStatus.OK;
         return new ResponseEntity<UserRes>(res, status);
     }
+
+    @GetMapping("history/{userId}")
+    @ApiOperation(value = "거래 기록 조회", notes = "매수 매도 기록의 합인 거래 기록을 조회한다.")
+    public ResponseEntity<?> history(@PathVariable String userId){
+        HttpStatus status;
+
+        User user = userService.getUserByUserId(userId);
+
+        if (user == null){
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(404, "없는 유저입니다"), status);
+        }
+
+        List<HistoryRes> historyResList = userService.getUserHistory(user);
+
+        status = HttpStatus.OK;
+        return new ResponseEntity<List<HistoryRes>>(historyResList, status);
+    }
+
 
 //    회원 삭제
 //    @DeleteMapping("info/{userSeq}")
