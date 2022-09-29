@@ -37,7 +37,7 @@ const CoinChart = () => {
     chart = init("coin-chart");
     chart.setStyleOptions(getLanguageOption());
     const fetchData = async () => {
-      const dataList = await getInitialDataList(selectedCoin, selectedTime);
+      const dataList = await getInitialDataList(selectedCoin.code, selectedTime);
       chart.applyNewData(dataList);
       setInitialized(true);
     };
@@ -56,16 +56,7 @@ const CoinChart = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.title}>
-        {marketCodes.map(
-          (ele) =>
-            ele.market === selectedCoin && (
-              <>
-                {ele.korean_name}({selectedCoin}) 실시간 가격 조회
-              </>
-            )
-        )}
-      </div>
+      <div className={classes.title}>{selectedCoin.name}({selectedCoin.code})</div>
       <div className={classes.menu}>
         {timetypes.map(({ key, text }) => {
           return (
