@@ -79,7 +79,7 @@ function SignupPage() {
   };
 
   const handleSubmit = function (e) {
-    // const error = vaildate()
+    const error = vaildate()
     setError(error);
     if (Object.values(error).some((v) => v)) {
       return;

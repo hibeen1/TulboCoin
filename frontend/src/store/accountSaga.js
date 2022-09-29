@@ -3,7 +3,7 @@
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
-import { signupApi, fetchUserApi, loginApi, putUserApi, deleteApi, fetchWalletApi } from './api'
+import { signupApi, fetchUserApi, loginApi, putUserApi, deleteApi, fetchWalletApi, resetWalletApi } from './api'
 import { logout, fetchUser, changeIsLoggedIn, token, fetchWallet } from './account';
 
 // 액션의 타입
@@ -15,6 +15,7 @@ const PUT_USER_ASYNC = 'PUT_USER_ASYNC' // 유저 정보 수정
 const FETCH_USER_ASYNC = 'FETCH_USER_ASYNC'
 const DELETE_USER_ASYNC = 'DELETE_USER_ASYNC' // 회원탈퇴
 const FETCH_WALLET_ASYNC = 'FETCH_WALLET_ASYNC' // 지갑정보 가져오기
+const RESET_WALLET_ASYNC = 'RESET_WALLET_ASYNC'
 
 
 // 액션 생성 함수 만들기
@@ -26,6 +27,7 @@ export const putUserAsync = (form) => ({ type: PUT_USER_ASYNC, meta: form })
 export const fetchUserAsync = () => ({ type: FETCH_USER_ASYNC })
 export const deleteUserAsync = () => ({ type: DELETE_USER_ASYNC })
 export const fetchWalletAsync = () => ({ type: FETCH_WALLET_ASYNC })
+export const resetWalletAsync = () => ({ type: RESET_WALLET_ASYNC })
 
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
@@ -49,7 +51,6 @@ function* loginSaga(action) {
     }
   } catch (error) {
     alert(error.response.data.message)
-    // console.log(error.data.message)
   }
   yield put(catchLogin())
 }
@@ -71,7 +72,6 @@ function* signupSaga(action) {
       alert('회원가입 성공')
     }
   } catch (error) {
-    console.log(error)
     alert(error.response.data.message)
   }
 }
@@ -80,7 +80,6 @@ function* signupSaga(action) {
 // 내 정보 수정
 function* putUserSaga(action) {
   const body = action.meta
-  console.log(body)
   try{
     const response = yield call(putUserApi, body)
     if (response.status === 200) {
@@ -96,7 +95,7 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
-  console.log('fetchUserAsync가 작동')
+  console.log('fechUserSaga 작동')
   try{
     const response = yield call(fetchUserApi)
     if (response.status === 200) {
@@ -122,7 +121,7 @@ function* deleteUserSaga() {
       alert(error.response.data.message)
     }
   } else {
-    alert('당신은 방금 털보를 배신할 뻔 했습니다.')
+    alert('휴 당신이 방금 털보를 배신하는 줄 알았습니다')
   }
 }
 // 회원탈퇴 끝
@@ -135,10 +134,27 @@ function* fetchWalletSaga() {
       yield put(fetchWallet(response.data))
     }
   } catch (error) {
-    console.log(error)
+    alert(error.response.data.message)
   }
 }
 // 지갑 정보 가져오기 끝
+
+// 지갑 리셋
+function* resetWalletSaga() {
+  if (window.confirm('지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)')) {
+    try {
+      const response = yield call(resetWalletApi)
+      if (response.status === 200) {
+        yield delay(fetchWalletAsync(), 1000)
+      }
+    } catch (error) {
+      alert(error.response.data.message)
+    }
+  } else {
+    alert('휴 당신은 털보와 함께한 시간을 버릴뻔 했습니다')
+  }
+}
+// 지갑 리셋 끝
 
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
@@ -149,5 +165,6 @@ export function* accountSaga() {
   yield takeLatest(LOGOUT_ASYNC, logoutSaga)
   yield takeLatest(PUT_USER_ASYNC, putUserSaga) // 유저정보 수정
   yield takeLatest(DELETE_USER_ASYNC, deleteUserSaga) // 회원탈퇴
-  yield takeLatest(FETCH_WALLET_ASYNC, fetchWalletSaga) // 회원탈퇴
+  yield takeLatest(FETCH_WALLET_ASYNC, fetchWalletSaga) // 지갑정보 다시 불러오기
+  yield takeLatest(RESET_WALLET_ASYNC, resetWalletSaga) // 지갑 리셋
 }
