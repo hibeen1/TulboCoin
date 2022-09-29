@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class SellReq {
     String sellCoinName;
+    String sellCoinCode;
     Double sellCoinAmount;
     int sellCoinPrice;
 }
