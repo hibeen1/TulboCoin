@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
-import { useDispatch } from 'react-redux'
-import { putUserAsync } from '../store/accountSaga'
+import { useDispatch, useSelector } from 'react-redux'
+import { putUserAsync, deleteUserAsync } from '../store/accountSaga'
+import { useNavigate } from 'react-router-dom'
 
 function MypagePage() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isLoggedin = useSelector(state => state.account.isLoggedin)
   const [ user, setUser ] = useState({})
+  const [ wallet, setWallet ] = useState([])
   const [ isChangeForm, setIsChangeForm ] = useState(false)
   const imagePath = 
     [
@@ -18,18 +22,13 @@ function MypagePage() {
   const [ form, setForm ] = useState()
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')))
+    setWallet(JSON.parse(localStorage.getItem('wallet')))
     setForm({
       email: JSON.parse(localStorage.getItem('user')).email,
       imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
     })
   }, [])
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('user')))
-    setForm({
-      email: JSON.parse(localStorage.getItem('user')).email,
-      imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
-    })
-  }, [isChangeForm])
+  console.log(wallet)
 
   useEffect(() => {
     setChecked(user.imagePath)
@@ -54,18 +53,19 @@ function MypagePage() {
   const handleChangeInfo = (e) => {
     e.preventDefault()
     dispatch(putUserAsync({imagePath: checked, email: form.email, userId: user.userId, balance: user.balance}))
-    setTimeout(() => {
-      handlePageToForm()
-    }, 300);
   }
-
+  
   const handleBalanceReset = () => {
     dispatch(putUserAsync({'balance': 10000000, userId: user.userId, imagePath: user.imagePath, email: user.email}))
-
+  }
+  
+  const handleDelete = () => {
+    dispatch(deleteUserAsync())
   }
 
-
   return <>
+  {isLoggedin && <>
+
     <h1>마이페이지입니다.</h1>
     {isChangeForm ? <>
         <form onSubmit={handleChangeInfo}>
@@ -86,16 +86,28 @@ function MypagePage() {
       </>
       : <>
         <div>
-          <p>아이디 : {JSON.parse(localStorage.getItem('user')).userId}</p>
-          <p>프로필 사진 : {JSON.parse(localStorage.getItem('user')).imagePath}</p>
+          <p>아이디 : {user.userId}</p>
+          <p>프로필 사진 : {user.imagePath}</p>
           <p>이메일 : {user.email}</p>
           <p>잔액 : {user.balance} KRW</p>
           <button onClick={handleBalanceReset}>잔액 초기화하기</button>
         </div>
         <button onClick={handlePageToForm}>수정하기</button>
+        <p>나의 보유 코인</p>
+        <hr />
+        {/* <p>{JSON.stringify(wallet)}</p> */}
+        {wallet.map(coin => (<>
+            <p>코인 이름 : {coin.coinName}</p>
+            <p>코인 수량 : {coin.coinAmount}</p>
+            <p>코인 평균 매수 가격 : {coin.coinAverage}</p>
+            <hr />
+          </>
+        ))}
       </>
     }
-    {/* <p>{JSON.stringify(user)}</p> */}
+    <button onClick={handleDelete} on>회원탈퇴</button>
+    </>
+  }
   </>
 }
 
