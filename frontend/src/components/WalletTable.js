@@ -1,25 +1,19 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useState, useEffect } from 'react';
 import MaterialReactTable from 'material-react-table';
-import { useUpbitWebSocket } from "use-upbit-api";
 
 
-function WalletTable({ wallet }) {
+function WalletTable({ wallet, socketData }) {
   const [ data, setData ] = useState([])
-  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const coinInWallet = JSON.parse(localStorage.getItem('wallet')).map(ele => ele.coinCode)
-  console.log(coinInWallet)
-  const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
-
   useEffect(() => {
-    const newData = wallet.map((coin) => {
-      const [tmp] = socketData.filter(ele => ele.code === coin.coinCode)
+    const newData = socketData.map((coin) => {
+      const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
       return {
-        name: `${coin.coinName}(${coin.coinCode})`,
-        code: coin.coinCode,
-        amount: coin.coinAmount,
-        average: coin.coinAverage,
-        percent: (tmp.signed_change_price / coin.coinAverage) * coin.coinAmount
+        name: `${tmp.coinName}(${coin.code})`,
+        code: coin.code,
+        amount: tmp.coinAmount,
+        average: tmp.coinAverage,
+        percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
       }
     });
     setData(newData)
@@ -53,22 +47,24 @@ function WalletTable({ wallet }) {
     [],
   );
 
-  return (
-    <MaterialReactTable
+  return <>
+    {(data.length >= 1) && 
+      <MaterialReactTable
       muiTableBodyRowProps={({ row }) => ({
         onClick: (event) => {
           console.info(event, row.id);
         }
-      })}
-      columns={columns}
-      data={data}
-      enableFullScreenToggle={false}
-      enableGlobalFilter={false} //turn off a feature
-      enableDensityToggle={false}
-      enableHiding={false}
-      initialState={{ density: 'compact' }}
-    />
-  );
+        })}
+        columns={columns}
+        data={data}
+        enableFullScreenToggle={false}
+        enableGlobalFilter={false} //turn off a feature
+        enableDensityToggle={false}
+        enableHiding={false}
+        initialState={{ density: 'compact' }}
+        />
+      }
+  </>
 }
 
-export default WalletTable
+export default memo(WalletTable)

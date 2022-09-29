@@ -1,16 +1,15 @@
 import { memo, useEffect, useState, useMemo } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import MaterialReactTable from 'material-react-table';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCoin } from "../store/coin";
 import { buyAsync } from "../store/coinSaga";
-import { fetchUserAsync } from "../store/accountSaga";
 
 const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
   // console.log(detailCoinData);
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData) {
+    if (socketData[i].code === detailCoinData.code) {
       targetSocketData = socketData[i];
       break;
     }
@@ -18,33 +17,33 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
 
   const [buyForm, setBuyForm] = useState({
     buyCoinAmount: 1,
-    buyCoinName: detailCoinData,
+    buyCoinName: detailCoinData.name,
     buyCoinPrice: targetSocketData.trade_price,
+    buyCoinCode: detailCoinData.code
   });
-
+  
   const handleChange = (e) => {
     setBuyForm({
       ...buyForm,
       [e.target.name]: Number(e.target.value),
     });
   };
-
+  
   useEffect(() => {
     setBuyForm({
       ...buyForm,
-      buyCoinName: detailCoinData,
+      buyCoinName: detailCoinData.name,
+      buyCoinCode: detailCoinData.code,
       buyCoinPrice: targetSocketData.trade_price,
     });
   }, [socketData, detailCoinData]);
 
   const dispatch = useDispatch();
   const handleBuy = function (e) {
-    const { buyCoinAmount, buyCoinName, buyCoinPrice } = buyForm;
-    const body = { buyCoinAmount, buyCoinName, buyCoinPrice };
+    const { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode } = buyForm;
+    const body = { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode };
     // console.log(body);
     dispatch(buyAsync(body));
-    // 유저정보 요청보내기
-    dispatch(fetchUserAsync());
   };
   return (
     <div>
@@ -79,27 +78,18 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
     </div>
   );
 });
+
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
-  const { marketCodes } = useFetchMarketCode();
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData) {
+    if (socketData[i].code === detailCoinData.code) {
       targetSocketData = socketData[i];
       break;
     }
   }
   return (
     <div>
-      <h1>
-        {marketCodes.map(
-          (ele) =>
-            ele.market === targetSocketData.code && (
-              <div>
-                {ele.korean_name}({targetSocketData.code})
-              </div>
-            )
-        )}
-      </h1>
+      <h1>{detailCoinData.name}</h1>
       <h3>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
@@ -116,17 +106,24 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
+  const { marketCodes } = useFetchMarketCode()
   const [ data, setData ] = useState()
-  const [selectedCoin, setSelectedCoin] = useState("KRW-BTC");
-  
-  
+  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+
   useEffect(() => {
     const newData = socketData.map((coin) => {
+      let tmp = ''
+      for (let i = 0; i < marketCodes.length; i += 1) {
+        if (marketCodes[i].market === coin.code) {
+          tmp = marketCodes[i].korean_name;
+          break;
+        }
+      }
       return {
-        // name: `${coin.coinName}(${coin.coinCode})`,
-        name: `(${coin.code})`,
+        name: tmp,
         code: coin.code,
-        trade_price: coin.trade_price
+        trade_price: coin.trade_price,
+        volume: Math.ceil(convertMillonWon(coin.acc_trade_price_24h)).toLocaleString("ko-KR")
       }
     });
     setData(newData)
@@ -145,21 +142,20 @@ const Coin = memo(function Coin({ socketData }) {
         enableColumnFilter: false,
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
-      // {
-      //   accessorKey: 'percent', //simple recommended way to define a column
-      //   header: '수익률',
-      //   enableColumnFilter: false,
-      // },
+      {
+        accessorKey: 'volume', //simple recommended way to define a column
+        header: '거래대금(백만)',
+        enableColumnFilter: false,
+        enableSorting: false
+      },
     ],
     [],
   );
   // 테이블 컬럼 끝
     
-  function selectDetailCoin(code) {
-    setSelectedCoin(code);
-    dispatch(selectCoin(code));
+  function selectDetailCoin(coin) {
+    dispatch(selectCoin(coin));
   }
-  const { marketCodes } = useFetchMarketCode();
   const convertMillonWon = (value) => {
     const MILLION = 1000000;
     const extractedValue = value / MILLION;
@@ -181,7 +177,7 @@ const Coin = memo(function Coin({ socketData }) {
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
             onClick: (event) => {
-              selectDetailCoin(row.original.code)
+              selectDetailCoin({code:row.original.code, name:row.original.name})
             }
           })}
           columns={columns}
@@ -190,6 +186,7 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
+          enablePagination={false}
           initialState={{ density: 'compact' }}
         />
       }
