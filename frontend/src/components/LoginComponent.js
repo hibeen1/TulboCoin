@@ -19,6 +19,12 @@ function LoginComponent() {
     if (isLoggedin) {
       navigate('/', true)
     }
+  }, [])
+  
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate('/', true)
+    }
   }, [isLoggedin])
 
   const [ loginForm, setLoginForm ] = useState({
