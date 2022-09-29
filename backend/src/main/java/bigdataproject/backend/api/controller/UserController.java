@@ -1,6 +1,7 @@
 package bigdataproject.backend.api.controller;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
+import bigdataproject.backend.api.response.LikeCoinRes;
 import bigdataproject.backend.api.response.UserInfoRes;
 import bigdataproject.backend.api.response.UserRes;
 import bigdataproject.backend.api.service.UserService;
@@ -99,6 +100,30 @@ public class UserController {
 
     }
 
+    @PostMapping("reset")
+    @ApiOperation(value = "유저 투자 초기화", notes = "투자시간, 지갑, 거래기록 초기화")
+    public ResponseEntity<?> reset(Authentication authentication){
+        HttpStatus status;
+
+        if (authentication == null){
+            status = HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(401, "토큰 없거나 만료되었습니다"), status);
+        }
+
+        TulUserDetails userDetails = (TulUserDetails) authentication.getDetails();
+        String userId = userDetails.getUsername();
+        User user = userService.getUserByUserId(userId);
+
+        if (user == null){
+            status = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(404, "없는 유저입니다"), status);
+        }
+
+        User renew_user = userService.reset(user);
+        UserRes res = UserRes.of(renew_user);
+        status = HttpStatus.OK;
+        return new ResponseEntity<UserRes>(res, status);
+    }
 
 //    회원 삭제
 //    @DeleteMapping("info/{userSeq}")

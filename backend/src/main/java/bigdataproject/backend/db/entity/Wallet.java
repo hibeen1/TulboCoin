@@ -22,15 +22,16 @@ public class Wallet {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(name = "wallet_coin_name", nullable = false)
+    @Column(name = "wallet_coin_name")
     private String coinName;
+
+    @Column(name = "wallet_coin_code")
+    private String coinCode;
 
     @Column(name = "wallet_coin_amount")
     private Double coinAmount;
 
     @Column(name = "wallet_coin_average")
     private Double coinAverage;
-
-
 
 }

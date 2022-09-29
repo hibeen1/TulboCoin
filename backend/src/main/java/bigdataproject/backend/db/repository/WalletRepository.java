@@ -12,6 +12,8 @@ import java.util.List;
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
     List<Wallet> findAllByUser(User user);
 
+    void deleteAllByUser(User user);
+
     @Query(value = "select * from wallet where user_seq = ?1 and wallet_coin_name = ?2", nativeQuery = true)
     Wallet findWalletUserCoin(User user, String coinName);
 }
