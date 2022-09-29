@@ -11,6 +11,7 @@ import bigdataproject.backend.db.entity.User;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @RestController
 @RequestMapping("users")
 @CrossOrigin
@@ -55,7 +56,10 @@ public class UserController {
 //        유효성 검사
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
-            return ResponseEntity.status(401).body(BaseResponseBodyAndError.of(401, "Invalid", errors));
+            String ErrorMsg = String.join(" ", errors);
+            log.info(ErrorMsg);
+            return ResponseEntity.status(401).body(BaseResponseBodyAndError.of(401, ErrorMsg, errors));
+
         }
 //        아이디 중복 검사
         String userId = userRegisterInfo.getUserId();
