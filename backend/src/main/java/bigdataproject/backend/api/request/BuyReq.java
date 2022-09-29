@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class BuyReq {
     String buyCoinName;
+    String buyCoinCode;
     Double buyCoinAmount;
     int buyCoinPrice;
 }
