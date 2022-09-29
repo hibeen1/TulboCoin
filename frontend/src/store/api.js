@@ -47,3 +47,9 @@ export const fetchWalletApi = async () => {
   return await axios.get('/wallet', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
 }
 // 지갑정보 요청 끝
+
+// 지갑 초기화 요청
+export const resetWalletApi = async () => {
+  return await axios.post('/uses/reset', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+}
+// 지갑 초기화 요청 끝
