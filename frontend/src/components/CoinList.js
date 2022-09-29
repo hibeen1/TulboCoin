@@ -3,10 +3,10 @@ import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { useDispatch } from "react-redux";
 import { selectCoin } from "../store/coin";
 import { buyAsync } from "../store/coinSaga";
+import { fetchUserAsync } from "../store/accountSaga";
 
 const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
   // console.log(detailCoinData);
-  const { marketCodes } = useFetchMarketCode();
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
     if (socketData[i].code === detailCoinData) {
@@ -28,23 +28,30 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
     });
   };
 
+  useEffect(() => {
+    setBuyForm({
+      ...buyForm,
+      buyCoinName: detailCoinData,
+      buyCoinPrice: targetSocketData.trade_price,
+    });
+  }, [socketData, detailCoinData]);
+
   const dispatch = useDispatch();
   const handleBuy = function (e) {
     const { buyCoinAmount, buyCoinName, buyCoinPrice } = buyForm;
     const body = { buyCoinAmount, buyCoinName, buyCoinPrice };
-    setBuyForm({
-      ...buyForm,
-      buyCoinName: detailCoinData,
-      buyCoinPrice: buyCoinAmount * targetSocketData.trade_price,
-    });
+    // console.log(body);
     dispatch(buyAsync(body));
+    // 유저정보 요청보내기
+    dispatch(fetchUserAsync());
   };
   return (
     <div>
       <form>
+        {/* <p>{JSON.stringify(buyForm)}</p> */}
         <div>
           <label>주문가능</label>
-          <label>0KRW(내가 가진 돈)</label>
+          <label>{JSON.parse(localStorage.getItem("user")).balance}KRW</label>
         </div>
         <div>
           <label>매수가격(KRW)</label> <br />
