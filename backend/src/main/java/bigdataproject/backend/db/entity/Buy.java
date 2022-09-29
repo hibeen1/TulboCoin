@@ -25,6 +25,9 @@ public class Buy {
     @Column(name = "buy_coin_name")
     private String buyCoinName;
 
+    @Column(name = "buy_coin_code")
+    private String buyCoinCode;
+
     @Column(name = "buy_coin_amount")
     private Double buyCoinAmount;
 
