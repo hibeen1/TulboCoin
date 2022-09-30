@@ -3,6 +3,7 @@ package bigdataproject.backend.api.service;
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.request.UserUpdateReq;
 import bigdataproject.backend.api.response.HistoryRes;
+import bigdataproject.backend.common.util.Variable;
 import bigdataproject.backend.db.entity.History;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.*;
@@ -114,7 +115,7 @@ public class UserServiceImpl implements  UserService{
         sellRepository.deleteAllByUser(user);
         historyRepository.deleteAllByUser(user);
         user.setInvestStartTime(LocalDateTime.now());
-        user.setBalance(10000000);
+        user.setBalance(Variable.seedMoney);
         userRepository.save(user);
         return user;
     }
