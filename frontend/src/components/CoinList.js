@@ -9,23 +9,38 @@ import { fetchUserAsync } from "../store/accountSaga";
 import { fetchWalletAsync } from "../store/accountSaga";
 import axios from "axios";
 
-const CoinNews = (detailCoinData) => {
+const CoinNews = ({ detailCoinData }) => {
   const [articles, setArticles] = useState();
+  // console.log(detailCoinData.code)
   useEffect(() => {
     const fetchEvents = async () => {
-      const client_id = "oxUIYoVPhQ5PllruiWCD";
-      const client_secret = "cTEbrfUhzN";
+      // const client_id = "oxUIYoVPhQ5PllruiWCD";
+      // const client_secret = "cTEbrfUhzN";
+      const client_id = "uIpJoI_5MAJ1oc7CNJ5i";
+      const client_secret = "sGgPJRu5IR";
       try {
-        const res = await axios.get("/v1/search/news.json", {
+        const res = await axios.get("https://openapi.naver.com/v1/search/news.json", {
           params: {
-            query: `${detailCoinData}`,
-            display: 20,
-          },
+              query: `${detailCoinData.code}`,
+              display: 20,
+            },
           headers: {
-            "X-Naver-Client-Id": client_id,
-            "X-Naver-Client-Secret": client_secret,
-          },
-        });
+              "X-Naver-Client-Id": client_id,
+              "X-Naver-Client-Secret": client_secret,
+            }
+          }
+        );
+        // const res = await axios.post("https://openapi.naver.com/v1/search/news.json", {
+        //   params: {
+        //     query: `${detailCoinData.code}`,
+        //     display: 20,
+        //   },
+        //   headers: {
+        //     "X-Naver-Client-Id": client_id,
+        //     "X-Naver-Client-Secret": client_secret,
+        //   }
+        // });
+        console.log(res)
         setArticles(res.data);
       } catch (e) {
         console.log("에러", e);
@@ -33,9 +48,8 @@ const CoinNews = (detailCoinData) => {
     };
     fetchEvents();
   }, [detailCoinData]);
-  console.log(detailCoinData);
   // console.log(newsCoin);
-  console.log("asdfasdf", articles);
+  // console.log("asdfasdf", articles);
   return <div></div>;
 };
 
