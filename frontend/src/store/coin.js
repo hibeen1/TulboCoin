@@ -6,7 +6,7 @@ const SELECT_TIME = "SELECT_TIME";
 export const selectCoin = (selectedCoin) => ({ type: SELECT_COIN, meta: selectedCoin });
 export const selectTime = (selectedTime) => ({ type: SELECT_TIME, meta: selectedTime });
 const initialState = {
-  selectedCoin: "KRW-BTC",
+  selectedCoin: {name:"비트코인", code:"KRW-BTC"},
   selectedTime: "minutes/1",
 };
 
