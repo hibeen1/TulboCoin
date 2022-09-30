@@ -10,15 +10,23 @@ display: flex;
 align-items: center;
 justify-content: center;
 width: 30vw;
-height: 40vh;
+height: 5vh;
 flex-direction: column;
+margin-bottom: 5vh;
+/* border: 3px solid black; */
+
+h1{
+  font-size: 8vmin;
+}
   
 `
 
 const StyledInput = styled.input`
 border-radius: 40px;
-height: 8vh;
+height: 5vh;
 border: 1px solid #7A7A7A;
+margin-top: 0.5vh;
+margin-bottom: 1vh;
 ::placeholder {
     font-size: 1.2rem;    
     color: #7A7A7A;
@@ -26,10 +34,15 @@ border: 1px solid #7A7A7A;
 
 
 `
-
+// 떠나볼까요
 const StyledButton = styled.button`
   border-radius: 40px;
-  height: 8vh;
+  height: 6vh;
+  width: 20vw;
+  font-size: 3vmin;
+  padding-bottom: 0;
+  margin-top: 4vh;
+  
   color: #ffffff;
   background-color: #3A53C0;
   cursor: pointer;
@@ -39,9 +52,10 @@ const StyledButton = styled.button`
 `
 
 const Styledlabel = styled.label`
-  font-size: 2.5vmin;
+  font-size: 2vmin;
   color: #697ed9;
-  margin-left: 3px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 `
 
 const StyledContext = styled.div`
@@ -50,9 +64,9 @@ align-items: center;
 justify-content: center;
 flex-direction: column;
 `
-
+// 아직 계정이 없나요
 const StyledText = styled.div`
-margin-bottom: 3vh;
+margin-top: 10vh;
 font-size: 3vmin;
 color: #7A7A7A;
 cursor: pointer;
@@ -61,6 +75,8 @@ cursor: pointer;
   }
 
 `;
+
+
 
 
 function LoginComponent() {
@@ -102,7 +118,7 @@ function LoginComponent() {
   }
   return <>
   <LoginPageBlock>
-    <h1>Tulbo Coin</h1>
+    <h1>TULBO COIN</h1>
     <form onSubmit={handleOnSubmit}>
       <StyledContext>
         <div>
@@ -115,7 +131,6 @@ function LoginComponent() {
         <br></br>
         </div>
         <StyledText>아직 계정이 없나요?</StyledText>
-        <StyledText></StyledText>
 
         <StyledButton>떠나볼까요?</StyledButton>
       </StyledContext>

@@ -2,12 +2,20 @@
 import styled from "styled-components"
 import CoinChart from "../components/CoinChart";
 import mainPage from "../media/images/mainHalf.png"
+import logo from "../media/images/logo.png"
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import LoginComponent from "../components/LoginComponent";
 
+
 const MainPageBlock = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+`
+
+const BgImgBlock = styled.div`
   display: flex;
   height: 100vh;
   width: 40vw;
@@ -32,15 +40,32 @@ margin-bottom: 10vh;
   
 `;
 
+const LogoBlock = styled.div`
+display: flex;
+position: absolute;
+/* position: relative; */
+margin-left: 42vw;
+margin-top: 2vh;
+size: 20vw 40vh;
+background-image: url(${logo}) center no-repeat;
+background-size: 20vw 40vh;
+border: 3px solid black;
+
+`
+
 function Main() {
 
 
   return (
     <>
     <MainPageBlock>
-      <LoginPageBlock>
-        <LoginComponent></LoginComponent>
-      </LoginPageBlock>
+    <LogoBlock></LogoBlock>
+      <BgImgBlock>
+        <LoginPageBlock>
+          <LoginComponent></LoginComponent>
+        </LoginPageBlock>
+        
+      </BgImgBlock>
     </MainPageBlock>
     </>
   );
