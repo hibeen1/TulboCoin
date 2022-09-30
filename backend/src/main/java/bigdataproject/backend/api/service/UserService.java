@@ -2,6 +2,7 @@ package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.request.UserUpdateReq;
+import bigdataproject.backend.api.response.LikeCoinRes;
 import bigdataproject.backend.db.entity.User;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface UserService {
     User updateUserInfo(String userId, UserUpdateReq updateInfo);
 
     Boolean checkIdDuplicated (String Id);
+
+    User reset(User user);
 
 }
 

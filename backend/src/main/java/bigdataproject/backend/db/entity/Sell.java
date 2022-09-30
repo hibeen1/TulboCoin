@@ -29,6 +29,9 @@ public class Sell {
     @Column(name = "sell_coin_name")
     private String sellCoinName;
 
+    @Column(name = "sell_coin_code")
+    private String sellCoinCode;
+
     @Column(name = "sell_coin_amount")
     private Double sellCoinAmount;
 

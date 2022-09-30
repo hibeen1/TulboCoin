@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface BuyRepository extends JpaRepository<Buy, Long> {
     List<Buy> findAllByUser(User user);
+
+    void deleteAllByUser(User user);
 }

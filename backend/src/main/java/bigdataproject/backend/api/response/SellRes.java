@@ -8,12 +8,14 @@ import lombok.Setter;
 @Setter
 public class SellRes {
     String sellCoinName;
+    String sellCoinCode;
     Double sellCoinAmount;
     int sellCoinPrice;
 
     public static SellRes of(Sell sell){
         SellRes res = new SellRes();
         res.setSellCoinName(sell.getSellCoinName());
+        res.setSellCoinCode(sell.getSellCoinCode());
         res.setSellCoinPrice(sell.getSellCoinPrice());
         res.setSellCoinAmount(sell.getSellCoinAmount());
         return res;
