@@ -95,7 +95,6 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
-  console.log('fechUserSaga 작동')
   try{
     const response = yield call(fetchUserApi)
     if (response.status === 200) {
@@ -144,6 +143,7 @@ function* resetWalletSaga() {
   if (window.confirm('지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)')) {
     try {
       const response = yield call(resetWalletApi)
+      console.log(response)
       if (response.status === 200) {
         yield delay(fetchWalletAsync(), 1000)
       }
