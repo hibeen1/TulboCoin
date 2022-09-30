@@ -1,6 +1,6 @@
 import { memo, useEffect, useState, useMemo } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
-import MaterialReactTable from 'material-react-table';
+import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCoin } from "../store/coin";
 import { buyAsync } from "../store/coinSaga";
@@ -11,14 +11,15 @@ import { fetchWalletAsync } from "../store/accountSaga";
 const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData) {
+    if (socketData[i].code === detailCoinData.code) {
       targetSocketData = socketData[i];
       break;
     }
   }
   const [sellForm, setSellForm] = useState({
     sellCoinAmount: 0,
-    sellCoinName: detailCoinData,
+    sellCoinName: detailCoinData.name,
+    sellCoinCode: detailCoinData.code,
     sellCoinPrice: targetSocketData.trade_price,
   });
 
@@ -35,15 +36,16 @@ const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   useEffect(() => {
     setSellForm({
       ...sellForm,
-      sellCoinName: detailCoinData,
+      sellCoinName: detailCoinData.name,
+      sellCoinCode: detailCoinData.code,
       sellCoinPrice: targetSocketData.trade_price,
     });
   }, [socketData, detailCoinData]);
 
   const dispatch = useDispatch();
   const handleSell = function (e) {
-    const { sellCoinAmount, sellCoinName, sellCoinPrice } = sellForm;
-    const body = { sellCoinAmount, sellCoinName, sellCoinPrice };
+    const { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice } = sellForm;
+    const body = { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice };
     // console.log(body);
     dispatch(sellAsync(body));
     setTimeout(() => {
@@ -61,7 +63,7 @@ const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
           <label>판매가능수량</label>
           <div>
             {JSON.parse(localStorage.getItem("wallet")).map((coin) =>
-              coin.coinName === detailCoinData ? coin.coinAmount : null
+              coin.coinCode === detailCoinData.code ? coin.coinAmount : null
             )}
           </div>
         </div>
@@ -99,16 +101,16 @@ const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
     buyCoinAmount: 1,
     buyCoinName: detailCoinData.name,
     buyCoinPrice: targetSocketData.trade_price,
-    buyCoinCode: detailCoinData.code
+    buyCoinCode: detailCoinData.code,
   });
-  
+
   const handleChange = (e) => {
     setBuyForm({
       ...buyForm,
       [e.target.name]: Number(e.target.value),
     });
   };
-  
+
   useEffect(() => {
     setBuyForm({
       ...buyForm,
@@ -170,7 +172,16 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   }
   return (
     <div>
-      <h1>{detailCoinData.name}</h1>
+      <h1>
+        <img
+          src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
+          alt=""
+          width={64}
+          height={64}
+        />
+
+        {detailCoinData.name}
+      </h1>
       <h3>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
@@ -187,13 +198,13 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
-  const { marketCodes } = useFetchMarketCode()
-  const [ data, setData ] = useState()
-  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+  const { marketCodes } = useFetchMarketCode();
+  const [data, setData] = useState();
+  const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
 
   useEffect(() => {
     const newData = socketData.map((coin) => {
-      let tmp = ''
+      let tmp = "";
       for (let i = 0; i < marketCodes.length; i += 1) {
         if (marketCodes[i].market === coin.code) {
           tmp = marketCodes[i].korean_name;
@@ -204,36 +215,36 @@ const Coin = memo(function Coin({ socketData }) {
         name: tmp,
         code: coin.code,
         trade_price: coin.trade_price,
-        volume: Math.ceil(convertMillonWon(coin.acc_trade_price_24h)).toLocaleString("ko-KR")
-      }
+        volume: Math.ceil(convertMillonWon(coin.acc_trade_price_24h)).toLocaleString("ko-KR"),
+      };
     });
-    setData(newData)
-  }, [socketData])
+    setData(newData);
+  }, [socketData]);
   // 테이블 컬럼
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'name', //simple recommended way to define a column
-        header: '코인 이름',
+        accessorKey: "name", //simple recommended way to define a column
+        header: "코인 이름",
         // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
       },
       {
-        accessorKey: 'trade_price', //simple recommended way to define a column
-        header: '현재 가격',
+        accessorKey: "trade_price", //simple recommended way to define a column
+        header: "현재 가격",
         enableColumnFilter: false,
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
       {
-        accessorKey: 'volume', //simple recommended way to define a column
-        header: '거래대금(백만)',
+        accessorKey: "volume", //simple recommended way to define a column
+        header: "거래대금(백만)",
         enableColumnFilter: false,
-        enableSorting: false
+        enableSorting: false,
       },
     ],
-    [],
+    []
   );
   // 테이블 컬럼 끝
-    
+
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
   }
@@ -255,12 +266,12 @@ const Coin = memo(function Coin({ socketData }) {
           <div>Ticker Loading...</div>
         )}
       </div>
-      {data &&
+      {data && (
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
             onClick: (event) => {
-              selectDetailCoin({code:row.original.code, name:row.original.name})
-            }
+              selectDetailCoin({ code: row.original.code, name: row.original.name });
+            },
           })}
           columns={columns}
           data={data}
@@ -269,9 +280,9 @@ const Coin = memo(function Coin({ socketData }) {
           enableDensityToggle={false}
           enableHiding={false}
           enablePagination={false}
-          initialState={{ density: 'compact' }}
+          initialState={{ density: "compact" }}
         />
-      }
+      )}
     </div>
   );
 });
