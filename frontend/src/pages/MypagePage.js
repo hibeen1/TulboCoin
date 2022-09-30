@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { putUserAsync, deleteUserAsync } from '../store/accountSaga'
-import { useNavigate } from 'react-router-dom'
+import MyWallet from "../components/MyWallet"
 
 function MypagePage() {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const isLoggedin = useSelector(state => state.account.isLoggedin)
   const [ user, setUser ] = useState({})
-  const [ wallet, setWallet ] = useState([])
   const [ isChangeForm, setIsChangeForm ] = useState(false)
   const imagePath = 
     [
@@ -22,13 +20,11 @@ function MypagePage() {
   const [ form, setForm ] = useState()
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')))
-    setWallet(JSON.parse(localStorage.getItem('wallet')))
     setForm({
       email: JSON.parse(localStorage.getItem('user')).email,
       imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
     })
   }, [])
-  console.log(wallet)
 
   useEffect(() => {
     setChecked(user.imagePath)
@@ -95,14 +91,7 @@ function MypagePage() {
         <button onClick={handlePageToForm}>수정하기</button>
         <p>나의 보유 코인</p>
         <hr />
-        {/* <p>{JSON.stringify(wallet)}</p> */}
-        {wallet.map(coin => (<>
-            <p>코인 이름 : {coin.coinName}</p>
-            <p>코인 수량 : {coin.coinAmount}</p>
-            <p>코인 평균 매수 가격 : {coin.coinAverage}</p>
-            <hr />
-          </>
-        ))}
+        <MyWallet />
       </>
     }
     <button onClick={handleDelete} on>회원탈퇴</button>
