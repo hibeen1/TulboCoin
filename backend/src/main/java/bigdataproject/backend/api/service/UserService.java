@@ -2,7 +2,7 @@ package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.request.UserUpdateReq;
-import bigdataproject.backend.api.response.LikeCoinRes;
+import bigdataproject.backend.api.response.HistoryRes;
 import bigdataproject.backend.db.entity.User;
 
 import java.util.List;
@@ -25,6 +25,7 @@ public interface UserService {
 
     User reset(User user);
 
+    List<HistoryRes> getUserHistory(User user);
 }
 
 //    User updateUserSeq(String userId, UserRegisterReq updateInfo);

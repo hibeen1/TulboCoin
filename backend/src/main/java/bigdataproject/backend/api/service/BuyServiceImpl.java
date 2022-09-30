@@ -4,14 +4,8 @@ import bigdataproject.backend.api.request.BuyReq;
 import bigdataproject.backend.api.request.CoinReq;
 import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.BuyRes;
-import bigdataproject.backend.db.entity.Buy;
-import bigdataproject.backend.db.entity.LikeCoin;
-import bigdataproject.backend.db.entity.User;
-import bigdataproject.backend.db.entity.Wallet;
-import bigdataproject.backend.db.repository.BuyRepository;
-import bigdataproject.backend.db.repository.CoinRepository;
-import bigdataproject.backend.db.repository.UserRepository;
-import bigdataproject.backend.db.repository.WalletRepository;
+import bigdataproject.backend.db.entity.*;
+import bigdataproject.backend.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,8 @@ public class BuyServiceImpl implements BuyService{
     private final WalletRepository walletRepository;
 
     private final CoinRepository coinRepository;
+
+    private final HistoryRepository historyRepository;
 
     private final LikeService likeService;
 
@@ -71,6 +67,16 @@ public class BuyServiceImpl implements BuyService{
                 .build();
         log.info(buyReq.getBuyCoinName() + "매수요청 코인이름");
         buyRepository.save(newBuy);
+
+        History history = History.builder()
+                .user(user)
+                .historyCoinName(buyReq.getBuyCoinName())
+                .historyCoinCode(buyReq.getBuyCoinCode())
+                .historyCoinAmount(buyReq.getBuyCoinAmount())
+                .historyCoinPrice(buyReq.getBuyCoinPrice())
+                .historyType(HistoryType.BUY)
+                .build();
+        historyRepository.save(history);
 
         //산 코인이 wallet에 존재하는지 안하는지 확인후
         //평균을 내어서 새로 저장해야함
