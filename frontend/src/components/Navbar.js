@@ -1,33 +1,66 @@
 import { Link } from "react-router-dom";
-import Logo from "../media/images/logo.png";
+import TulLogo from "../media/images/TulLogo.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../store/accountSaga";
 import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import GreyHome from "../media/images/icons/GreyHome.png";
+import GreyCoin from "../media/images/icons/GreyCoin.png";
+import GreyGraph from "../media/images/icons/GreyGraph.png";
+import GreySetting from "../media/images/icons/GreySetting.png";
+import GreyPerson from "../media/images/icons/GreyPerson.png";
+import Exit from "../media/images/icons/Exit.png";
+
+
+
+
 const NavBlock = styled.div`
-  width: 10vw;
-  height: 100vh;
-  border: 3px blue solid;
+  width: 5vw;
+  height: 90vh;
+  border: 3px solid green;
   position: fixed;
   /* top: 0; */
   flex-direction: column;
-  margin-left: 2vw;
-  margin-top: 3vh;
+  margin-left: 0.8vw;
+  margin-top: 4vh;
   align-items: center;
   justify-content: space-between;
+  padding: 0;
+  background-color: #F3F3F3;
+  border-radius: 50px;
 
-  .Link {
-    margin-top: 3vh;
-  }
 `;
+
+const NavItem =  styled.div`
+  width: 4vw;
+  height: 7vh;
+  background: url(${GreyHome}) center no-repeat;
+  background-size: 4vw 7vh;
+  border: solid red 3px;
+  margin-top: 3vh;
+  margin-left: 0.3vw;
+`;
+
+const LoginOutItem = styled.div`
+width: 4vw;
+height: 7vh;
+background: url(${Exit}) center no-repeat;
+background-size: 4vw 7vh;
+/* border: solid red 3px; */
+margin-top: 39vh;
+margin-left: 0.5vw;
+`
 
 const LogoBlock = styled.div`
-  width: 5vw;
+  width: 4vw;
   height: 7vh;
-  background-image: url(${Logo});
-  background-size: 5vw 7vh;
-`;
+  background: url(${GreyHome}) center no-repeat;
+  background-size: 4vw 7vh;
+  border: solid red 3px;
+  margin-top: 3vh;
+  margin-left: 0.3vw;
+  `;
 
 function Navbar() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
@@ -45,37 +78,43 @@ function Navbar() {
     navigate("/");
   };
   return (
-    <>
-      <NavBlock>
+    <NavBlock>
+
         <Link to="/">
-          <LogoBlock></LogoBlock>
+        <LogoBlock></LogoBlock>
           {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
         </Link>
-        <br />
+
+      <NavItem>
         <Link to="/sise">시세</Link>
-        {/* <br /> */}
-        {/* <Link to="/info">정보집합소</Link> */}
-        <br />
+        </NavItem>
+
+        <NavItem>
         <Link to="/honor/*">명예의전당</Link>
-        <br />
 
-        {isLoggedin ? (
-          <>
+        </NavItem>
+
+        {isLoggedin ? (<>
+          <NavItem>
             <Link to="/mypage">마이페이지</Link>
-            <br />
+          </NavItem>
+          <LoginOutItem onClick={onLogout}>
+            {/* 로그아웃 */}
+          </LoginOutItem>
 
-            <button onClick={onLogout}>로그아웃</button>
-          </>
-        ) : (
-          <>
+          </>) : (<>
+
+          <NavItem>
             <Link to="/signup">회원가입</Link>
+            </NavItem>
+          <LoginOutItem Link to="/login">
+          </LoginOutItem>
 
-            <Link to="/login">로그인</Link>
-          </>
-        )}
+          </>)}
       </NavBlock>
-    </>
+
   );
-}
+        };
+
 
 export default Navbar;

@@ -131,9 +131,9 @@ function LoginComponent() {
               <br />
               <br></br>
             </div>
-            <StyledText>
-              <Link to="/signup">아직 계정이 없나요?</Link>
-            </StyledText>
+            
+              <Link to="/signup" style={{ textDecoration: 'none' }}><StyledText>아직 계정이 없나요? </StyledText></Link>
+           
 
             <StyledButton>떠나볼까요?</StyledButton>
           </StyledContext>

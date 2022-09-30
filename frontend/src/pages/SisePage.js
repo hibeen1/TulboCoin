@@ -11,7 +11,7 @@ const SisePageBlock = styled.div`
 
 const NavBlock = styled.div`
   border: solid yellow 3px;
-  width: 10vw;
+  width: 7vw;
   height: 100vh;
   position: relative;
   display: flex;
@@ -19,6 +19,7 @@ const NavBlock = styled.div`
 `
 
 const SiseBlock = styled.div`
+background-color: #F3F3F3;
   border: solid black 3px;
   width: 70vw;
   height: 100vh;

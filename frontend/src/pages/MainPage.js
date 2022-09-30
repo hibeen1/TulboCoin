@@ -2,7 +2,7 @@
 import styled from "styled-components"
 import CoinChart from "../components/CoinChart";
 import mainPage from "../media/images/mainHalf.png"
-import logo from "../media/images/logo.png"
+import TulLogo from "../media/images/TulLogo.png"
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -36,20 +36,19 @@ margin-left: 55vw;
 width: 50vw;
 margin-bottom: 10vh;
 /* height: 70vh; */
-
-  
 `;
 
 const LogoBlock = styled.div`
 display: flex;
 position: absolute;
 /* position: relative; */
-margin-left: 42vw;
+margin-left: 41vw;
 margin-top: 2vh;
-size: 20vw 40vh;
-background-image: url(${logo}) center no-repeat;
-background-size: 20vw 40vh;
-border: 3px solid black;
+background: url(${TulLogo}) center no-repeat;
+background-size: 6vw 10vh;
+width: 6vw; 
+height: 10vh;
+/* border: 3px solid red; */
 
 `
 
@@ -64,7 +63,6 @@ function Main() {
         <LoginPageBlock>
           <LoginComponent></LoginComponent>
         </LoginPageBlock>
-        
       </BgImgBlock>
     </MainPageBlock>
     </>
