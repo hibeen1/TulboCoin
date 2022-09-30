@@ -6,10 +6,15 @@ import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import GreyHome from "../media/images/icons/GreyHome.png";
+import BlueHome from "../media/images/icons/BlueHome.png";
 import GreyCoin from "../media/images/icons/GreyCoin.png";
+import BlueCoin from "../media/images/icons/BlueCoin.png";
 import GreyGraph from "../media/images/icons/GreyGraph.png";
+import BlueGraph from "../media/images/icons/BlueGraph.png";
 import GreySetting from "../media/images/icons/GreySetting.png";
+import BlueSetting from "../media/images/icons/BlueSetting.png";
 import GreyPerson from "../media/images/icons/GreyPerson.png";
+import BluePerson from "../media/images/icons/BluePerson.png";
 import Exit from "../media/images/icons/Exit.png";
 
 
@@ -18,7 +23,7 @@ import Exit from "../media/images/icons/Exit.png";
 const NavBlock = styled.div`
   width: 5vw;
   height: 90vh;
-  border: 3px solid green;
+  /* border: 3px solid green; */
   position: fixed;
   /* top: 0; */
   flex-direction: column;
@@ -35,31 +40,80 @@ const NavBlock = styled.div`
 const NavItem =  styled.div`
   width: 4vw;
   height: 7vh;
-  background: url(${GreyHome}) center no-repeat;
   background-size: 4vw 7vh;
-  border: solid red 3px;
-  margin-top: 3vh;
+  /* border: solid red 3px; */
+  margin-top: 5vh;
   margin-left: 0.3vw;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+/* 시세 */
+  &.sise{
+    background: url(${GreyCoin}) center no-repeat;
+    background-size: 4vw 7vh;
+    :hover {
+      background: url(${BlueCoin}) center no-repeat;
+      background-size: 4vw 7vh;
+    }}
+
+    /* 명예의 전당 */
+    &.honor{
+    background: url(${GreyGraph}) center no-repeat;
+    background-size: 4vw 7vh;
+    :hover {
+      background: url(${BlueGraph}) center no-repeat;
+    background-size: 4vw 7vh;
+    }}
+
+    /* 마이페이지 */
+    &.myPage{
+    background: url(${GreyPerson}) center no-repeat;
+    background-size: 4vw 7vh;
+    &:hover {
+    background: url(${BluePerson}) center no-repeat;
+    background-size: 4vw 7vh;
+  }}
+
+      /* 설정 페이지 */
+      &.setting{
+    background: url(${GreySetting}) center no-repeat;
+    background-size: 4vw 7vh;
+    :hover {
+    background: url(${BlueSetting}) center no-repeat;
+    background-size: 4vw 7vh;
+    }}
+
 `;
 
 const LoginOutItem = styled.div`
-width: 4vw;
-height: 7vh;
+width: 61px;
+height: 61px;
 background: url(${Exit}) center no-repeat;
-background-size: 4vw 7vh;
+background-size: 61px 61px;
 /* border: solid red 3px; */
-margin-top: 39vh;
-margin-left: 0.5vw;
-`
+margin-top: 22vh;
+margin-left: 0.05vw;
+cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
 const LogoBlock = styled.div`
   width: 4vw;
   height: 7vh;
   background: url(${GreyHome}) center no-repeat;
   background-size: 4vw 7vh;
-  border: solid red 3px;
+  /* border: solid red 3px; */
   margin-top: 3vh;
   margin-left: 0.3vw;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+    background: url(${BlueHome}) center no-repeat;
+    background-size: 4vw 7vh;
+  }
   `;
 
 function Navbar() {
@@ -85,19 +139,19 @@ function Navbar() {
           {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
         </Link>
 
-      <NavItem>
-        <Link to="/sise">시세</Link>
-        </NavItem>
-
-        <NavItem>
-        <Link to="/honor/*">명예의전당</Link>
-
-        </NavItem>
+      {/* 시세 */}
+        <Link to="/sise" ><NavItem className="sise"></NavItem></Link>
+        {/* 명예의 전당 */}
+        <Link to="/honor/*" ><NavItem className="honor"></NavItem></Link>
+        
 
         {isLoggedin ? (<>
-          <NavItem>
-            <Link to="/mypage">마이페이지</Link>
-          </NavItem>
+          {/* 마이페이지 */}
+            <Link to="/mypage" ><NavItem className="myPage"></NavItem></Link>
+
+            {/* 세팅 페이지 만들기 */}
+          <NavItem className="setting"></NavItem>
+
           <LoginOutItem onClick={onLogout}>
             {/* 로그아웃 */}
           </LoginOutItem>

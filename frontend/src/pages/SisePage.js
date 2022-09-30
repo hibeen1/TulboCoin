@@ -21,7 +21,7 @@ const NavBlock = styled.div`
 const SiseBlock = styled.div`
 background-color: #F3F3F3;
   border: solid black 3px;
-  width: 70vw;
+  width: 93vw;
   height: 100vh;
   position: relative;
   display: flex;
