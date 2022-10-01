@@ -7,6 +7,7 @@ import { buyAsync } from "../store/coinSaga";
 import { sellAsync } from "../store/coinSaga";
 import { fetchUserAsync } from "../store/accountSaga";
 import { fetchWalletAsync } from "../store/accountSaga";
+import CustomTable from "./CustomTable";
 
 const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -193,6 +194,7 @@ const Coin = memo(function Coin({ socketData }) {
   const { marketCodes } = useFetchMarketCode()
   const [ data, setData ] = useState()
   const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+  const { sortBy, setSortBy } = useState()
 
   useEffect(() => {
     const newData = socketData.map((coin) => {
@@ -271,10 +273,12 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
-          // enablePagination={false}
+          enablePagination={true}
           initialState={{ density: 'compact' }}
         />
       }
+      {/* {data && <CustomTable data={data} 
+          columns={columns} />} */}
     </div>
   );
 });
