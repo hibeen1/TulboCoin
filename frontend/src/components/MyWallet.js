@@ -5,17 +5,6 @@ import { useUpbitWebSocket } from "use-upbit-api";
 function MyWallet () {
   const [ wallet, setWallet ] = useState([])
   const [ coinInWallet, setCoinInWallet ] = useState([])
-  // const { isLoading, marketCodes } = useFetchMarketCode();
-  // const [targetMarketCode, setTargetMarketCode] = useState([]);
-
-  // useEffect(() => {
-  //   // 변경시 호출
-  //   if (!isLoading && marketCodes) {
-  //     setTargetMarketCode(marketCodes.filter((ele) => ele.market.includes("KRW")));
-  //     // console.log("여기입니다", marketCodes);
-  //   }
-  //   // 2번째 인자 [isLoading, marketCodes]  -> 상태변경을 감지할 애들
-  // }, [isLoading, marketCodes]);
 
   useEffect(() => {
     setWallet(JSON.parse(localStorage.getItem('wallet')))
