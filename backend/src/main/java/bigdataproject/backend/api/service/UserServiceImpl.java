@@ -2,8 +2,9 @@ package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.UserRegisterReq;
 import bigdataproject.backend.api.request.UserUpdateReq;
-import bigdataproject.backend.api.response.LikeCoinRes;
-import bigdataproject.backend.db.entity.LikeCoin;
+import bigdataproject.backend.api.response.HistoryRes;
+import bigdataproject.backend.common.util.Variable;
+import bigdataproject.backend.db.entity.History;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class UserServiceImpl implements  UserService{
 
     @Autowired
     LikeCoinRepository likeCoinRepository;
+
+    @Autowired
+    HistoryRepository historyRepository;
 
 
 
@@ -109,10 +113,22 @@ public class UserServiceImpl implements  UserService{
         walletRepository.deleteAllByUser(user);
         buyRepository.deleteAllByUser(user);
         sellRepository.deleteAllByUser(user);
+        historyRepository.deleteAllByUser(user);
         user.setInvestStartTime(LocalDateTime.now());
-        user.setBalance(10000000);
+        user.setBalance(Variable.seedMoney);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public List<HistoryRes> getUserHistory(User user) {
+        List<History> historyList = historyRepository.findAllByUserOrderByHistoryTimeDesc(user);
+        List<HistoryRes> historyResList = new ArrayList<>();
+        for (History history : historyList){
+            HistoryRes historyRes = HistoryRes.of(history);
+            historyResList.add(historyRes);
+        }
+        return historyResList;
     }
 }
 

@@ -4,10 +4,8 @@ import bigdataproject.backend.api.request.SellReq;
 import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.SellRecordRes;
 import bigdataproject.backend.api.response.SellRes;
-import bigdataproject.backend.db.entity.Buy;
-import bigdataproject.backend.db.entity.Sell;
-import bigdataproject.backend.db.entity.User;
-import bigdataproject.backend.db.entity.Wallet;
+import bigdataproject.backend.db.entity.*;
+import bigdataproject.backend.db.repository.HistoryRepository;
 import bigdataproject.backend.db.repository.SellRepository;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.WalletRepository;
@@ -31,6 +29,8 @@ public class SellServiceImpl implements SellService{
 
     private final WalletRepository walletRepository;
 
+    private final HistoryRepository historyRepository;
+
     @Override
     @Transactional
     public SellRes postSellRecord(User user, SellReq sellReq) {
@@ -43,6 +43,16 @@ public class SellServiceImpl implements SellService{
                 .sellCoinPrice(sellReq.getSellCoinPrice())
                 .build();
         sellRepository.save(newSell);
+
+        History history = History.builder()
+                .user(user)
+                .historyCoinName(sellReq.getSellCoinName())
+                .historyCoinCode(sellReq.getSellCoinCode())
+                .historyCoinAmount(sellReq.getSellCoinAmount())
+                .historyCoinPrice(sellReq.getSellCoinPrice())
+                .historyType(HistoryType.SELL)
+                .build();
+        historyRepository.save(history);
 
         Wallet wallet = walletRepository.findWalletUserCoin(
                 user,
