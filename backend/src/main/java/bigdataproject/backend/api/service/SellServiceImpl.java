@@ -38,6 +38,7 @@ public class SellServiceImpl implements SellService{
         Sell newSell = Sell.builder()
                 .user(user)
                 .sellCoinName(sellReq.getSellCoinName())
+                .sellCoinCode(sellReq.getSellCoinCode())
                 .sellCoinAmount(sellReq.getSellCoinAmount())
                 .sellCoinPrice(sellReq.getSellCoinPrice())
                 .build();

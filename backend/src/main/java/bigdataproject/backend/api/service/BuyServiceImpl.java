@@ -1,12 +1,15 @@
 package bigdataproject.backend.api.service;
 
 import bigdataproject.backend.api.request.BuyReq;
+import bigdataproject.backend.api.request.CoinReq;
 import bigdataproject.backend.api.response.BuyRecordRes;
 import bigdataproject.backend.api.response.BuyRes;
 import bigdataproject.backend.db.entity.Buy;
+import bigdataproject.backend.db.entity.LikeCoin;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
 import bigdataproject.backend.db.repository.BuyRepository;
+import bigdataproject.backend.db.repository.CoinRepository;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,10 @@ public class BuyServiceImpl implements BuyService{
     private final BuyRepository buyRepository;
 
     private final WalletRepository walletRepository;
+
+    private final CoinRepository coinRepository;
+
+    private final LikeService likeService;
 
     @Override
     public List<BuyRecordRes> getBuyRecord(User user) {
@@ -58,6 +65,7 @@ public class BuyServiceImpl implements BuyService{
         Buy newBuy = Buy.builder()
                 .user(user)
                 .buyCoinName(buyReq.getBuyCoinName())
+                .buyCoinCode(buyReq.getBuyCoinCode())
                 .buyCoinAmount(buyReq.getBuyCoinAmount())
                 .buyCoinPrice(buyReq.getBuyCoinPrice())
                 .build();
@@ -87,6 +95,7 @@ public class BuyServiceImpl implements BuyService{
             Wallet newWallet = Wallet.builder()
                     .user(user)
                     .coinName(buyReq.getBuyCoinName())
+                    .coinCode(buyReq.getBuyCoinCode())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)
                     .build();
@@ -99,6 +108,7 @@ public class BuyServiceImpl implements BuyService{
                     .walletSeq(wallet.getWalletSeq())
                     .user(wallet.getUser())
                     .coinName(wallet.getCoinName())
+                    .coinCode(wallet.getCoinCode())
                     .coinAmount(newAmount)
                     .coinAverage((buyTotal+walletTotal)/newAmount)
                     .build();
@@ -107,6 +117,12 @@ public class BuyServiceImpl implements BuyService{
 
         //응답 newBuy로 제작
         BuyRes buyRes = BuyRes.of(newBuy);
+
+        CoinReq coinReq = new CoinReq();
+        coinReq.setCoinCode(buyReq.getBuyCoinCode());
+        coinReq.setCoinName(buyReq.getBuyCoinName());
+
+        likeService.postLikeCoin(user, coinReq);
 
         return buyRes;
     }
