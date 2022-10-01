@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 public class BuyRecordRes {
     String buyCoinName;
+    String buyCoinCode;
     Double buyCoinAmount;
     int buyCoinPrice;
     LocalDateTime buyTime;
@@ -17,6 +18,7 @@ public class BuyRecordRes {
     public static BuyRecordRes of(Buy buy){
         BuyRecordRes res = new BuyRecordRes();
         res.setBuyCoinName(buy.getBuyCoinName());
+        res.setBuyCoinCode(buy.getBuyCoinCode());
         res.setBuyCoinPrice(buy.getBuyCoinPrice());
         res.setBuyCoinAmount(buy.getBuyCoinAmount());
         res.setBuyTime(buy.getBuyTime());
