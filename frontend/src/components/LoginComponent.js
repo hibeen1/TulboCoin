@@ -5,6 +5,8 @@ import { loginAsync } from "../store/accountSaga";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import logo from "../media/images/TulboCoin.png"
+
 const LoginPageBlock = styled.div`
   display: flex;
   align-items: center;
@@ -12,7 +14,7 @@ const LoginPageBlock = styled.div`
   width: 30vw;
   height: 5vh;
   flex-direction: column;
-  margin-bottom: 5vh;
+  margin-top: 25vh;
   /* border: 3px solid black; */
 
   h1 {
@@ -72,6 +74,19 @@ const StyledText = styled.div`
   }
 `;
 
+const LogoBlock = styled.div`
+width: 20vw;
+height: 10vh;
+margin-bottom: 78vh;
+margin-right: 1vw;
+background: url(${logo}) center no-repeat;
+background-size: 20vw 10vh;
+/* border: solid black 5px; */
+display: flex;
+position: absolute;
+  
+`
+
 function LoginComponent() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
   // state의 값은 store.getState() 함수를 호출했을 때 나타나는 결과물과 동일합니다.
@@ -112,7 +127,10 @@ function LoginComponent() {
   return (
     <>
       <LoginPageBlock>
-        <h1>TULBO COIN</h1>
+        <LogoBlock></LogoBlock>
+        {/* <h1>TULBO COIN</h1> */}
+
+
         <form onSubmit={handleOnSubmit}>
           <StyledContext>
             <div>

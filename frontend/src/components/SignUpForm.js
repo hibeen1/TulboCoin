@@ -138,6 +138,7 @@ function SignupForm() {
   };
 
   const handleSubmit = function (e) {
+    e.preventDefault()
     const error = vaildate()
     setError(error);
     if (Object.values(error).some((v) => v)) {
@@ -146,7 +147,6 @@ function SignupForm() {
       const { userId, email, password, balance, imagePath } = signupForm;
       const body = { userId, email, password, balance, imagePath };
       dispatch(signupAsync(body));
-      console.log(body);
     }
   };
 
@@ -167,6 +167,11 @@ function SignupForm() {
         <br />
         <StyledInput id="email" type="text" name="email" onChange={handleChange} /><br />
         {error.email && <p>{error.email}</p>}
+
+        <Styledlabel htmlFor="password">비밀번호</Styledlabel>
+        <br />
+        <StyledInput id="password" type="password" name="password" onChange={handleChange} /><br />
+        {error.password && <p>{error.password}</p>}
 
         <Styledlabel htmlFor="password-check">비밀번호 확인</Styledlabel>
         <br />
