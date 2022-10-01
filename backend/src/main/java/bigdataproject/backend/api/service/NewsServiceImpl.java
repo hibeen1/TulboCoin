@@ -20,7 +20,7 @@ public class NewsServiceImpl implements NewsService{
 
     public Object getNews(String query){
         Object mono = WebClient.builder()
-                .baseUrl("https://openapi.naver.com/v1/search/news.json?query=" + query)
+                .baseUrl("https://openapi.naver.com/v1/search/news.json?query=" + query + "&display=20&sort=date")
                 .defaultHeader(Variable.naverApiIdHeader, Variable.naverApiIdValue)
                 .defaultHeader(Variable.naverApiSecretHeader, Variable.naverApiSecretValue)
                 .build()
