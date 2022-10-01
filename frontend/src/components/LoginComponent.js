@@ -35,7 +35,7 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   border-radius: 40px;
   height: 6vh;
-  width: 20vw;
+  width: 18vw;
   font-size: 3vmin;
   padding-bottom: 0;
   margin-top: 4vh;

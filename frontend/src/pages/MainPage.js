@@ -45,8 +45,8 @@ position: absolute;
 margin-left: 41vw;
 margin-top: 2vh;
 background: url(${TulLogo}) center no-repeat;
-background-size: 6vw 10vh;
-width: 6vw; 
+background-size: 5.5vw 10vh;
+width: 5.5vw; 
 height: 10vh;
 /* border: 3px solid red; */
 
