@@ -6,17 +6,19 @@ import MaterialReactTable from 'material-react-table';
 function WalletTable({ wallet, socketData }) {
   const [ data, setData ] = useState([])
   useEffect(() => {
-    const newData = socketData.map((coin) => {
-      const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
-      return {
-        name: `${tmp.coinName}(${coin.code})`,
-        code: coin.code,
-        amount: tmp.coinAmount,
-        average: tmp.coinAverage,
-        percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
-      }
-    });
-    setData(newData)
+    if (wallet) {
+      const newData = socketData.map((coin) => {
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
+        return {
+          name: `${tmp.coinName}(${coin.code})`,
+          code: coin.code,
+          amount: tmp.coinAmount,
+          average: tmp.coinAverage,
+          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
+        }
+      });
+      setData(newData)
+    }
   }, [socketData])
 
   const columns = useMemo(

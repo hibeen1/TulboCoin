@@ -11,7 +11,7 @@ import { fetchWalletAsync } from "../store/accountSaga";
 const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData) {
+    if (socketData[i].code === detailCoinData.code) {
       targetSocketData = socketData[i];
       break;
     }
@@ -35,15 +35,16 @@ const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   useEffect(() => {
     setSellForm({
       ...sellForm,
-      sellCoinName: detailCoinData,
+      sellCoinName: detailCoinData.name,
+      sellCoinCode: detailCoinData.code,
       sellCoinPrice: targetSocketData.trade_price,
     });
   }, [socketData, detailCoinData]);
 
   const dispatch = useDispatch();
   const handleSell = function (e) {
-    const { sellCoinAmount, sellCoinName, sellCoinPrice } = sellForm;
-    const body = { sellCoinAmount, sellCoinName, sellCoinPrice };
+    const { sellCoinAmount, sellCoinName, sellCoinPrice, sellCoinCode } = sellForm;
+    const body = { sellCoinAmount, sellCoinName, sellCoinPrice, sellCoinCode };
     // console.log(body);
     dispatch(sellAsync(body));
     setTimeout(() => {
@@ -270,7 +271,7 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
-          enablePagination={false}
+          // enablePagination={false}
           initialState={{ density: 'compact' }}
         />
       }
