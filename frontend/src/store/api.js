@@ -75,3 +75,11 @@ export const rankingApi = async () => {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 };
+
+export const historyApi = async (body) => {
+  return await axios.get(`/users/history/${body}`);
+};
+
+export const fetchOtherUserApi = async (body) => {
+  return await axios.get(`/users/info/id/${body}`);
+};

@@ -9,35 +9,35 @@ import { fetchUserAsync } from "../store/accountSaga";
 import { fetchWalletAsync } from "../store/accountSaga";
 import axios from "axios";
 
-const CoinNews = (detailCoinData) => {
-  const [articles, setArticles] = useState();
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const client_id = "oxUIYoVPhQ5PllruiWCD";
-      const client_secret = "cTEbrfUhzN";
-      try {
-        const res = await axios.get("/v1/search/news.json", {
-          params: {
-            query: `${detailCoinData}`,
-            display: 20,
-          },
-          headers: {
-            "X-Naver-Client-Id": client_id,
-            "X-Naver-Client-Secret": client_secret,
-          },
-        });
-        setArticles(res.data);
-      } catch (e) {
-        console.log("에러", e);
-      }
-    };
-    fetchEvents();
-  }, [detailCoinData]);
-  console.log(detailCoinData);
-  // console.log(newsCoin);
-  console.log("asdfasdf", articles);
-  return <div></div>;
-};
+// const CoinNews = (detailCoinData) => {
+//   const [articles, setArticles] = useState();
+//   useEffect(() => {
+//     const fetchEvents = async () => {
+//       const client_id = "oxUIYoVPhQ5PllruiWCD";
+//       const client_secret = "cTEbrfUhzN";
+//       try {
+//         const res = await axios.get("/v1/search/news.json", {
+//           params: {
+//             query: `${detailCoinData}`,
+//             display: 20,
+//           },
+//           headers: {
+//             "X-Naver-Client-Id": client_id,
+//             "X-Naver-Client-Secret": client_secret,
+//           },
+//         });
+//         setArticles(res.data);
+//       } catch (e) {
+//         console.log("에러", e);
+//       }
+//     };
+//     fetchEvents();
+//   }, [detailCoinData]);
+//   console.log(detailCoinData);
+//   // console.log(newsCoin);
+//   console.log("asdfasdf", articles);
+//   return <div></div>;
+// };
 
 const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -292,7 +292,7 @@ const Coin = memo(function Coin({ socketData }) {
             <CoinSell socketData={socketData} detailCoinData={selectedCoin} />
             <CoinBuy socketData={socketData} detailCoinData={selectedCoin} />
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
-            <CoinNews detailCoinData={selectedCoin} />
+            {/* <CoinNews detailCoinData={selectedCoin} /> */}
           </>
         ) : (
           <div>Ticker Loading...</div>

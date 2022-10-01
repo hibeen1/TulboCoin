@@ -12,8 +12,19 @@ import {
   fetchWalletApi,
   resetWalletApi,
   rankingApi,
+  historyApi,
+  fetchOtherUserApi,
 } from "./api";
-import { logout, fetchUser, changeIsLoggedIn, token, fetchWallet } from "./account";
+import {
+  logout,
+  fetchUser,
+  changeIsLoggedIn,
+  token,
+  fetchWallet,
+  fetchRanking,
+  fetchHistory,
+  fetchOtherUser,
+} from "./account";
 
 // 액션의 타입
 const CATCH_LOGIN = "CATCH_LOGIN"; // token이 있는지 확인해서 로그인 여부 변경
@@ -26,6 +37,8 @@ const DELETE_USER_ASYNC = "DELETE_USER_ASYNC"; // 회원탈퇴
 const FETCH_WALLET_ASYNC = "FETCH_WALLET_ASYNC"; // 지갑정보 가져오기
 const RESET_WALLET_ASYNC = "RESET_WALLET_ASYNC";
 const RANKING_ASYNC = "RANKING_ASYNC";
+const HISTORY_ASYNC = "HISTORY_ASYNC";
+const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -38,7 +51,8 @@ export const deleteUserAsync = () => ({ type: DELETE_USER_ASYNC });
 export const fetchWalletAsync = () => ({ type: FETCH_WALLET_ASYNC });
 export const resetWalletAsync = () => ({ type: RESET_WALLET_ASYNC });
 export const rankingAsync = () => ({ type: RANKING_ASYNC });
-
+export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
+export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
@@ -170,6 +184,7 @@ function* rankingSaga() {
   try {
     const response = yield call(rankingApi);
     if (response.status === 200) {
+      yield put(fetchRanking(response.data));
       console.log("랭킹들어옴????", response.data);
     }
   } catch (error) {
@@ -177,6 +192,31 @@ function* rankingSaga() {
   }
 }
 
+function* historySaga(action) {
+  const body = action.meta;
+  try {
+    const response = yield call(historyApi, body);
+    if (response.status === 200) {
+      yield put(fetchHistory(response.data));
+      console.log("히스토리????", response.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* fetchOtherUserSaga(action) {
+  const body = action.meta;
+  try {
+    const response = yield call(fetchOtherUserApi, body);
+    if (response.status === 200) {
+      yield put(fetchOtherUser(response.data));
+      console.log("다른사람정보?????", response.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
   yield takeLatest(LOGIN_ASYNC, loginSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
@@ -189,4 +229,6 @@ export function* accountSaga() {
   yield takeLatest(FETCH_WALLET_ASYNC, fetchWalletSaga); // 지갑정보 다시 불러오기
   yield takeLatest(RESET_WALLET_ASYNC, resetWalletSaga); // 지갑 리셋
   yield takeLatest(RANKING_ASYNC, rankingSaga); // 지갑 리셋
+  yield takeLatest(HISTORY_ASYNC, historySaga); // 지갑 리셋
+  yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
 }
