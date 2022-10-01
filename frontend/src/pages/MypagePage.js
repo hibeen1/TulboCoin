@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-import { putUserAsync, deleteUserAsync } from '../store/accountSaga'
+import { putUserAsync, deleteUserAsync, resetWalletAsync } from '../store/accountSaga'
 import MyWallet from "../components/MyWallet"
 
 function MypagePage() {
@@ -52,7 +52,7 @@ function MypagePage() {
   }
   
   const handleBalanceReset = () => {
-    dispatch(putUserAsync({'balance': 10000000, userId: user.userId, imagePath: user.imagePath, email: user.email}))
+    dispatch(resetWalletAsync())
   }
   
   const handleDelete = () => {
