@@ -49,10 +49,11 @@ function* loginSaga(action) {
       yield put(token(response.data));
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
       yield put(fetchWalletAsync());
-      yield delay((window.location.href = "/sise"), 1000);
+      yield delay(500)
+      yield call(window.location.replace("/sise"));
     }
   } catch (error) {
-
+    console.log(error)
     alert(error.response.data.message)
   }
   yield put(catchLogin());
@@ -72,7 +73,8 @@ function* signupSaga(action) {
   try {
     const response = yield call(signupApi, body);
     if (response.status === 200) {
-      alert("회원가입 성공");
+      yield alert("회원가입 성공");
+      yield put(loginAsync({id: body.userId, password: body.password}))
     }
   } catch (error) {
 
@@ -100,10 +102,8 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
-
   try{
     const response = yield call(fetchUserApi)
-
     if (response.status === 200) {
       yield put(fetchUser(response.data));
     }
@@ -135,13 +135,13 @@ function* deleteUserSaga() {
 
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
+  console.log('지갑정보 가져오기 작동')
   try {
     const response = yield call(fetchWalletApi);
     if (response.status === 200) {
       yield put(fetchWallet(response.data));
     }
   } catch (error) {
-
     alert(error.response.data.message)
   }
 }
@@ -170,7 +170,6 @@ export function* accountSaga() {
   yield takeLatest(LOGIN_ASYNC, loginSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
   yield takeLatest(SIGNUP_ASYNC, signupSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
   yield takeLatest(FETCH_USER_ASYNC, fetchUserSaga); // 가장 마지막으로 디스패치된 FETCH_USER_ASYNC 액션만을 처리
-
   yield takeLatest(CATCH_LOGIN, catchLoginSaga)
   yield takeLatest(LOGOUT_ASYNC, logoutSaga)
   yield takeLatest(PUT_USER_ASYNC, putUserSaga) // 유저정보 수정
