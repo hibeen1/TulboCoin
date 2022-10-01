@@ -93,9 +93,11 @@ const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
         <div>
           <label>판매가능수량</label>
           <div>
-            {JSON.parse(localStorage.getItem("wallet")).map((coin) =>
-              coin.coinCode === detailCoinData.code ? coin.coinAmount : null
-            )}
+            {localStorage.getItem("wallet") &&
+              JSON.parse(localStorage.getItem("wallet")).map((coin) =>
+                coin.coinName === detailCoinData.name ? coin.coinAmount : null
+              )
+            }
           </div>
         </div>
         <div>
@@ -311,8 +313,8 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
-          enablePagination={false}
-          initialState={{ density: "compact" }}
+          // enablePagination={false}
+          initialState={{ density: 'compact' }}
         />
       )}
     </div>

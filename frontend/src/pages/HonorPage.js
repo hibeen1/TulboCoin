@@ -1,16 +1,38 @@
+
 import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { historyAsync, rankingAsync, fetchOtherUserAsync } from "../store/accountSaga";
 import { useSelector } from "react-redux";
 import MaterialReactTable from "material-react-table";
+import styled from "styled-components"
+import Navbar from "../components/Navbar"
+
+const HonorPageBlock = styled.div`
+  display: flex;
+`
+
+const NavBlock = styled.div`
+  border: solid yellow 3px;
+  width: 7vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  
+`
+
+const HonorBlock = styled.div`
+background-color: #F3F3F3;
+  border: solid black 3px;
+  width: 93vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+`
 const OtherUser = () => {
   const historylist = useSelector((state) => state.account.historylist);
   const otheruser = useSelector((state) => state.account.otheruser);
   return (
     <>
-      {/* <h1>명예의전당 페이지입니다</h1> */}
-      {/* <div>{rankinglist.map((rank) => rank.user.userId)}</div>
-      <div>{historylist.map((history) => history.historyTime)}</div> */}
       <h1>{otheruser.userId}님의 정보입니다.</h1>
       <table>
         <thead>
@@ -43,8 +65,6 @@ function Honor() {
   }, []);
   const dispatch = useDispatch();
   const rankinglist = useSelector((state) => state.account.rankinglist);
-  // console.log("랭킹 리스트", rankinglist);
-  // console.log("거래내역 리스트", historylist);
   function selectUser(userId) {
     dispatch(historyAsync(userId));
     dispatch(fetchOtherUserAsync(userId));
@@ -77,50 +97,31 @@ function Honor() {
   );
   return (
     <>
-      {/* <h1>명예의전당 페이지입니다</h1> */}
-      {/* <div>{rankinglist.map((rank) => rank.user.userId)}</div>
-      <div>{historylist.map((history) => history.historyTime)}</div> */}
-      {/* {otheruser.userId}
-      <table>
-        <thead>
-          <tr>
-            <th>날짜</th>
-            <th>코인 이름</th>
-            <th>양</th>
-            <th>가격</th>
-            <th>타입</th>
-          </tr>
-        </thead>
-        <tbody>
-          {historylist.map((history) => (
-            <tr key={history.historyTime}>
-              <td>{history.historyTime}</td>
-              <td>{history.historyCoinName}</td>
-              <td>{history.historyCoinAmount}</td>
-              <td>{history.historyCoinPrice}</td>
-              <td>{history.historyType}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-      <OtherUser></OtherUser>
-      {rankinglist && (
-        <MaterialReactTable
-          muiTableBodyRowProps={({ row }) => ({
-            onClick: (event) => selectUser(row.original.user.userId),
-          })}
-          columns={columns}
-          data={rankinglist}
-          enableFullScreenToggle={false}
-          enableGlobalFilter={false} //turn off a feature
-          enableDensityToggle={false}
-          enableHiding={false}
-          enablePagination={false}
-          initialState={{ density: "compact" }}
-        />
-      )}
+      <HonorPageBlock>
+        <NavBlock>
+          <Navbar></Navbar>
+        </NavBlock>
+        <HonorBlock>
+        <h1>명예의전당 페이지입니다</h1>
+        <OtherUser></OtherUser>
+        {rankinglist && (
+          <MaterialReactTable
+            muiTableBodyRowProps={({ row }) => ({
+              onClick: (event) => selectUser(row.original.user.userId),
+            })}
+            columns={columns}
+            data={rankinglist}
+            enableFullScreenToggle={false}
+            enableGlobalFilter={false} //turn off a feature
+            enableDensityToggle={false}
+            enableHiding={false}
+            enablePagination={false}
+            initialState={{ density: "compact" }}
+          />
+        )}
+        </HonorBlock>
+      </HonorPageBlock>
     </>
   );
 }
-
 export default Honor;
