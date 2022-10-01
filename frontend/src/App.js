@@ -22,7 +22,7 @@ function App() {
   }, [])
 
   return (<>
-    <Navbar />
+    {/* <Navbar /> */}
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path='sise' element={<SisePage />} />

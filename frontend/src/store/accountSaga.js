@@ -2,6 +2,7 @@
 // put : 특정 액션 디스패치
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
+
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import { signupApi, fetchUserApi, loginApi, putUserApi, deleteApi, fetchWalletApi, resetWalletApi } from './api'
 import { logout, fetchUser, changeIsLoggedIn, token, fetchWallet } from './account';
@@ -32,46 +33,49 @@ export const resetWalletAsync = () => ({ type: RESET_WALLET_ASYNC })
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
-    yield put(changeIsLoggedIn(true))
+    yield put(changeIsLoggedIn(true));
   } else {
-    yield put(changeIsLoggedIn(false))
+    yield put(changeIsLoggedIn(false));
   }
 }
 // 로그인 되었는지 확인 끝
 
 // 로그인 시작
 function* loginSaga(action) {
-  const body = action.meta
-  try{
-    const response = yield call(loginApi, body)
+  const body = action.meta;
+  try {
+    const response = yield call(loginApi, body);
     if (response.status === 200) {
-      yield put(token(response.data))
+      yield put(token(response.data));
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
-      yield put(fetchWalletAsync())
+      yield put(fetchWalletAsync());
+      yield delay((window.location.href = "/sise"), 1000);
     }
   } catch (error) {
+
     alert(error.response.data.message)
   }
-  yield put(catchLogin())
+  yield put(catchLogin());
 }
 // 로그인 끝
 
 // 로그아웃
 function* logoutSaga() {
-  yield put(logout())
-  yield put(catchLogin())
+  yield put(logout());
+  yield put(catchLogin());
 }
 // 로그아웃 끝
 
 // 회원가입 시작시키기
 function* signupSaga(action) {
-  const body = action.meta
-  try{
-    const response = yield call(signupApi, body)
+  const body = action.meta;
+  try {
+    const response = yield call(signupApi, body);
     if (response.status === 200) {
-      alert('회원가입 성공')
+      alert("회원가입 성공");
     }
   } catch (error) {
+
     alert(error.response.data.message)
   }
 }
@@ -82,12 +86,13 @@ function* putUserSaga(action) {
   const body = action.meta
   try{
     const response = yield call(putUserApi, body)
+
     if (response.status === 200) {
-      yield put(fetchUserAsync())
-      yield delay(window.location.reload(), 1000)
+      yield put(fetchUserAsync());
+      yield delay(window.location.reload(), 1000);
     }
   } catch (error) {
-    alert(error.response.data.message)
+    alert(error.response.data.message);
     // console.log(error)
   }
 }
@@ -95,31 +100,34 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
+
   try{
     const response = yield call(fetchUserApi)
+
     if (response.status === 200) {
-      yield put(fetchUser(response.data))
+      yield put(fetchUser(response.data));
     }
   } catch (error) {
-    alert(error.response.data.message)
+    alert(error.response.data.message);
   }
 }
 // 내 정보 받아오기 끝
 
 // 회원탈퇴
 function* deleteUserSaga() {
-  if (window.confirm('정말로 회원탈퇴 하시겠습니까?')) {
-    try{
-      const response = yield call(deleteApi)
+  if (window.confirm("정말로 회원탈퇴 하시겠습니까?")) {
+    try {
+      const response = yield call(deleteApi);
       if (response.status === 200) {
-        yield put(logoutAsync())
-        yield alert('회원탈퇴되었습니다')
-        yield window.location.replace('/')
+        yield put(logoutAsync());
+        yield alert("회원탈퇴되었습니다");
+        yield window.location.replace("/");
       }
     } catch (error) {
-      alert(error.response.data.message)
+      alert(error.response.data.message);
     }
   } else {
+
     alert('휴 당신이 방금 털보를 배신하는 줄 알았습니다')
   }
 }
@@ -127,12 +135,13 @@ function* deleteUserSaga() {
 
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
-  try{
-    const response = yield call(fetchWalletApi)
+  try {
+    const response = yield call(fetchWalletApi);
     if (response.status === 200) {
-      yield put(fetchWallet(response.data))
+      yield put(fetchWallet(response.data));
     }
   } catch (error) {
+
     alert(error.response.data.message)
   }
 }
@@ -161,6 +170,7 @@ export function* accountSaga() {
   yield takeLatest(LOGIN_ASYNC, loginSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
   yield takeLatest(SIGNUP_ASYNC, signupSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
   yield takeLatest(FETCH_USER_ASYNC, fetchUserSaga); // 가장 마지막으로 디스패치된 FETCH_USER_ASYNC 액션만을 처리
+
   yield takeLatest(CATCH_LOGIN, catchLoginSaga)
   yield takeLatest(LOGOUT_ASYNC, logoutSaga)
   yield takeLatest(PUT_USER_ASYNC, putUserSaga) // 유저정보 수정
