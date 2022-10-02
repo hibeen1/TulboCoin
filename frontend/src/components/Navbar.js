@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import TulLogo from "../media/images/TulLogo.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../store/accountSaga";
-import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import GreyHome from "../media/images/icons/GreyHome.png";
@@ -21,7 +19,7 @@ import Exit from "../media/images/icons/Exit.png";
 
 
 const NavBlock = styled.div`
-  width: 5vw;
+  width: 4vw;
   height: 90vh;
   /* border: 3px solid green; */
   position: fixed;
@@ -43,54 +41,65 @@ const NavItem =  styled.div`
   background-size: 4vw 7vh;
   /* border: solid red 3px; */
   margin-top: 5vh;
-  margin-left: 0.3vw;
+  margin-left: 0.1vw;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
   }
+
+  /* 홈 */
+  &.home{
+    background: url(${GreyHome}) center no-repeat;
+    background-size: 3vw 6vh;
+    :hover {
+      background: url(${BlueHome}) center no-repeat;
+      background-size: 3vw 6vh;
+    }}
+
+
 /* 시세 */
   &.sise{
     background: url(${GreyCoin}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     :hover {
       background: url(${BlueCoin}) center no-repeat;
-      background-size: 4vw 7vh;
+      background-size: 3vw 6vh;
     }}
 
     /* 명예의 전당 */
     &.honor{
     background: url(${GreyGraph}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     :hover {
       background: url(${BlueGraph}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     }}
 
     /* 마이페이지 */
     &.myPage{
     background: url(${GreyPerson}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     &:hover {
     background: url(${BluePerson}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
   }}
 
       /* 설정 페이지 */
       &.setting{
     background: url(${GreySetting}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     :hover {
     background: url(${BlueSetting}) center no-repeat;
-    background-size: 4vw 7vh;
+    background-size: 3vw 6vh;
     }}
 
 `;
 
 const LoginOutItem = styled.div`
-width: 61px;
-height: 61px;
+  width: 4vw;
+  height: 7vh;
 background: url(${Exit}) center no-repeat;
-background-size: 61px 61px;
+background-size: 3vw 6vh;
 /* border: solid red 3px; */
 margin-top: 22vh;
 margin-left: 0.05vw;
@@ -100,21 +109,6 @@ cursor: pointer;
   }
 `;
 
-const LogoBlock = styled.div`
-  width: 4vw;
-  height: 7vh;
-  background: url(${GreyHome}) center no-repeat;
-  background-size: 4vw 7vh;
-  /* border: solid red 3px; */
-  margin-top: 3vh;
-  margin-left: 0.3vw;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.1);
-    background: url(${BlueHome}) center no-repeat;
-    background-size: 4vw 7vh;
-  }
-  `;
 
 function Navbar() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
@@ -134,8 +128,7 @@ function Navbar() {
   return (
     <NavBlock>
 
-        <Link to="/">
-        <LogoBlock></LogoBlock>
+        <Link to="/"><NavItem className="home"></NavItem>
           {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
         </Link>
 
