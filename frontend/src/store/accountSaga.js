@@ -120,8 +120,8 @@ function* putUserSaga(action) {
 
 // 내 정보 받아오기
 function* fetchUserSaga() {
-  try{
-    const response = yield call(fetchUserApi)
+  try {
+    const response = yield call(fetchUserApi);
     if (response.status === 200) {
       yield put(fetchUser(response.data));
     }
@@ -151,7 +151,7 @@ function* deleteUserSaga() {
 
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
-  console.log('지갑정보 가져오기 작동')
+  console.log("지갑정보 가져오기 작동");
   try {
     const response = yield call(fetchWalletApi);
     if (response.status === 200) {
