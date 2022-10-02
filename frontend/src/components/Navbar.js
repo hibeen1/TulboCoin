@@ -128,7 +128,7 @@ function Navbar() {
   return (
     <NavBlock>
 
-        <Link to="/"><NavItem className="home"></NavItem>
+        <Link to="/home"><NavItem className="home"></NavItem>
           {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
         </Link>
 

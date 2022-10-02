@@ -20,12 +20,27 @@ const NavBlock = styled.div`
 
 const MyBlock = styled.div`
 background-color: #F3F3F3;
-  border: solid black 3px;
+  /* border: solid black 3px; */
   width: 94vw;
   height: 100vh;
   position: relative;
   display: flex;
 `
+
+const ProfileBlock = styled.div`
+/* background-color: #F3F3F3; */
+  border: solid red 3px;
+  width: 94vw;
+  height: 30vh;
+
+`
+
+const StyledImg = styled.img`
+  width: 3vw;
+  height: 3vh;
+`
+  
+
 
 function MypagePage() {
   const dispatch = useDispatch()
@@ -83,38 +98,40 @@ function MypagePage() {
     dispatch(deleteUserAsync())
   }
 
-  return (<>
+  return (
         <MyPageBlock>
         <NavBlock>
           <Navbar></Navbar>
         </NavBlock>
         <MyBlock>
-
-  
   {isLoggedin && <>
 
     {/* <h1>마이페이지입니다.</h1> */}
     {isChangeForm ? <>
-        <form onSubmit={handleChangeInfo}>
-          <p>프로필 사진</p>
-          {imagePath.map((item) => (
-            <label key={item.value} htmlFor={item.name}>
-                <input type="radio" id={item.name} value={item.value} checked={item.value === checked} onChange={handleRadioChange} />
-                <img src={`${process.env.PUBLIC_URL}/profile/profile${item.value}.png`} alt={`프로필 이미지${item.value}`} />
-              </label>
-            ))
-          }
-          <br />
-          <label htmlFor="email">이메일 : </label>
-          <input type="text" name="email" value={form.email} onChange={handleForm} /><br />
-          <button>수정하기</button>
-        </form>
-        <button onClick={handlePageToForm}>취소</button>
+
+      <form onSubmit={handleChangeInfo}>
+        {/* <p>프로필 사진</p> */}
+        {imagePath.map((item) => (
+          <label key={item.value} htmlFor={item.name}>
+              <input type="radio" id={item.name} value={item.value} checked={item.value === checked} onChange={handleRadioChange} />
+              <StyledImg src={`${process.env.PUBLIC_URL}/profile/profile${item.value}.png`} alt={`프로필 이미지${item.value}`} />
+            </label>
+          ))
+        }
+        <br />
+        <label htmlFor="email">이메일 : </label>
+        <input type="text" name="email" value={form.email} onChange={handleForm} /><br />
+        <button>수정하기</button>
+      </form>
+      <button onClick={handlePageToForm}>취소</button>
+      <button onClick={handleDelete} on>회원탈퇴</button>
+
       </>
-      : <>
+      :
+      <ProfileBlock>
         <div>
-          <p>아이디 : {user.userId}</p>
-          <p>프로필 사진 : <img src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`} /></p>
+          <h1 style="display:inline;">좋은 하루 되세요 {user.userId}님!</h1>
+          <p><StyledImg src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`} /></p>
           <p>이메일 : {user.email}</p>
           <p>잔액 : {user.balance} KRW</p>
           <button onClick={handleBalanceReset}>잔액 초기화하기</button>
@@ -123,14 +140,12 @@ function MypagePage() {
         <p>나의 보유 코인</p>
         <hr />
         <MyWallet />
-      </>
-    }
-    <button onClick={handleDelete} on>회원탈퇴</button>
-    </>
-  }
-          </MyBlock>
-      </MyPageBlock>
-  </>)
-}
+        </ProfileBlock>
 
+    }
+  </>}
+          </MyBlock>      
+      </MyPageBlock>
+)
+  }
 export default MypagePage
