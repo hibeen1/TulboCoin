@@ -289,6 +289,7 @@ const Coin = memo(function Coin({ socketData }) {
           initialState={{ density: 'compact' }}
         />
       )}
+      {/* {data && <CustomTable data={data} columns={columns} />} */}
     </div>
   );
 });
