@@ -1,6 +1,5 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import MainPage from './pages/MainPage';
 import SisePage from './pages/SisePage';
 import InfoPage from './pages/InfoPage';
@@ -28,11 +27,10 @@ function App() {
       <Route path='/home' element={<HomePage />} />
       <Route path='sise' element={<SisePage />} />
       <Route path='info' element={<InfoPage />} />
-      <Route path='honor/*' element={<HonorPage />} />
+      <Route path='honor' element={<HonorPage />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignupPage />} />
       <Route path='mypage' element={<MypagePage />} />
-      {/* <Route path='test' element={<TestPage />} /> */}
     </Routes>
   </>
   );

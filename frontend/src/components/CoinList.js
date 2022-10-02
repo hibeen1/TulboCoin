@@ -3,168 +3,8 @@ import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCoin } from "../store/coin";
-import { buyAsync } from "../store/coinSaga";
-import { sellAsync } from "../store/coinSaga";
-import { fetchUserAsync } from "../store/accountSaga";
-import { fetchWalletAsync } from "../store/accountSaga";
+import CoinDeal from "./CoinDeal";
 import CustomTable from "./CustomTable";
-
-
-const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
-  let targetSocketData = [];
-  for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData.code) {
-      targetSocketData = socketData[i];
-      break;
-    }
-  }
-  const [sellForm, setSellForm] = useState({
-    sellCoinAmount: 0,
-    sellCoinName: detailCoinData.name,
-    sellCoinCode: detailCoinData.code,
-    sellCoinPrice: targetSocketData.trade_price,
-  });
-
-  const handleChange = (e) => {
-    console.log(e);
-    console.log(e.target.name);
-    console.log(e.target.value);
-    setSellForm({
-      ...sellForm,
-      [e.target.name]: Number(e.target.value),
-    });
-  };
-
-  useEffect(() => {
-    setSellForm({
-      ...sellForm,
-      sellCoinName: detailCoinData.name,
-      sellCoinCode: detailCoinData.code,
-      sellCoinPrice: targetSocketData.trade_price,
-    });
-  }, [socketData, detailCoinData]);
-
-  const dispatch = useDispatch();
-  const handleSell = function (e) {
-    const { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice } = sellForm;
-    const body = { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice };
-    // console.log(body);
-    dispatch(sellAsync(body));
-    setTimeout(() => {
-      dispatch(fetchWalletAsync());
-      dispatch(fetchUserAsync());
-    }, 300);
-    // dispatch(fetchWalletAsync());
-    // dispatch(fetchUserAsync());
-  };
-  return (
-    <div>
-      <form>
-        {/* <p>{JSON.stringify(buyForm)}</p> */}
-        <div>
-          <label>판매가능수량</label>
-          <div>
-            {localStorage.getItem("wallet") &&
-              JSON.parse(localStorage.getItem("wallet")).map((coin) =>
-                coin.coinName === detailCoinData.name ? coin.coinAmount : null
-              )
-            }
-          </div>
-        </div>
-        <div>
-          <label>매도가격(KRW)</label> <br />
-          <label>{targetSocketData.trade_price}</label>
-        </div>
-        <div>
-          <label htmlFor="sellCoinAmount">판매수량</label>
-          <input id="sellCoinAmount" type="number" name="sellCoinAmount" onChange={handleChange} />
-        </div>
-        <div>
-          <p htmlFor="sellCoinPrice">판매총액</p>
-          <p id="sellCoinPrice" name="sellCoinPrice" onChange={handleChange}>
-            {sellForm.sellCoinAmount * targetSocketData.trade_price}
-          </p>
-        </div>
-      </form>
-      <button onClick={handleSell}>매도</button>
-    </div>
-  );
-});
-
-const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
-  // console.log(detailCoinData);
-  let targetSocketData = [];
-  for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData.code) {
-      targetSocketData = socketData[i];
-      break;
-    }
-  }
-
-  const [buyForm, setBuyForm] = useState({
-    buyCoinAmount: 1,
-    buyCoinName: detailCoinData.name,
-    buyCoinPrice: targetSocketData.trade_price,
-    buyCoinCode: detailCoinData.code,
-  });
-
-  const handleChange = (e) => {
-    setBuyForm({
-      ...buyForm,
-      [e.target.name]: Number(e.target.value),
-    });
-  };
-
-  useEffect(() => {
-    setBuyForm({
-      ...buyForm,
-      buyCoinName: detailCoinData.name,
-      buyCoinCode: detailCoinData.code,
-      buyCoinPrice: targetSocketData.trade_price,
-    });
-  }, [socketData, detailCoinData]);
-
-  const dispatch = useDispatch();
-  const handleBuy = function (e) {
-    const { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode } = buyForm;
-    const body = { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode };
-    // console.log(body);
-    dispatch(buyAsync(body));
-    setTimeout(() => {
-      dispatch(fetchWalletAsync());
-      dispatch(fetchUserAsync());
-    }, 300);
-    // 유저정보 요청보내기
-    // dispatch(fetchWalletAsync());
-    // dispatch(fetchUserAsync());
-  };
-  return (
-    <div>
-      <form>
-        {/* <p>{JSON.stringify(buyForm)}</p> */}
-        <div>
-          <label>주문가능</label>
-          <label>{JSON.parse(localStorage.getItem("user")).balance}KRW</label>
-        </div>
-        <div>
-          <label>매수가격(KRW)</label> <br />
-          <label>{targetSocketData.trade_price}</label>
-        </div>
-        <div>
-          <label htmlFor="buyCoinAmount">주문수량</label>
-          <input id="buyCoinAmount" type="number" name="buyCoinAmount" onChange={handleChange} />
-        </div>
-        <div>
-          <p htmlFor="buyCoinPrice">주문총액</p>
-          <p id="buyCoinPrice" name="buyCoinPrice" onChange={handleChange}>
-            {buyForm.buyCoinAmount * targetSocketData.trade_price}
-          </p>
-        </div>
-      </form>
-      <button onClick={handleBuy}>매수</button>
-    </div>
-  );
-});
 
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -202,9 +42,10 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
+  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
   const { marketCodes } = useFetchMarketCode()
   const [ data, setData ] = useState()
-  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
+  const [ modal, setModal ] = useState('')
   const { sortBy, setSortBy } = useState()
 
   useEffect(() => {
@@ -258,15 +99,23 @@ const Coin = memo(function Coin({ socketData }) {
     const extractedValue = value / MILLION;
     return extractedValue;
   };
+
+  const handleModal = (e) => {
+    setModal(e.target.name)
+  }
+
+  const modalClose = () => {
+    setModal('')
+  }
   return (
     <div>
-      <div>
+      <div style={{marginBottom: '300px'}}>
         {selectedCoin ? (
           <>
-            <CoinSell socketData={socketData} detailCoinData={selectedCoin} />
-            <CoinBuy socketData={socketData} detailCoinData={selectedCoin} />
+            <button onClick={handleModal} name='sell' >코인 판매</button>
+            <button onClick={handleModal} name='buy' >코인 구매</button>
+            {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />}
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
-            {/* <CoinNews detailCoinData={selectedCoin} /> */}
           </>
         ) : (
           <div>Ticker Loading...</div>
@@ -285,7 +134,6 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
-          // enablePagination={false}
           initialState={{ density: 'compact' }}
         />
       )}
@@ -303,7 +151,6 @@ function CoinPage() {
     // 변경시 호출
     if (!isLoading && marketCodes) {
       setTargetMarketCode(marketCodes.filter((ele) => ele.market.includes("KRW")));
-      // console.log("여기입니다", marketCodes);
     }
     // 2번째 인자 [isLoading, marketCodes]  -> 상태변경을 감지할 애들
   }, [isLoading, marketCodes]);
@@ -315,29 +162,10 @@ function CoinPage() {
   // const { socket, isConnected, socketData } = useUpbitWebSocket(
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
 
-  // 연결 컨트롤 버튼 이벤트 핸들러
-  // const connectButtonHandler = (evt) => {
-  //   if (isConnected && socket) {
-  //     socket.close();
-  //     console.log("이거는", socketData);
-  //   }
-  // };
 
   return (
     <>
-      {/* <div>RealTimePrice Example</div>
-      <div>Connected : {isConnected ? "🟢" : "🔴"}</div>
-      <button onClick={connectButtonHandler}>{"연결종료"}</button> */}
-      {/* <h3>Ticker</h3> */}
       {socketData ? <Coin socketData={socketData} /> : <div>Ticker Loading...</div>}
-      {/* {socketData ? <NewCoinSummary socketData={socketData} /> : <div>Ticker Loading...</div>} */}
-      {/* {marketCodes.map((element) =>
-        element.market.includes("KRW") ? (
-          <div>
-            한국 포함 : {element.korean_name} {element.market}
-          </div>
-        ) : null
-      )} */}
     </>
   );
 }
