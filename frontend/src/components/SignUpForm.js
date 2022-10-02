@@ -91,7 +91,7 @@ function SignupForm() {
 
   const eng = /[a-g]/g
   const num = /[0-9]/g
-  const special = /[`~!@#$%^&*()_+-=/?<>|\\]/g
+  const special = /[`~!@#$%^&*()_+\-=/?<>|\\]/g
   const passwordCheck = () => {
     if (signupForm.password.length < 8) {
       return false
@@ -105,7 +105,8 @@ function SignupForm() {
   }
   
   const userIdCheck = () => {
-    if (signupForm.userId.length < 2 || signupForm.userId > 10) {
+    if (signupForm.userId.length < 2 || signupForm.userId.length > 10) {
+      console.log('길이')
       return false
     } else if (!!signupForm.userId.match(special)) {
       return false
