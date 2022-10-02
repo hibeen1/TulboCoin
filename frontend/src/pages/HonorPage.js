@@ -31,14 +31,20 @@ const HonorBlock = styled.div`
   height: 100vh;
   position: relative;
   display: flex;
-`
+`;
 const OtherUser = () => {
   const historylist = useSelector((state) => state.account.historylist);
   const otheruser = useSelector((state) => state.account.otheruser);
   return (
     <>
       <h1>{otheruser.userId}님의 정보입니다.</h1>
-      <p>프로필 사진 : <img src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`} alt={`프로필 이미지${otheruser.imagePath}`} /></p>
+      <p>
+        프로필 사진 :{" "}
+        <img
+          src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`}
+          alt={`프로필 이미지${otheruser.imagePath}`}
+        />
+      </p>
       <table>
         <thead>
           <tr>
@@ -128,20 +134,25 @@ function Honor() {
       {rankinglist && (
         <div className="carousel">
           <Slider {...settings}>
-            {/* <div>{rankinglist[0].user.userId}</div>
-              <div>{rankinglist[1].user.userId}</div>
-              <div>{rankinglist[2].user.userId}</div>
-              <div>{rankinglist[3].user.userId}</div>
-              <div>{rankinglist[4].user.userId}</div>
-              <div>{rankinglist[5].user.userId}</div>
-              <div>{rankinglist[6].user.userId}</div>
-              <div>{rankinglist[7].user.userId}</div>
-              <div>{rankinglist[8].user.userId}</div> */}
-            <div>1번 이다아아아</div>
-            <div>2번 이다아아아</div>
-            <div>3번 이다아아아</div>
-            <div>4번 이다아아아</div>
-            <div>5번 이다아아아</div>
+            {rankinglist.slice(0, 6).map((data, idx) => (
+              <div>
+                <h1>{idx + 1} 등</h1>
+                <div>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/profile/profile${data.user.imagePath}.png`}
+                    alt={`프로필 이미지${data.user.imagePath}`}
+                    width={64}
+                    height={64}
+                  />
+                  <h1>{data.user.userId}</h1>
+                  <h2>수익률 : {data.percent}%</h2>
+                  <h2>
+                    가입날짜 : {data.user.investStartTime.substring(0, 10)} <></>
+                    {data.user.investStartTime.substring(11, 19)}
+                  </h2>
+                </div>
+              </div>
+            ))}
           </Slider>
         </div>
       )}
@@ -153,7 +164,14 @@ function Honor() {
           {isOpenModal && (
             <Modal onClickToggleModal={onClickToggleModal}>
               <h1>{userInformation.user.userId}</h1>
-              <h1>{userInformation.user.imagePath}</h1>
+              <h1>
+                <img
+                  src={`${process.env.PUBLIC_URL}/profile/profile${userInformation.user.imagePath}.png`}
+                  alt={`프로필 이미지${userInformation.user.imagePath}`}
+                  width={64}
+                  height={64}
+                />
+              </h1>
               <h2>{userInformation.user.userId}님의 거래내역입니다</h2>
               <table>
                 <thead>
@@ -172,7 +190,6 @@ function Honor() {
                         {history.historyTime.substring(0, 10)} <></>
                         {history.historyTime.substring(11, 19)}
                       </td>
-                      {/* <td>{history.historyTime}</td> */}
                       <td>{history.historyCoinName}</td>
                       <td>{history.historyCoinAmount}</td>
                       <td>{history.historyCoinPrice}</td>
