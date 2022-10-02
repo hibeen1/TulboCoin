@@ -2,13 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signupAsync } from "../store/accountSaga";
 import styled from "styled-components";
-<<<<<<< HEAD
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-=======
 import logo from "../media/images/TulboCoin.png"
 import alert from "../media/images/Alert.png"
->>>>>>> b671dd45f4c6e80264128dd2f74a3534734458bc
 
 const SignUpPageBlock = styled.div`
   display: flex;
@@ -94,9 +91,6 @@ flex-direction: column;
 border-radius: 40px;
 padding: 10px;
 color: #f25b96;
-
-
-  
 `
 
 
