@@ -64,8 +64,10 @@ export const fetchWalletApi = async () => {
 
 // 지갑 초기화 요청
 export const resetWalletApi = async () => {
-  return await axios.post('/users/reset', null, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-}
+  return await axios.post("/users/reset", null, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};
 // 지갑 초기화 요청 끝
 
 export const rankingApi = async () => {
