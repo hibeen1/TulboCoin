@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { putUserAsync, deleteUserAsync, resetWalletAsync } from '../store/accountSaga'
 import MyWallet from "../components/MyWallet"
 
 function MypagePage() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const isLoggedin = useSelector(state => state.account.isLoggedin)
-  const [ user, setUser ] = useState({})
+  const user = JSON.parse(useSelector(state => state.account.user))
   const [ isChangeForm, setIsChangeForm ] = useState(false)
   const imagePath = 
     [
@@ -19,16 +21,21 @@ function MypagePage() {
   const [ checked, setChecked ] = useState()
   const [ form, setForm ] = useState()
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('user')))
     setForm({
-      email: JSON.parse(localStorage.getItem('user')).email,
-      imagePath: JSON.parse(localStorage.getItem('user')).imagePath,
+      email: user.email,
+      imagePath: user.imagePath,
     })
   }, [])
 
   useEffect(() => {
     setChecked(user.imagePath)
   }, [user])
+
+  useEffect(() => {
+    if (!isLoggedin) {
+      navigate('/')
+    }
+  }, [isLoggedin])
 
   // 수정하기 버튼 누르면 화면이 폼으로 바뀜
   const handlePageToForm = () => {

@@ -72,8 +72,6 @@ function* loginSaga(action) {
       yield put(token(response.data));
       yield put(fetchWalletAsync());
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
-      yield delay(500)
-      yield call(window.location.replace("/sise"));
     }
   } catch (error) {
     alert(error.response.data.message)
@@ -141,7 +139,6 @@ function* deleteUserSaga() {
       if (response.status === 200) {
         yield put(logoutAsync());
         yield alert("회원탈퇴되었습니다");
-        yield window.location.replace("/");
       }
     } catch (error) {
       alert(error.response.data.message);
