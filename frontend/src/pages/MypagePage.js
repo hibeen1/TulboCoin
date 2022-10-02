@@ -130,7 +130,7 @@ function MypagePage() {
       :
       <ProfileBlock>
         <div>
-          <h1 style="display:inline;">좋은 하루 되세요 {user.userId}님!</h1>
+          <h1 style={{display:'inline'}}>좋은 하루 되세요 {user.userId}님!</h1>
           <p><StyledImg src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`} /></p>
           <p>이메일 : {user.email}</p>
           <p>잔액 : {user.balance} KRW</p>
