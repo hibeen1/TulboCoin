@@ -24,6 +24,7 @@ import {
   fetchRanking,
   fetchHistory,
   fetchOtherUser,
+  changeIsLoading,
 } from "./account";
 
 // 액션의 타입
@@ -109,7 +110,6 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body);
     if (response.status === 200) {
       yield put(fetchUserAsync());
-      yield delay(window.location.reload(), 1000);
     }
   } catch (error) {
     alert(error.response.data.message);

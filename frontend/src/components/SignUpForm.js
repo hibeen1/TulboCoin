@@ -4,6 +4,7 @@ import { signupAsync } from "../store/accountSaga";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../media/images/TulboCoin.png"
 import alert from "../media/images/Alert.png"
 
@@ -45,6 +46,16 @@ const StyledButton = styled.button`
 
   color: #ffffff;
   background-color: #3a53c0;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+// 이미 계정이 있어요
+const StyledText = styled.div`
+  margin-top: 10vh;
+  font-size: 3vmin;
+  color: #7a7a7a;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
@@ -235,6 +246,8 @@ function SignupForm() {
         <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
         </StyledContext>
       </form>
+      
+      <Link to="/" style={{ textDecoration: 'none' }}><StyledText>나는 이미 계정이 있어요!!</StyledText></Link>
 
     </SignUpPageBlock>
   </>

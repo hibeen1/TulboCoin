@@ -142,7 +142,7 @@ function Navbar() {
       {/* 시세 */}
         <Link to="/sise" ><NavItem className="sise"></NavItem></Link>
         {/* 명예의 전당 */}
-        <Link to="/honor/*" ><NavItem className="honor"></NavItem></Link>
+        <Link to="/honor" ><NavItem className="honor"></NavItem></Link>
         
 
         {isLoggedin ? (<>
