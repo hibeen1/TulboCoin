@@ -22,6 +22,7 @@ const LoginPageBlock = styled.div`
   }
 `;
 
+
 const StyledInput = styled.input`
   border-radius: 40px;
   height: 5vh;
