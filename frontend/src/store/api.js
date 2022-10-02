@@ -56,12 +56,28 @@ export const deleteApi = async () => {
 
 // 지갑정보 요청
 export const fetchWalletApi = async () => {
-  return await axios.get('/wallet', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-}
+  return await axios.get("/wallet", {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};
 // 지갑정보 요청 끝
 
 // 지갑 초기화 요청
 export const resetWalletApi = async () => {
-  return await axios.post('/uses/reset', { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  return await axios.post('/users/reset', null, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
 }
 // 지갑 초기화 요청 끝
+
+export const rankingApi = async () => {
+  return await axios.get("/rank", {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+};
+
+export const historyApi = async (body) => {
+  return await axios.get(`/users/history/${body}`);
+};
+
+export const fetchOtherUserApi = async (body) => {
+  return await axios.get(`/users/info/id/${body}`);
+};

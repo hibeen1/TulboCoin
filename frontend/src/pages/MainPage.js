@@ -42,12 +42,12 @@ const LogoBlock = styled.div`
 display: flex;
 position: absolute;
 /* position: relative; */
-margin-left: 41vw;
+margin-left: 1vw;
 margin-top: 2vh;
 background: url(${TulLogo}) center no-repeat;
-background-size: 6vw 10vh;
-width: 6vw; 
-height: 10vh;
+background-size: 2.5vw 5vh;
+width: 2.5vw; 
+height: 5vh;
 /* border: 3px solid red; */
 
 `
