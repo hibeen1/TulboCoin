@@ -1,19 +1,27 @@
 package bigdataproject.backend.db.entity;
 
+import bigdataproject.backend.api.response.WalletRes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "user")
 public class User {
 
@@ -35,12 +43,29 @@ public class User {
 
 
     @Column(name = "balance")
-    private long balance;
+    private double balance;
 
     @Column(name = "image_path")
     private String imagePath;
 
-    @OneToMany(mappedBy = "user")
+    @Column(name = "invest_start_time")
+    private LocalDateTime investStartTime;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<LikeCoin> likeCoinList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wallet> walletList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Buy> buyList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Sell> sellList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<History> historyList = new ArrayList<>();
+
 }
+
+
