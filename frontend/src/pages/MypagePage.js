@@ -100,7 +100,7 @@ function MypagePage() {
           {imagePath.map((item) => (
             <label key={item.value} htmlFor={item.name}>
                 <input type="radio" id={item.name} value={item.value} checked={item.value === checked} onChange={handleRadioChange} />
-                {item.name}
+                <img src={`${process.env.PUBLIC_URL}/profile/profile${item.value}.png`} alt={`프로필 이미지${item.value}`} />
               </label>
             ))
           }
@@ -114,7 +114,7 @@ function MypagePage() {
       : <>
         <div>
           <p>아이디 : {user.userId}</p>
-          <p>프로필 사진 : {user.imagePath}</p>
+          <p>프로필 사진 : <img src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`} /></p>
           <p>이메일 : {user.email}</p>
           <p>잔액 : {user.balance} KRW</p>
           <button onClick={handleBalanceReset}>잔액 초기화하기</button>

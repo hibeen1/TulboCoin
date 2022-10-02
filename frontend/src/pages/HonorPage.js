@@ -34,6 +34,7 @@ const OtherUser = () => {
   return (
     <>
       <h1>{otheruser.userId}님의 정보입니다.</h1>
+      <p>프로필 사진 : <img src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`} alt={`프로필 이미지${otheruser.imagePath}`} /></p>
       <table>
         <thead>
           <tr>
