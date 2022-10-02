@@ -19,8 +19,8 @@ export const fetchOtherUser = (data) => ({ type: FETCH_OTHER_USER, meta: data })
 // 초기 값
 const initialState = {
   isLoggedin: false,
-  token: "",
   user: {},
+  wallet: [],
   rankinglist: [],
   historylist: [],
   otheruser: {},
@@ -43,11 +43,13 @@ export default function account(state = initialState, action) {
       localStorage.setItem("user", JSON.stringify(action.meta.user));
       return {
         ...state,
+        user: JSON.stringify(action.meta.user)
       };
     case FETCH_WALLET:
       localStorage.setItem("wallet", JSON.stringify(action.meta));
       return {
         ...state,
+        wallet: JSON.stringify(action.meta)
       };
     case LOGOUT:
       localStorage.removeItem("token");
@@ -55,6 +57,8 @@ export default function account(state = initialState, action) {
       localStorage.removeItem("wallet");
       return {
         ...state,
+        user: JSON.stringify({}),
+        wallet: JSON.stringify([])
       };
     case FETCH_RANKING:
       return {
