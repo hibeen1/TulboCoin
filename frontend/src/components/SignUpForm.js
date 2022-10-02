@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupAsync } from "../store/accountSaga";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../media/images/TulboCoin.png"
 import alert from "../media/images/Alert.png"
 
@@ -89,14 +91,26 @@ flex-direction: column;
 border-radius: 40px;
 padding: 10px;
 color: #f25b96;
-
-
-  
 `
 
 
 
 function SignupForm() {
+  const isLoggedin = useSelector(state => state.account.isLoggedin)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate(-1, true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate('/sise', true)
+    }
+  }, [isLoggedin])
+
   const [signupForm, setSignupForm] = useState({
     userId: "",
     password: "",
@@ -115,9 +129,6 @@ function SignupForm() {
   });
 
   const handleChange = (e) => {
-    console.log(e.target);
-    console.log(e.target.name);
-    console.log(e.target.value);
     setSignupForm({
       ...signupForm,
       [e.target.name]: e.target.value,
@@ -141,7 +152,6 @@ function SignupForm() {
   
   const userIdCheck = () => {
     if (signupForm.userId.length < 2 || signupForm.userId.length > 10) {
-      console.log('길이')
       return false
     } else if (!!signupForm.userId.match(special)) {
       return false
