@@ -285,7 +285,7 @@ const Coin = memo(function Coin({ socketData }) {
           enableGlobalFilter={false} //turn off a feature
           enableDensityToggle={false}
           enableHiding={false}
-          enablePagination={true}
+          // enablePagination={false}
           initialState={{ density: 'compact' }}
         />
       )}
