@@ -10,7 +10,6 @@ let BASE_URL = "https://j7e203.p.ssafy.io/api/";
 
 // if (process.env.NODE_ENV === "development") {
 //   BASE_URL = "http://localhost:8080/api/";
-//   // BASE_URL = "http://localhost:3000/";
 // }
 
 const DEFAULT_ACCEPT_TYPE = "application/json";

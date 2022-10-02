@@ -97,7 +97,7 @@ function* signupSaga(action) {
     const response = yield call(signupApi, body);
     if (response.status === 200) {
       yield alert("회원가입 성공");
-      yield put(loginAsync({id: body.userId, password: body.password}))
+      yield put(loginAsync({userId: body.userId, password: body.password}))
     }
   } catch (error) {
     alert(error.response.data.message);
