@@ -12,8 +12,8 @@ const HonorPageBlock = styled.div`
 `
 
 const NavBlock = styled.div`
-  border: solid yellow 3px;
-  width: 7vw;
+  /* border: solid yellow 3px; */
+  width: 6vw;
   height: 100vh;
   position: relative;
   display: flex;
@@ -23,7 +23,7 @@ const NavBlock = styled.div`
 const HonorBlock = styled.div`
 background-color: #F3F3F3;
   border: solid black 3px;
-  width: 93vw;
+  width: 94vw;
   height: 100vh;
   position: relative;
   display: flex;

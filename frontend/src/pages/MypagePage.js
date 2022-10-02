@@ -2,6 +2,30 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { putUserAsync, deleteUserAsync, resetWalletAsync } from '../store/accountSaga'
 import MyWallet from "../components/MyWallet"
+import styled from "styled-components"
+import Navbar from "../components/Navbar"
+
+const MyPageBlock = styled.div`
+  display: flex;
+`
+
+const NavBlock = styled.div`
+  /* border: solid yellow 3px; */
+  width: 6vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  
+`
+
+const MyBlock = styled.div`
+background-color: #F3F3F3;
+  border: solid black 3px;
+  width: 94vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+`
 
 function MypagePage() {
   const dispatch = useDispatch()
@@ -59,10 +83,17 @@ function MypagePage() {
     dispatch(deleteUserAsync())
   }
 
-  return <>
+  return (<>
+        <MyPageBlock>
+        <NavBlock>
+          <Navbar></Navbar>
+        </NavBlock>
+        <MyBlock>
+
+  
   {isLoggedin && <>
 
-    <h1>마이페이지입니다.</h1>
+    {/* <h1>마이페이지입니다.</h1> */}
     {isChangeForm ? <>
         <form onSubmit={handleChangeInfo}>
           <p>프로필 사진</p>
@@ -97,7 +128,9 @@ function MypagePage() {
     <button onClick={handleDelete} on>회원탈퇴</button>
     </>
   }
-  </>
+          </MyBlock>
+      </MyPageBlock>
+  </>)
 }
 
 export default MypagePage
