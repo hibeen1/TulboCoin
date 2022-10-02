@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupAsync } from "../store/accountSaga";
 import styled from "styled-components";
+import logo from "../media/images/TulboCoin.png"
+import alert from "../media/images/Alert.png"
 
 const SignUpPageBlock = styled.div`
   display: flex;
@@ -10,7 +12,7 @@ const SignUpPageBlock = styled.div`
   width: 30vw;
   height: 5vh;
   flex-direction: column;
-  margin-bottom: 5vh;
+  margin-top: 25vh;
   /* border: 3px solid black; */
 
   h1 {
@@ -61,6 +63,39 @@ const StyledContext = styled.div`
   flex-direction: column;
 `;
 
+const LogoBlock = styled.div`
+width: 20vw;
+height: 10vh;
+margin-bottom: 78vh;
+margin-right: 1vw;
+background: url(${logo}) center no-repeat;
+background-size: 20vw 10vh;
+/* border: solid black 5px; */
+display: flex;
+position: absolute;
+ `
+
+const ErrorBlock = styled.div`
+display: flex;
+position: absolute;
+width: 20vw;
+height: 35vh;
+margin-right: 35vw;
+margin-bottom: 12vh;
+/* background: url(${alert}) center no-repeat; */
+/* background-color: #faa2c2; */
+background-size: 20vw 35vh;
+flex-direction: column;
+border-radius: 40px;
+padding: 10px;
+color: #f25b96;
+
+
+  
+`
+
+
+
 function SignupForm() {
   const [signupForm, setSignupForm] = useState({
     userId: "",
@@ -91,7 +126,7 @@ function SignupForm() {
 
   const eng = /[a-g]/g
   const num = /[0-9]/g
-  const special = /[`~!@#$%^&*()_+-=/?<>|\\]/g
+  const special = /[`~!@#$%^&*()_+\-=/?<>|\\]/g
   const passwordCheck = () => {
     if (signupForm.password.length < 8) {
       return false
@@ -105,7 +140,8 @@ function SignupForm() {
   }
   
   const userIdCheck = () => {
-    if (signupForm.userId.length < 2 || signupForm.userId > 10) {
+    if (signupForm.userId.length < 2 || signupForm.userId.length > 10) {
+      console.log('길이')
       return false
     } else if (!!signupForm.userId.match(special)) {
       return false
@@ -123,13 +159,13 @@ function SignupForm() {
       email: ''
     }
     if (!userIdCheck()) {
-      error.userId = '아이디는 2~10글자의 영어, 숫자, 한글만 사용 가능합니다.'
+      error.userId = '아이디는 2~10자의 영어, 숫자, 한글만 가능해요.'
     }
     if (!passwordCheck()) {
-        error.password = '비밀번호는 8자리 이상 15자리 이하이고, 영어와 숫자, 특수문자가 반드시 포함되어야 합니다'
+        error.password = '비밀번호는 영어, 숫자, 특수문자를 포함한 8 ~ 15자여야 해요.'
     }
     if (signupForm.password !== signupForm.passwordCheck) {
-      error.passwordCheck = "비밀번호를 똑같이 한번 더 입력해 주세요";
+      error.passwordCheck = "비밀번호를 한번 더 입력해 주세요";
     }
     if (!mail.test(signupForm.email)) {
       error.email = "정확한 이메일을 입력해주세요";
@@ -152,32 +188,40 @@ function SignupForm() {
 
   return <>
     <SignUpPageBlock>
-      <h1>TULBO COIN</h1>
+      {/* <h1>TULBO COIN</h1> */}
+      <LogoBlock></LogoBlock>
       {/* <h3>가입하세요!</h3> */}
       
       <form>
       <StyledContext>
       <div>
-        <Styledlabel htmlFor="userId">아이디</Styledlabel>
+        <Styledlabel htmlFor="userId" placeholder="2~10자의 영어, 숫자, 한글">아이디</Styledlabel>
         <br />
         <StyledInput id="userId" type="text" name="userId" onChange={handleChange} /><br />
-        {error.userId && <p>{error.userId}</p>}
+        
         
         <Styledlabel htmlFor="email">이메일</Styledlabel>
         <br />
         <StyledInput id="email" type="text" name="email" onChange={handleChange} /><br />
-        {error.email && <p>{error.email}</p>}
+
 
         <Styledlabel htmlFor="password">비밀번호</Styledlabel>
         <br />
         <StyledInput id="password" type="password" name="password" onChange={handleChange} /><br />
-        {error.password && <p>{error.password}</p>}
+
 
         <Styledlabel htmlFor="password-check">비밀번호 확인</Styledlabel>
         <br />
         <StyledInput id="password-check" type="password" name="passwordCheck" onChange={handleChange} /><br />
-        {error.passwordCheck && <p>{error.passwordCheck}</p>}
+
         </div>
+        <ErrorBlock>
+          {error.userId && <p>{error.userId}</p>}
+          {error.email && <p>{error.email}</p>}
+
+          {error.password && <p>{error.password}</p>}
+          {error.passwordCheck && <p>{error.passwordCheck}</p>}
+        </ErrorBlock>
         <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
         </StyledContext>
       </form>
@@ -185,5 +229,6 @@ function SignupForm() {
     </SignUpPageBlock>
   </>
 }
+
 
 export default SignupForm;

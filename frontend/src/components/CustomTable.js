@@ -1,14 +1,22 @@
 import { useState, useEffect } from "react"
+import CustomTableDetail from "./CustomTableDetail"
 
-function CustomTable({ data }) {
-  const [ coinData, setCoinData ] = useState()
+function CustomTable({ data, columns }) {
+  const [ customData, setCustomData ] = useState()
+  const [ customColumns, setCustomColumns ] = useState()
+  const [ sortBy, setSortBy ] = useState()
+
   useEffect(() => {
-    setCoinData(data)
+    setCustomColumns(data)
+    setCustomData(columns)
   }, [])
+
+  useEffect(() => {
+    setCustomData()
+  }, [sortBy])
+
   return <>
-    {data.map((coin) => {
-      return <td>{coin.code}</td>
-    })}
+    <CustomTableDetail data={customData} columns={customColumns} />
   </>
 }
 

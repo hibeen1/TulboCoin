@@ -8,7 +8,7 @@ import HonorPage from './pages/HonorPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import MypagePage from './pages/MypagePage'
-import TestPage from './pages/TestPage';
+import HomePage from './pages/HomePage';
 import { useDispatch } from "react-redux";
 import { catchLogin } from './store/accountSaga'
 import { useEffect } from 'react';
@@ -25,6 +25,7 @@ function App() {
     {/* <Navbar /> */}
     <Routes>
       <Route path='/' element={<MainPage />} />
+      <Route path='/home' element={<HomePage />} />
       <Route path='sise' element={<SisePage />} />
       <Route path='info' element={<InfoPage />} />
       <Route path='honor/*' element={<HonorPage />} />

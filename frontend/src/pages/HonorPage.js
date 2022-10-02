@@ -12,8 +12,8 @@ const HonorPageBlock = styled.div`
 `
 
 const NavBlock = styled.div`
-  border: solid yellow 3px;
-  width: 7vw;
+  /* border: solid yellow 3px; */
+  width: 6vw;
   height: 100vh;
   position: relative;
   display: flex;
@@ -23,7 +23,7 @@ const NavBlock = styled.div`
 const HonorBlock = styled.div`
 background-color: #F3F3F3;
   border: solid black 3px;
-  width: 93vw;
+  width: 94vw;
   height: 100vh;
   position: relative;
   display: flex;
@@ -34,6 +34,7 @@ const OtherUser = () => {
   return (
     <>
       <h1>{otheruser.userId}님의 정보입니다.</h1>
+      <p>프로필 사진 : <img src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`} alt={`프로필 이미지${otheruser.imagePath}`} /></p>
       <table>
         <thead>
           <tr>
