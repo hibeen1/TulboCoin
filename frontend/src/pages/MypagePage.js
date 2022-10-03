@@ -2,7 +2,9 @@ import { useEffect, useState  } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { resetWalletAsync } from '../store/accountSaga'
-import MyWallet from "../components/MyWallet"
+import React, { memo, useMemo } from 'react';
+import { useUpbitWebSocket } from "use-upbit-api";
+import MaterialReactTable from 'material-react-table';
 import Navbar from "../components/Navbar"
 import ChangeMyInfoModal from "../components/ChangeMyInfoModal"
 import styled from "styled-components"
@@ -11,6 +13,7 @@ import BlueSetting from "../media/images/icons/BlueSetting.png"
 import GreyRefresh from "../media/images/icons/GreyRefresh.png"
 import BlueRefresh from "../media/images/icons/BlueRefresh.png"
 import PiggyBank from "../media/images/PiggyBank.png"
+import DoughnutChart from "../components/DoughnutChart"
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -169,6 +172,63 @@ function MypagePage() {
     dispatch(resetWalletAsync())
   }
 
+  const wallet = JSON.parse(useSelector(state => state.account.wallet))
+  const [ data, setData ] = useState([])
+
+  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
+  const [ coinInWallet, setCoinInWallet ] = useState([])
+  const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
+
+  useEffect(() => {
+    if (wallet.length > 0) {
+      const tmp = wallet.map(ele => ({market: ele.coinCode}))
+      setCoinInWallet(tmp)
+    }
+  }, [])
+  useEffect(() => {
+    if (socketData) {
+      const newData = socketData.map((coin) => {
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
+        return {
+          name: `${tmp.coinName}(${coin.code})`,
+          code: coin.code,
+          amount: tmp.coinAmount,
+          average: tmp.coinAverage,
+          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
+        }
+      });
+      setData(newData)
+    }
+  }, [socketData])
+
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: 'name', //simple recommended way to define a column
+        header: '코인 이름',
+        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      },
+      {
+        accessorKey: 'amount', //simple recommended way to define a column
+        header: '수량',
+        enableColumnFilter: false,
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        accessorKey: 'average', //simple recommended way to define a column
+        header: '평균 매수 가격',
+        enableColumnFilter: false,
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        accessorKey: 'percent', //simple recommended way to define a column
+        header: '수익률',
+        enableColumnFilter: false,
+      },
+    ],
+    [],
+  );
+
   return (
     <MyPageBlock>
       <NavBlock>
@@ -194,7 +254,7 @@ function MypagePage() {
             </div>
 
             <GraphBlock>
-              {/* 원그래프 들어올 자리 */}
+              {(data.length >= 1) && <DoughnutChart socketData={socketData} wallet={wallet} />}
             </GraphBlock>
           </div>
           
@@ -202,7 +262,22 @@ function MypagePage() {
             <WalletBlock>
             <p>나의 보유 코인</p>
           <hr />
-              <MyWallet />  
+          {(data.length >= 1) && 
+            <MaterialReactTable
+            muiTableBodyRowProps={({ row }) => ({
+              onClick: (event) => {
+                console.info(event, row.id);
+              }
+              })}
+              columns={columns}
+              data={data}
+              enableFullScreenToggle={false}
+              enableGlobalFilter={false} //turn off a feature
+              enableDensityToggle={false}
+              enableHiding={false}
+              initialState={{ density: 'compact' }}
+              />
+            }
             </WalletBlock>
           </ProfileBlock>
       </MyBlock>
