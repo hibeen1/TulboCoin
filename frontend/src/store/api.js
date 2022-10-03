@@ -83,3 +83,9 @@ export const historyApi = async (body) => {
 export const fetchOtherUserApi = async (body) => {
   return await axios.get(`/users/info/id/${body}`);
 };
+
+// 뉴스 정보 요청
+export const newsApi = async (body) => {
+  return await axios.get(`/news/${body}`);
+};
+// 뉴스 정보 요청 끝
