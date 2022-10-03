@@ -122,6 +122,13 @@ function LoginComponent() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    if (!loginForm.userId) {
+      alert('아이디를 입력했나요?')
+      return
+    } else if (!loginForm.password) {
+      alert('비밀번호를 입력했나요?')
+      return
+    }
     dispatch(loginAsync(loginForm));
   };
   return (
