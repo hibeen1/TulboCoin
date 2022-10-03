@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import Navbar from "../components/Navbar"
+import WordCloud from "../utils/WordCloud"
 
 const HomePageBlock = styled.div`
   display: flex;
@@ -18,9 +19,9 @@ const HomeBlock = styled.div`
 background-color: #F3F3F3;
   border: solid black 3px;
   width: 94vw;
-  height: 100vh;
+  height: 300vh;
   position: relative;
-  display: flex;
+  /* display: flex; */
 `
 
 function HomePage() {
@@ -30,7 +31,8 @@ function HomePage() {
       <Navbar></Navbar>
     </NavBlock>
     <HomeBlock>
-    <h1>워드클라우드 및 소개 페이지입니다</h1>
+    {/* <h1>워드클라우드 및 소개 페이지입니다</h1> */}
+    <WordCloud></WordCloud>
     </HomeBlock>
   </HomePageBlock>
   )
