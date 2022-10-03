@@ -32,44 +32,44 @@ const HonorBlock = styled.div`
   position: relative;
   display: flex;
 `;
-const OtherUser = () => {
-  const historylist = useSelector((state) => state.account.historylist);
-  const otheruser = useSelector((state) => state.account.otheruser);
-  return (
-    <>
-      <h1>{otheruser.userId}님의 정보입니다.</h1>
-      <p>
-        프로필 사진 :{" "}
-        <img
-          src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`}
-          alt={`프로필 이미지${otheruser.imagePath}`}
-        />
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>날짜</th>
-            <th>코인 이름</th>
-            <th>양</th>
-            <th>가격</th>
-            <th>타입</th>
-          </tr>
-        </thead>
-        <tbody>
-          {historylist.map((history) => (
-            <tr key={history.historyTime}>
-              <td>{history.historyTime}</td>
-              <td>{history.historyCoinName}</td>
-              <td>{history.historyCoinAmount}</td>
-              <td>{history.historyCoinPrice}</td>
-              <td>{history.historyType}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
-  );
-};
+// const OtherUser = () => {
+//   const historylist = useSelector((state) => state.account.historylist);
+//   const otheruser = useSelector((state) => state.account.otheruser);
+//   return (
+//     <>
+//       <h1>{otheruser.userId}님의 정보입니다.</h1>
+//       <p>
+//         프로필 사진 :{" "}
+//         <img
+//           src={`${process.env.PUBLIC_URL}/profile/profile${otheruser.imagePath}.png`}
+//           alt={`프로필 이미지${otheruser.imagePath}`}
+//         />
+//       </p>
+//       <table>
+//         <thead>
+//           <tr>
+//             <th>날짜</th>
+//             <th>코인 이름</th>
+//             <th>양</th>
+//             <th>가격</th>
+//             <th>타입</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {historylist.map((history) => (
+//             <tr key={history.historyTime}>
+//               <td>{history.historyTime}</td>
+//               <td>{history.historyCoinName}</td>
+//               <td>{history.historyCoinAmount}</td>
+//               <td>{history.historyCoinPrice}</td>
+//               <td>{history.historyType}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </>
+//   );
+// };
 function Honor() {
   useEffect(() => {
     dispatch(rankingAsync());
