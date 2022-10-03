@@ -2,13 +2,14 @@ import { memo, useEffect, useState, useMemo } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCoin } from "../store/coin";
-import { buyAsync } from "../store/coinSaga";
-import { sellAsync } from "../store/coinSaga";
+import { selectCoin, selectNews } from "../store/coin";
+import { buyAsync, sellAsync, newsAsync } from "../store/coinSaga";
 import { fetchUserAsync } from "../store/accountSaga";
 import { fetchWalletAsync } from "../store/accountSaga";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import CustomTable from "./CustomTable";
-
 
 const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -67,8 +68,7 @@ const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
             {localStorage.getItem("wallet") &&
               JSON.parse(localStorage.getItem("wallet")).map((coin) =>
                 coin.coinName === detailCoinData.name ? coin.coinAmount : null
-              )
-            }
+              )}
           </div>
         </div>
         <div>
@@ -202,10 +202,12 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
 
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
-  const { marketCodes } = useFetchMarketCode()
-  const [ data, setData ] = useState()
-  const selectedCoin = useSelector(state => state.coinReducer.selectedCoin)
-  const { sortBy, setSortBy } = useState()
+  const { marketCodes } = useFetchMarketCode();
+  const [data, setData] = useState();
+  const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
+  const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
+  console.log("뉴스으으으", selectedNews);
+  const { sortBy, setSortBy } = useState();
 
   useEffect(() => {
     const newData = socketData.map((coin) => {
@@ -225,6 +227,10 @@ const Coin = memo(function Coin({ socketData }) {
     });
     setData(newData);
   }, [socketData]);
+
+  useEffect(() => {
+    dispatch(newsAsync("비트코인"));
+  }, []);
   // 테이블 컬럼
   const columns = useMemo(
     () => [
@@ -252,11 +258,20 @@ const Coin = memo(function Coin({ socketData }) {
 
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
+    dispatch(newsAsync(coin.name));
   }
   const convertMillonWon = (value) => {
     const MILLION = 1000000;
     const extractedValue = value / MILLION;
     return extractedValue;
+  };
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: false,
   };
   return (
     <div>
@@ -286,10 +301,27 @@ const Coin = memo(function Coin({ socketData }) {
           enableDensityToggle={false}
           enableHiding={false}
           // enablePagination={false}
-          initialState={{ density: 'compact' }}
+          initialState={{ density: "compact" }}
         />
       )}
       {/* {data && <CustomTable data={data} columns={columns} />} */}
+      <div>
+        {selectedNews ? (
+          <div className="carousel">
+            <Slider {...settings}>
+              {selectedNews.items.map((news) => (
+                <div>
+                  <a href={news.link}>
+                    <div>{news.title}</div>
+                    <div>{news.description}</div>
+                  </a>
+                  <hr />
+                </div>
+              ))}
+            </Slider>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 });
