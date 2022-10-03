@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupAsync } from "../store/accountSaga";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../media/images/TulboCoin.png"
 import alert from "../media/images/Alert.png"
 
@@ -48,6 +51,16 @@ const StyledButton = styled.button`
     transform: scale(1.1);
   }
 `;
+// 이미 계정이 있어요
+const StyledText = styled.div`
+  margin-top: 10vh;
+  font-size: 3vmin;
+  color: #7a7a7a;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
 const Styledlabel = styled.label`
   font-size: 2vmin;
@@ -89,14 +102,26 @@ flex-direction: column;
 border-radius: 40px;
 padding: 10px;
 color: #f25b96;
-
-
-  
 `
 
 
 
 function SignupForm() {
+  const isLoggedin = useSelector(state => state.account.isLoggedin)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate(-1, true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate('/sise', true)
+    }
+  }, [isLoggedin])
+
   const [signupForm, setSignupForm] = useState({
     userId: "",
     password: "",
@@ -115,9 +140,6 @@ function SignupForm() {
   });
 
   const handleChange = (e) => {
-    console.log(e.target);
-    console.log(e.target.name);
-    console.log(e.target.value);
     setSignupForm({
       ...signupForm,
       [e.target.name]: e.target.value,
@@ -141,7 +163,6 @@ function SignupForm() {
   
   const userIdCheck = () => {
     if (signupForm.userId.length < 2 || signupForm.userId.length > 10) {
-      console.log('길이')
       return false
     } else if (!!signupForm.userId.match(special)) {
       return false
@@ -225,6 +246,8 @@ function SignupForm() {
         <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
         </StyledContext>
       </form>
+      
+      <Link to="/" style={{ textDecoration: 'none' }}><StyledText>나는 이미 계정이 있어요!!</StyledText></Link>
 
     </SignUpPageBlock>
   </>

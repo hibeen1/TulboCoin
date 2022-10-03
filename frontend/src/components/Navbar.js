@@ -14,6 +14,7 @@ import BlueSetting from "../media/images/icons/BlueSetting.png";
 import GreyPerson from "../media/images/icons/GreyPerson.png";
 import BluePerson from "../media/images/icons/BluePerson.png";
 import Exit from "../media/images/icons/Exit.png";
+import { useEffect } from "react";
 
 
 
@@ -123,8 +124,14 @@ function Navbar() {
   // 각 액션들을 디스패치하는 함수들을 만드세요
   const onLogout = () => {
     dispatch(logoutAsync());
-    navigate("/");
   };
+
+  useEffect(() => {
+    if (!isLoggedin) {
+      navigate("/");
+    }
+  }, [isLoggedin])
+
   return (
     <NavBlock>
 
@@ -135,7 +142,7 @@ function Navbar() {
       {/* 시세 */}
         <Link to="/sise" ><NavItem className="sise"></NavItem></Link>
         {/* 명예의 전당 */}
-        <Link to="/honor/*" ><NavItem className="honor"></NavItem></Link>
+        <Link to="/honor" ><NavItem className="honor"></NavItem></Link>
         
 
         {isLoggedin ? (<>

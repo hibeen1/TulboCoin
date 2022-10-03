@@ -99,13 +99,13 @@ function LoginComponent() {
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedin) {
-      navigate("/", true);
+      navigate("/sise", true);
     }
   }, []);
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate("/", true);
+      navigate("/sise", true);
     }
   }, [isLoggedin]);
 
