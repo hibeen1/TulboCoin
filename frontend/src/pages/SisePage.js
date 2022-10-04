@@ -36,7 +36,7 @@ function Sise() {
       <Navbar></Navbar>
       </NavBlock>
       <SiseBlock>
-        <h1>시세페이지입니다</h1>
+        {/* <h1>시세페이지입니다</h1> */}
         <CoinChart></CoinChart>
         <CoinList></CoinList>
       </SiseBlock>
