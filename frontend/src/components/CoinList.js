@@ -49,29 +49,62 @@ const Coin = memo(function Coin({ socketData }) {
   const [data, setData] = useState();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
+  const likedCoin = useSelector(state => state.coinReducer.likedCoin)
   const [ modal, setModal ] = useState('');
-  
+  // name, amount, like
+  const [ whatTable, setWhatTable ] = useState('amount')
+
   useEffect(() => {
-    const newData = socketData.map((coin) => {
-      let tmp = "";
-      for (let i = 0; i < marketCodes.length; i += 1) {
-        if (marketCodes[i].market === coin.code) {
-          tmp = marketCodes[i].korean_name;
-          break;
+    if (whatTable === 'amount'){
+      const newData = socketData.map((coin) => {
+        let tmp = "";
+        for (let i = 0; i < marketCodes.length; i += 1) {
+          if (marketCodes[i].market === coin.code) {
+            tmp = marketCodes[i].korean_name;
+            break;
+          }
         }
-      }
-      return {
-        name: tmp,
-        code: coin.code,
-        trade_price: coin.trade_price,
-        volume: Math.ceil(convertMillonWon(coin.acc_trade_price_24h)).toLocaleString("ko-KR"),
-      };
-    });
-    setData(newData);
-  }, [socketData]);
+        return {
+          name: tmp,
+          code: coin.code,
+          volume: coin.acc_trade_price_24h,
+        };
+      });
+      newData.sort(function(a, b) {
+        return b.volume - a.volume;
+      })
+      setData(newData.slice(0, 20));
+    } else if (whatTable === 'name') {
+      const newData = socketData.map((coin) => {
+        let tmp = "";
+        for (let i = 0; i < marketCodes.length; i += 1) {
+          if (marketCodes[i].market === coin.code) {
+            tmp = marketCodes[i].korean_name;
+            break;
+          }
+        }
+        return {
+          name: tmp,
+          code: coin.code,
+        };
+      });
+      newData.sort(function(a, b) {
+        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+      })
+      setData(newData);
+    } else if (whatTable === 'like') {
+      const newData = JSON.parse(likedCoin).map((coin) => {
+        return {
+          name: coin.coinName,
+          code: coin.coinCode
+        }})
+      setData(newData);
+    }
+  }, [whatTable, socketData]);
 
   useEffect(() => {
     dispatch(newsAsync("비트코인"));
+    setWhatTable('name')
   }, []);
 
   // 테이블 컬럼
@@ -90,11 +123,7 @@ const Coin = memo(function Coin({ socketData }) {
     dispatch(selectCoin(coin));
     dispatch(newsAsync(coin.name));
   }
-  const convertMillonWon = (value) => {
-    const MILLION = 1000000;
-    const extractedValue = value / MILLION;
-    return extractedValue;
-  };
+
   const settings = {
     dots: false,
     infinite: false,
@@ -112,6 +141,10 @@ const Coin = memo(function Coin({ socketData }) {
     setModal('')
   }
 
+  const handleWhatTable = (what) => {
+    setWhatTable(what)
+  }
+
   return (
     <div>
       <div style={{marginBottom: '300px'}}>
@@ -126,6 +159,9 @@ const Coin = memo(function Coin({ socketData }) {
           <div>Ticker Loading...</div>
         )}
       </div>
+      <button onClick={() => handleWhatTable('name')}>이름순</button>
+      <button onClick={() => handleWhatTable('amount')}>거래대금순</button>
+      <button onClick={() => handleWhatTable('like')}>관심코인</button>
       {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
       <div>
         {selectedNews ? (
@@ -167,7 +203,6 @@ function CoinPage() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   // const { socket, isConnected, socketData } = useUpbitWebSocket(
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
-
 
   return (
     <>

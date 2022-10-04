@@ -14,6 +14,7 @@ import {
   rankingApi,
   historyApi,
   fetchOtherUserApi,
+  fetchLikedCoinApi
 } from "./api";
 import {
   logout,
@@ -24,7 +25,8 @@ import {
   fetchRanking,
   fetchHistory,
   fetchOtherUser,
-  fetchMyHistory
+  fetchMyHistory,
+  fetchLikedCoin
 } from "./account";
 
 // 액션의 타입
@@ -41,6 +43,7 @@ const RANKING_ASYNC = "RANKING_ASYNC";
 const HISTORY_ASYNC = "HISTORY_ASYNC";
 const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
 const FETCH_MY_HISTORY_ASYNC = 'FETCH_MY_HISTORY_ASYNC'
+const FETCH_LIKED_COIN_ASYNC = 'FETCH_LIKED_COIN_ASYNC'
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -56,6 +59,7 @@ export const rankingAsync = () => ({ type: RANKING_ASYNC });
 export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
 export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
 export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta:userId})
+export const fetchLikedCoinAsync = () => ({ type: FETCH_LIKED_COIN_ASYNC })
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
@@ -74,6 +78,7 @@ function* loginSaga(action) {
     if (response.status === 200) {
       yield put(token(response.data));
       yield put(fetchWalletAsync());
+      yield put(fetchLikedCoinAsync())
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
@@ -220,6 +225,7 @@ function* fetchOtherUserSaga(action) {
   }
 }
 
+// 내 거래기록
 function* fetchMyHistorySaga(action) {
   try{
     const response = yield call(historyApi, action.meta)
@@ -230,6 +236,20 @@ function* fetchMyHistorySaga(action) {
     console.log(error)
   }
 }
+// 내 거래기록 끝
+
+// 관심코인 가져오기
+function* fetchLikedCoinSaga() {
+  try{
+    const response = yield call(fetchLikedCoinApi)
+    if (response.state === 200) {
+      yield put(fetchLikedCoin(response.data))
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 가져오기 끝
 
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
@@ -246,4 +266,5 @@ export function* accountSaga() {
   yield takeLatest(HISTORY_ASYNC, historySaga); // 지갑 리셋
   yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
   yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga)
+  yield takeLatest(FETCH_LIKED_COIN_ASYNC, fetchLikedCoinSaga)
 }
