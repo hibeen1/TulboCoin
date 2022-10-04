@@ -3,11 +3,7 @@ import styled from 'styled-components'
 
 
 const WordCloudBlock = styled.div`
-  width: 50vw;
-  height: 10vh;
-  /* border: red solid 3px; */
-  margin-top: 20vh;
-  margin-left: 30vw;
+
 `
 
 
@@ -30,26 +26,26 @@ const data = [
   { value: 'TypeScript', count: 150 },
   { value: 'Flow', count: 300 },
   { value: 'NPM', count: 11 },
+  { value: 'Flow', count: 300 },
+  { value: 'NPM', count: 11 },
 ]
 
 const options = {
   // luminosity: 'light',
-  hue: 'blue',
+  hue: 'yellow',
 }
 
 function WordCloud() {
   return(
-    <WordCloudBlock>
     <TagCloud
     minSize={10}
     maxSize={40}
     colorOptions={options}
     tags={data}
     onClick={tag => alert(`'${tag.value}'가 선택되었습니다`)}
-    style={{ width: 300, textAlign: 'center' }}
+    style={{ width: 430, textAlign: 'center' }}
     className="myTagCloud"
   />
-  </WordCloudBlock>
 )}
 
 export default WordCloud;

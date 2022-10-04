@@ -15,12 +15,12 @@ const timetypes = [
   { key: "days", text: "1일" },
   { key: "months", text: "한달" },
 ];
-const types = [
-  { key: "candle_solid", text: "캔들" },
-  { key: "candle_stroke", text: "투명 캔들" },
-  { key: "ohlc", text: "Bar 형식의 OHLC" },
-  { key: "area", text: "Mountain" },
-];
+// const types = [
+//   { key: "candle_solid", text: "캔들" },
+//   { key: "candle_stroke", text: "투명 캔들" },
+//   { key: "ohlc", text: "Bar 형식의 OHLC" },
+//   { key: "area", text: "Mountain" },
+// ];
 const CoinChart = () => {
   const dispatch = useDispatch();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
@@ -67,7 +67,7 @@ const CoinChart = () => {
         })}
       </div>
       <div id="coin-chart" className={classes.chart} />
-      <div className={classes.menu}>
+      {/* <div className={classes.menu}>
         {types.map(({ key, text }) => {
           return (
             <button
@@ -84,7 +84,7 @@ const CoinChart = () => {
             </button>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };
