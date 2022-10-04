@@ -122,15 +122,15 @@ const MoneyAmountChart = styled.div`
   /* margin-top: 5vh; */
 `
 // 코인 이름 정보 + 코인 차트
-const CoinChartBlock = styled.div`
-  width: 60vw;
-  height: 55vh;
-  display: flex;
-  justify-content: start;
-  align-items: center; 
-  border: solid skyblue 3px;
-  flex-direction: column;
-`
+// const CoinChartBlock = styled.div`
+//   width: 60vw;
+//   height: 55vh;
+//   display: flex;
+//   justify-content: start;
+//   align-items: center; 
+//   border: solid skyblue 3px;
+//   flex-direction: column;
+// `
 // const CoinNameMsg = styled.div`
 //   width: 60vw;
 //   height: 15vh;
@@ -176,13 +176,13 @@ function Sise() {
           </CenterLeftBlock>
 
           {/* coinChart Block */}
-          <CoinChartBlock>
-           {/* <CoinList></CoinList> */}
+          {/* <CoinChartBlock> */}
+           <CoinList></CoinList>
 
 
             {/* <div>코인 그래프</div> */}
             <CoinChart></CoinChart>
-          </CoinChartBlock>
+          {/* </CoinChartBlock> */}
 
         </CenterBlock>
 

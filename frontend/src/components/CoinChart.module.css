@@ -3,14 +3,14 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-left: 5vw;
+  /* margin-left: 5vw; */
   /* margin-bottom: 100px; */
   /* border-radius: 2px; */
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
   background-color: #ffffff;
-  border: 3px solid black;
-  width: 55vw;
-  height: 55vh;
+
+  width: 40vw;
+  height: 50vh;
 /* justify-content: start; */
   /* align-items: end; */
   /* padding: 16px 6px 16px 16px; */
@@ -23,6 +23,8 @@
 }
 .chart {
   display: flex;
+  width: 40vw;
+  height: 50vh;
   /* flex: 1; */
 }
 .menu {
@@ -39,7 +41,8 @@ button {
   cursor: pointer;
   background-color: #243ead;
   border-radius: 2px;
-  margin-left: 8vw;
+  margin-left: 2vw;
+  margin-top: 1vh;
   height: 24px;
   line-height: 26px;
   padding: 0 6px;

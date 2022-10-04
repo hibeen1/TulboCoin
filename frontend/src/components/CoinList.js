@@ -17,6 +17,8 @@ const WholeCoinChartBlock = styled.div`
   display: flex;
   justify-content: start;
   align-items: center; 
+  border: solid skyblue 3px;
+  flex-direction: column;
 `
 const CoinLogo = styled.div`
 width: 5vmin;
@@ -25,6 +27,9 @@ border: 3px solid grey;
   
 `
 const CoinName = styled.div`
+width: 5vmin;
+height: 5vmin;
+border: 3px solid grey;
 `
 
 const CompareYesterDay = styled.div`
@@ -35,13 +40,10 @@ const CompareYesterDay = styled.div`
 const CoinDetails = styled.div`
 `
 const CoinChartBlock = styled.div`
-  width: 60vw;
-  height: 55vh;
-  display: flex;
-  justify-content: start;
-  align-items: center; 
-  border: solid skyblue 3px;
-  flex-direction: column;
+  width: 40vw;
+  height: 50vh;
+  border: 3px solid black;
+
 `
 
 
@@ -62,6 +64,9 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
         <img
           src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
           alt=""
+          width={64}
+          height={64}
+
         />
         </CoinLogo>
         <CoinName>
@@ -80,7 +85,6 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
       <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
       <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
       </CoinDetails>
-      <CoinChartBlock><CoinChart></CoinChart></CoinChartBlock>
       </WholeCoinChartBlock>
   );
 });
@@ -91,7 +95,7 @@ const Coin = memo(function Coin({ socketData }) {
   const [data, setData] = useState();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
-  console.log("뉴스으으으", selectedNews);
+  // console.log("뉴스으으으", selectedNews);
   const [ modal, setModal ] = useState('');
   const { sortBy, setSortBy } = useState();
 
