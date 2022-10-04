@@ -24,7 +24,7 @@ const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  position: relative;
+  /* position: relative; */
   display: flex;
 `;
 
@@ -124,7 +124,7 @@ const BalanceAndGraphBlock = styled.div`
   height: 35vh;
   width: 91vw;
 `;
-
+// 좋은 하루 되세요
 const GreetingMsg = styled.div`
 width: 50vw; 
 height: 100%;

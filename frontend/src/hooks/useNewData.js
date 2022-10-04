@@ -8,10 +8,9 @@ const useNewData = () => {
   const [timer, setTimer] = useState(false);
   const data = [
     { ticket: "test" },
-    { type: "ticker", codes: [`${selectedCoin}`], isOnlyRealtime: true },
+    { type: "ticker", codes: [`${selectedCoin.code}`], isOnlyRealtime: true },
   ];
   const ws = useRef(null);
-
   useEffect(() => {
     // timer 종료 시 트리거
     if (timer) {
@@ -36,6 +35,7 @@ const useNewData = () => {
     ws.current.onmessage = async (event) => {
       // console.log("여기ㅣㅣㅣㅣㅣㅣ", event);
       const text = await new Response(event.data).text();
+      console.log(text)
       const message = JSON.parse(text);
       const { opening_price, low_price, high_price, trade_price, timestamp, trade_volume } =
         message;
