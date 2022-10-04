@@ -243,8 +243,7 @@ function MypagePage() {
           amount: tmp.coinAmount,
           average: tmp.coinAverage,
           percent: `${(
-            (coin.trade_price / tmp.coinAverage) *
-            tmp.coinAmount
+            (coin.trade_price / tmp.coinAverage - 1) * 100
           ).toFixed(2)} %`,
         };
       });
@@ -356,8 +355,6 @@ function MypagePage() {
           <p>나의 코인 거래 기록</p>
           <hr />
           {myHistory && <><CustomTable data={historyData} columns={customHistoryColumns} /> <hr /></>}
-          <p>테이블 테스트</p>
-          {myHistory && <><CustomTable data={myHistory} columns={customHistoryColumns} /> <hr /></>}
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>

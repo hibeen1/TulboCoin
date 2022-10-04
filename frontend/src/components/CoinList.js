@@ -50,8 +50,7 @@ const Coin = memo(function Coin({ socketData }) {
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
   const [ modal, setModal ] = useState('');
-  const { sortBy, setSortBy } = useState();
-
+  
   useEffect(() => {
     const newData = socketData.map((coin) => {
       let tmp = "";
@@ -81,19 +80,6 @@ const Coin = memo(function Coin({ socketData }) {
       {
         name: "name", //simple recommended way to define a column
         header: "코인 이름",
-        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
-      },
-      {
-        name: "trade_price", //simple recommended way to define a column
-        header: "현재 가격",
-        enableColumnFilter: false,
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-      },
-      {
-        name: "volume", //simple recommended way to define a column
-        header: "거래대금(백만)",
-        enableColumnFilter: false,
-        enableSorting: false,
       },
     ],
     []
