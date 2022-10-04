@@ -76,9 +76,11 @@ export const rankingApi = async () => {
   });
 };
 
+// 히스토리 받아오기
 export const historyApi = async (body) => {
   return await axios.get(`/users/history/${body}`);
 };
+// 히스토리 받아오기 끝
 
 export const fetchOtherUserApi = async (body) => {
   return await axios.get(`/users/info/id/${body}`);
