@@ -61,37 +61,37 @@ const NavItem =  styled.div`
 /* 시세 */
   &.sise{
     background: url(${GreyCoin}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueCoin}) center no-repeat;
-      background-size: 3vw 6vh;
+      background-size: 6vmin 6vmin;
     }}
 
     /* 명예의 전당 */
     &.honor{
     background: url(${GreyGraph}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueGraph}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     }}
 
     /* 마이페이지 */
     &.myPage{
     background: url(${GreyPerson}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     &:hover {
     background: url(${BluePerson}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
   }}
 
       /* 설정 페이지 */
       &.setting{
     background: url(${GreySetting}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     :hover {
     background: url(${BlueSetting}) center no-repeat;
-    background-size: 3vw 6vh;
+    background-size: 6vmin 6vmin;
     }}
 
 `;
@@ -100,7 +100,7 @@ const LoginOutItem = styled.div`
 width: 3.5vw;
 height: 6.5vh;
 background: url(${Exit}) center no-repeat;
-background-size: 3.5vw 6.5vh;
+background-size: 6vmin 6vmin;
 /* border: solid red 3px; */
 margin-top: 23vh;
 margin-left: 0.2vw;
