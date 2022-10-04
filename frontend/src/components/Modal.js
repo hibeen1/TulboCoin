@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 function Modal({ onClickToggleModal, children }) {
@@ -24,12 +24,12 @@ const ModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: relative;
 `;
 
 const DialogBox = styled.dialog`
-  width: 800px;
-  height: 400px;
+  width: 1000px;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,6 +39,7 @@ const DialogBox = styled.dialog`
   box-sizing: border-box;
   background-color: white;
   z-index: 10000;
+  position: relative;
 `;
 
 const Backdrop = styled.div`
