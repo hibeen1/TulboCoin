@@ -1,14 +1,16 @@
 package bigdataproject.backend.db.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Getter
 @Setter
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class Wallet {
 
     @Id
@@ -22,6 +24,9 @@ public class Wallet {
 
     @Column(name = "wallet_coin_name")
     private String coinName;
+
+    @Column(name = "wallet_coin_code")
+    private String coinCode;
 
     @Column(name = "wallet_coin_amount")
     private Double coinAmount;
