@@ -242,7 +242,7 @@ function* fetchMyHistorySaga(action) {
 function* fetchLikedCoinSaga() {
   try{
     const response = yield call(fetchLikedCoinApi)
-    if (response.state === 200) {
+    if (response.status === 200) {
       yield put(fetchLikedCoin(response.data))
     }
   } catch(error) {
