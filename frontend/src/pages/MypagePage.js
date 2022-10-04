@@ -14,6 +14,7 @@ import BlueRefresh from "../media/images/icons/BlueRefresh.png";
 import PiggyBank from "../media/images/PiggyBank.png";
 import DoughnutChart from "../components/DoughnutChart";
 import CustomTable from "../components/CustomTable";
+import BlueCoin from "../media/images/icons/BlueCoin.png";
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -50,7 +51,6 @@ const ProfileBlock = styled.div`
   h1 {
     /* border: solid black 3px; */
   }
-
 `;
 
 const StyledImg = styled.img`
@@ -62,6 +62,7 @@ const WalletBlock = styled.div`
   border: solid red 3px;
   width: 91vw;
   height: 50vh;
+  overflow: auto;
   /* margin-left: 1vw;
   margin-top: 5vw; */
 `;
@@ -71,17 +72,16 @@ const SettingButton = styled.div`
   height: 10vmin;
   background: url(${GreySetting}) no-repeat center;
   background-size: 10vmin 10vmin;
-  width: 15vw; 
-height: 100%;
-display: flex;
-justify-content: center;
-align-items: center; 
+  width: 15vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   /* border: 3px black solid; */
   :hover {
     background: url(${BlueSetting}) center no-repeat;
     background-size: 1.5vw 3vh;
-
   }
 `;
 
@@ -89,31 +89,38 @@ align-items: center;
 const CashBlock = styled.div`
   background-color: #ffffff;
   width: 30vw;
-  height: 20vh;
-  margin-top: 5vh;
+  height: 12vh;
+  // margin-top: 5vh;
   flex-direction: row;
   display: flex;
   border: 0.911773px solid #e7e8f2;
   border-radius: 5.47064px;
+  align-items: center;
 `;
 const PiggyBankImg = styled.div`
-  width: 6vw;
-  height: 8.5vh;
+  width: 8.5vmin;
+  height: 8.5vmin;
   background: url(${PiggyBank}) no-repeat center;
-  background-size: 6vw 8.5vh;
-  margin-top: 2vh;
+  background-size: 8.5vmin 8.5vmin;
+  margin-left: 1vw;
+`;
+
+const TulboCoinImg = styled.div`
+  width: 8.5vmin;
+  height: 8.5vmin;
+  background: url(${BlueCoin}) no-repeat center;
+  background-size: 6.5vmin 6.5vmin;
   margin-left: 1vw;
 `;
 
 const BalanceRefreshBtn = styled.button`
-  width: 1.5vw;
-  height: 3vh;
+  
+  width: 1.5vmin;
+  height: 2vmin;
   background: url(${GreyRefresh}) no-repeat center;
   background-size: 1.5vw 3vh;
   margin-left: 3vw;
-  margin-top: 2vh;
   display: inline;
-  position: fixed;
   /* border: 3px black solid; */
   :hover {
     /* background: url(${BlueRefresh}) center no-repeat;
@@ -125,8 +132,8 @@ const BalanceRefreshBtn = styled.button`
 const GraphBlock = styled.div`
   background-color: #ffffff;
   width: 30vw;
-  height: 20vh;
-  margin-top: 5vh;
+  height: 30vh;
+  /* margin-top: 2.5vh; */
   flex-direction: row;
   display: flex;
   border: 0.911773px solid #e7e8f2;
@@ -134,25 +141,41 @@ const GraphBlock = styled.div`
 `;
 
 const BalanceAndGraphBlock = styled.div`
+
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: start;
   border: 3px purple solid;
-  height: 35vh;
+  height: 30vh;
   width: 91vw;
+  flex-direction: row;
 `;
 
 const GreetingMsg = styled.div`
-width: 30vw; 
+width: 50vw; 
 height: 100%;
 display: flex;
-justify-content: center;
+justify-content: start;
+align-items: center; 
+font-size: 4vmin;
+font-weight: bold;
+padding: 0.1vh 1vw;
+`
+
+const GreetingProfitMsg = styled.div`
+width: 50vw; 
+height: 100%;
+display: flex;
+justify-content: start;
 align-items: center; 
 font-size: 3vmin;
+font-weight: bold;
+padding: 0.1vh 1vw;
 `
 
 const EmailMsg = styled.div`
-width: 40vw; 
+width: 20vw; 
 height: 100%;
 display: flex;
 justify-content: center;
@@ -160,13 +183,43 @@ align-items: center;
 font-size: 3vmin;
 `
 const ProfileImg = styled.div`
-width: 15vw; 
+width: 5vw; 
 height: 100%;
 display: flex;
-justify-content: center;
+justify-content: end;
 align-items: center; 
+padding: 0.1vh 1vw;
   
 `
+
+// 회원정보 수정하기 버튼
+const SettingButton = styled.div`
+  width: 5vmin;
+  height: 5vmin;
+  background: url(${GreySetting}) no-repeat center;
+  background-size: 5vmin 5vmin;
+  width: 15vw; 
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center; 
+  cursor: pointer;
+  /* border: 3px black solid; */
+  :hover {
+    background: url(${BlueSetting}) center no-repeat;
+    background-size: 5vmin 5vmin;
+  }
+`;
+
+
+const BalanceMsg = styled.div`
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 30vh;
+  margin-right: 15vw;
+`
+
 
 // ==============================================================
 function MypagePage() {
@@ -219,11 +272,7 @@ function MypagePage() {
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
-  const { socketData } = useUpbitWebSocket(
-    coinInWallet,
-    "ticker",
-    webSocketOptions
-  );
+  const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
 
   useEffect(() => {
     if (wallet.length > 0) {
@@ -310,10 +359,7 @@ function MypagePage() {
       <MyBlock>
         {isChangeForm && (
           <>
-            <ChangeMyInfoModal
-              user={user}
-              handlePageToForm={handlePageToForm}
-            />
+            <ChangeMyInfoModal user={user} handlePageToForm={handlePageToForm} />
           </>
         )}
         <ProfileBlock>
@@ -322,17 +368,22 @@ function MypagePage() {
           {/* 회원정보 수정하기 버튼 */}
           <SettingButton onClick={handlePageToForm}></SettingButton>
           <ProfileImg>
-            <StyledImg src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`}/>
+            <StyledImg
+              src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`}
+              alt={`프로필 이미지${user.imagePath}`}
+            />
           </ProfileImg>
         </ProfileBlock>
+        <div>
+          <GreetingProfitMsg>{user.userId}님의 수익률은 현재 {(((user.balance+cash-10000000)/10000000)*100).toFixed(2)}%입니다</GreetingProfitMsg>
+        </div>
+
         <BalanceAndGraphBlock>
-          <h3>잔고</h3>
-
-
+          <BalanceMsg>
             <CashBlock>
               <PiggyBankImg></PiggyBankImg>
               <div>
-                <p>잔액 : {user.balance} 원</p>
+                <p>잔고 : {user.balance} 원</p>
               </div>
               {/* 잔액 초기화 버튼 */}
               <div>
@@ -341,10 +392,21 @@ function MypagePage() {
                 ></BalanceRefreshBtn>
               </div>
             </CashBlock>
+            <CashBlock>
+              <TulboCoinImg></TulboCoinImg>
+              <div>
+                <p>자산 : {cash} 원</p>
+              </div>
+            </CashBlock>
+          </BalanceMsg>
           <GraphBlock>
-            {data.length >= 1 && (
+            {data.length >= 1 ? (
               <DoughnutChart socketData={socketData} wallet={wallet} />
-            )}
+            ) : 
+              <div>
+                아무것도 없음
+              </div>
+          }
           </GraphBlock>
         </BalanceAndGraphBlock>
         <br />
@@ -359,5 +421,5 @@ function MypagePage() {
       </MyBlock>
     </MyPageBlock>
   );
-              }
+}
 export default MypagePage;
