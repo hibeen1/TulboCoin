@@ -305,7 +305,7 @@ function MypagePage() {
         <BalanceAndGraphBlock>
           <h3>잔고</h3>
 
-          <div style={{ display: "inline" }}>
+
             <CashBlock>
               <PiggyBankImg></PiggyBankImg>
               <div>
@@ -318,12 +318,11 @@ function MypagePage() {
                 ></BalanceRefreshBtn>
               </div>
             </CashBlock>
-            </div>
+
 
             <GraphBlock>
               {socketData && <DoughnutChart socketData={socketData} wallet={wallet} />}
             </GraphBlock>
-          </div>
 
           <GraphBlock>
             {data.length >= 1 && (
@@ -349,13 +348,12 @@ function MypagePage() {
               enableHiding={false}
               initialState={{ density: 'compact' }}
               />
-            }
+            )}
             <hr />
             {data && <CustomTable data={data} columns={customColumns} />}
             </WalletBlock>
-          </ProfileBlock>
       </MyBlock>
     </MyPageBlock>
   );
-}
+              }
 export default MypagePage;
