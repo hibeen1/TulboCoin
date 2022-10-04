@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resetWalletAsync } from "../store/accountSaga";
+import { resetWalletAsync, fetchMyHistoryAsync } from "../store/accountSaga";
 import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
-import MaterialReactTable from "material-react-table";
 import Navbar from "../components/Navbar";
 import ChangeMyInfoModal from "../components/ChangeMyInfoModal";
 import styled from "styled-components";
@@ -176,12 +175,35 @@ function MypagePage() {
   const isLoggedin = useSelector((state) => state.account.isLoggedin);
   const user = JSON.parse(useSelector((state) => state.account.user));
   const [isChangeForm, setIsChangeForm] = useState(false);
+  const myHistory = useSelector(state => state.account.myHistory)
+  const [historyData, setHistoryData] = useState([])
 
   useEffect(() => {
     if (!isLoggedin) {
       navigate("/");
     }
   }, [isLoggedin]);
+
+  useEffect(() => {
+    dispatch(fetchMyHistoryAsync(user.userId))
+  }, [])
+
+  useEffect(() => {
+    const historyData = myHistory.map(function(ele){
+      if (ele.historyType === 'BUY') {
+        return {
+          ...ele,
+          rowStyle: {background:'blue'}
+        }
+      } else {
+        return {
+          ...ele,
+          rowStyle: {background:'pink'}
+        }
+      }
+    })
+    setHistoryData(historyData)
+  }, [myHistory])
 
   // 수정하기 버튼 누르면 모달창이 뜸
   const handlePageToForm = () => {
@@ -231,34 +253,7 @@ function MypagePage() {
     }
   }, [socketData]);
 
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "name", //simple recommended way to define a column
-        header: "코인 이름",
-        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
-      },
-      {
-        accessorKey: "amount", //simple recommended way to define a column
-        header: "수량",
-        enableColumnFilter: false,
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-      },
-      {
-        accessorKey: "average", //simple recommended way to define a column
-        header: "평균 매수 가격",
-        enableColumnFilter: false,
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-      },
-      {
-        accessorKey: "percent", //simple recommended way to define a column
-        header: "수익률",
-        enableColumnFilter: false,
-      },
-    ],
-    []
-  );
-  const customColumns = useMemo(
+  const customCoinColumns = useMemo(
     () => [
       {
         name: 'name', //simple recommended way to define a column
@@ -282,7 +277,32 @@ function MypagePage() {
     ],
     [],
   );
-  console.log(cash)
+
+  const customHistoryColumns = useMemo(
+    () => [
+      {
+        name: 'historyTime', //simple recommended way to define a column
+        header: '날짜',
+      },
+      {
+        name: 'historyCoinName', //simple recommended way to define a column
+        header: '이름',
+      },
+      {
+        name: 'historyCoinAmount', //simple recommended way to define a column
+        header: '수량',
+      },
+      {
+        name: 'historyCoinPrice', //simple recommended way to define a column
+        header: '거래가격',
+      },
+      {
+        name: 'historyType', //simple recommended way to define a column
+        header: '거래종류',
+      },
+    ],[]
+  )
+
   return (
     <MyPageBlock>
       <NavBlock>
@@ -332,24 +352,10 @@ function MypagePage() {
         <WalletBlock>
           <p>나의 보유 코인</p>
           <hr />
-          {(data.length >= 1) && 
-            <MaterialReactTable
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: (event) => {
-                  console.info(event, row.id);
-                }
-                })}
-              columns={columns}
-              data={data}
-              enableFullScreenToggle={false}
-              enableGlobalFilter={false} //turn off a feature
-              enableDensityToggle={false}
-              enableHiding={false}
-              initialState={{ density: 'compact' }}
-              />
-            }
+          {data && <><CustomTable data={data} columns={customCoinColumns} /> <hr /></>}
+          <p>나의 코인 거래 기록</p>
           <hr />
-          {data && <CustomTable data={data} columns={customColumns} />}
+          {myHistory && <><CustomTable data={historyData} columns={customHistoryColumns} /> <hr /></>}
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>
