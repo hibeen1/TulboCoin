@@ -15,7 +15,7 @@ function DoughnutChart({ socketData, wallet }) {
       setLabels(labels)
       const amount = socketData.map((coin) => {
         const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
-        return coin.trade_price})
+        return coin.trade_price * tmp.coinAmount})
         setAmount(amount)
     }
   }, [socketData])

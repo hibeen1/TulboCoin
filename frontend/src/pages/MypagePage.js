@@ -14,6 +14,7 @@ import GreyRefresh from "../media/images/icons/GreyRefresh.png"
 import BlueRefresh from "../media/images/icons/BlueRefresh.png"
 import PiggyBank from "../media/images/PiggyBank.png"
 import DoughnutChart from "../components/DoughnutChart"
+import CustomTable from "../components/CustomTable";
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -228,6 +229,30 @@ function MypagePage() {
     ],
     [],
   );
+  const customColumns = useMemo(
+    () => [
+      {
+        name: 'name', //simple recommended way to define a column
+        header: '코인 이름',
+        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      },
+      {
+        name: 'amount', //simple recommended way to define a column
+        header: '수량',
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        name: 'average', //simple recommended way to define a column
+        header: '평균 매수 가격',
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        name: 'percent', //simple recommended way to define a column
+        header: '수익률',
+      },
+    ],
+    [],
+  );
 
   return (
     <MyPageBlock>
@@ -254,7 +279,7 @@ function MypagePage() {
             </div>
 
             <GraphBlock>
-              {(data.length >= 1) && <DoughnutChart socketData={socketData} wallet={wallet} />}
+              {socketData && <DoughnutChart socketData={socketData} wallet={wallet} />}
             </GraphBlock>
           </div>
           
@@ -264,11 +289,11 @@ function MypagePage() {
           <hr />
           {(data.length >= 1) && 
             <MaterialReactTable
-            muiTableBodyRowProps={({ row }) => ({
-              onClick: (event) => {
-                console.info(event, row.id);
-              }
-              })}
+              muiTableBodyRowProps={({ row }) => ({
+                onClick: (event) => {
+                  console.info(event, row.id);
+                }
+                })}
               columns={columns}
               data={data}
               enableFullScreenToggle={false}
@@ -278,6 +303,8 @@ function MypagePage() {
               initialState={{ density: 'compact' }}
               />
             }
+            <hr />
+            {data && <CustomTable data={data} columns={customColumns} />}
             </WalletBlock>
           </ProfileBlock>
       </MyBlock>
