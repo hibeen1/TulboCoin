@@ -51,7 +51,6 @@ const ProfileBlock = styled.div`
   h1 {
     /* border: solid black 3px; */
   }
-
 `;
 
 const StyledImg = styled.img`
@@ -67,7 +66,24 @@ const WalletBlock = styled.div`
   /* margin-left: 1vw;
   margin-top: 5vw; */
 `;
-
+// 회원정보 수정하기 버튼
+const SettingButton = styled.div`
+  width: 10vmin;
+  height: 10vmin;
+  background: url(${GreySetting}) no-repeat center;
+  background-size: 10vmin 10vmin;
+  width: 15vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* border: 3px black solid; */
+  :hover {
+    background: url(${BlueSetting}) center no-repeat;
+    background-size: 1.5vw 3vh;
+  }
+`;
 
 // 잔액 표시된 하얀 네모
 const CashBlock = styled.div`
@@ -256,11 +272,7 @@ function MypagePage() {
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
-  const { socketData } = useUpbitWebSocket(
-    coinInWallet,
-    "ticker",
-    webSocketOptions
-  );
+  const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
 
   useEffect(() => {
     if (wallet.length > 0) {
@@ -279,10 +291,7 @@ function MypagePage() {
           code: coin.code,
           amount: tmp.coinAmount,
           average: tmp.coinAverage,
-          percent: `${(
-            (coin.trade_price / tmp.coinAverage) *
-            tmp.coinAmount
-          ).toFixed(2)} %`,
+          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`,
         };
       });
       setCash(newCash)
@@ -348,10 +357,7 @@ function MypagePage() {
       <MyBlock>
         {isChangeForm && (
           <>
-            <ChangeMyInfoModal
-              user={user}
-              handlePageToForm={handlePageToForm}
-            />
+            <ChangeMyInfoModal user={user} handlePageToForm={handlePageToForm} />
           </>
         )}
         <ProfileBlock>
@@ -360,7 +366,10 @@ function MypagePage() {
           {/* 회원정보 수정하기 버튼 */}
           <SettingButton onClick={handlePageToForm}></SettingButton>
           <ProfileImg>
-            <StyledImg src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`} alt={`프로필 이미지${user.imagePath}`}/>
+            <StyledImg
+              src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`}
+              alt={`프로필 이미지${user.imagePath}`}
+            />
           </ProfileImg>
         </ProfileBlock>
         <div>
@@ -410,5 +419,5 @@ function MypagePage() {
       </MyBlock>
     </MyPageBlock>
   );
-              }
+}
 export default MypagePage;
