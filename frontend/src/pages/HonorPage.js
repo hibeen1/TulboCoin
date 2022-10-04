@@ -109,8 +109,9 @@ const RankingTable = styled.div`
 
   tbody {
     td {
-      border: 1px solid black;
-      border-radius: 5px;
+      /* border: 1px solid black;
+      border-radius: 5px; */
+      background-color: white;
       font-size: 25px;
     }
   }
@@ -165,18 +166,18 @@ const RankingModalTable = styled.div`
   }
   thead {
     background-color: #aabfea;
-    td {
+    th {
       border: 3px solid #aabfea;
-      border-radius: 10px;
-      font-size: 10px;
+      border-radius: 5px;
+      font-size: 18px;
       font: solid;
     }
   }
 
   tbody {
     td {
-      border: 1px solid black;
-      border-radius: 5px;
+      /* border: 1px solid black;
+      border-radius: 5px; */
       font-size: 15px;
     }
   }

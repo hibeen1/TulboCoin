@@ -1,50 +1,60 @@
-import { Doughnut } from 'react-chartjs-2';
-import {Chart, ArcElement, Tooltip} from 'chart.js'
-import { memo, useState, useEffect } from 'react';
-import styled from 'styled-components';
-Chart.register(ArcElement, Tooltip);
-
-
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { memo, useState, useEffect } from "react";
+import styled from "styled-components";
+Chart.register(ArcElement, Tooltip, Legend);
 
 const DoughnutBlock = styled.div`
   width: 30vw;
-  height: 20vh;
-  margin-left: 10vw;
-  margin-top: 5vh;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-left: 10vw;
+  margin-top: 5vh; */
   /* border: 3px solid black; */
-`
+`;
 
 function DoughnutChart({ socketData, wallet }) {
-  const [ labels, setLabels ] = useState([])
-  const [ amount, setAmount ] = useState([])
+  const [labels, setLabels] = useState([]);
+  const [amount, setAmount] = useState([]);
 
   useEffect(() => {
     if (socketData) {
       const labels = socketData.map((coin) => {
-        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
-        return `${tmp.coinName}(${coin.code})`})
-      setLabels(labels)
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+        return `${tmp.coinName}`;
+      });
+      setLabels(labels);
       const amount = socketData.map((coin) => {
-        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
-        return coin.trade_price * tmp.coinAmount})
-        setAmount(amount)
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+        return coin.trade_price * tmp.coinAmount;
+      });
+      setAmount(amount);
     }
-  }, [socketData])
+  }, [socketData]);
 
-  const data ={
+  const data = {
     labels: labels,
-    datasets: [{
-      label: '나의 코인 지갑',
-      backgroungColor: ['#1A70FF', '#F39D00','#E8DE00'],
-      borderColor: ['#1A70FF', '#F39D00','#E8DE00'],
-      data: amount,
-      borderWidth: 5
-    }]
-  }
+    datasets: [
+      {
+        label: "나의 코인 지갑",
+        backgroundColor: ["#aabfea", "#697ed9", "#243ead"],
+        borderColor: ["#aabfea", "#697ed9", "#243ead"],
+        data: amount,
+        borderWidth: 5,
+      },
+    ],
+  };
 
   const options = {
     // responsive 속성을 false로 지정한다.
     responsive: false,
+    plugins: {
+      legend: {
+        position: "left",
+      },
+    },
     scales: {
       yAxes: [
         {
@@ -56,11 +66,17 @@ function DoughnutChart({ socketData, wallet }) {
     },
   };
 
-  return <>
-  <DoughnutBlock>
-    <Doughnut data={data} options={options} style={{ position: "relative", height: "10vh", width: "8vw"}}/>
-  </DoughnutBlock>
-  </>
+  return (
+    <>
+      <DoughnutBlock>
+        <Doughnut
+          data={data}
+          options={options}
+          style={{ position: "relative", height: "20vh", width: "20vw" }}
+        />
+      </DoughnutBlock>
+    </>
+  );
 }
 
-export default memo(DoughnutChart)
+export default memo(DoughnutChart);
