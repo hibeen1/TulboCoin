@@ -254,6 +254,30 @@ function MypagePage() {
     ],
     []
   );
+  const customColumns = useMemo(
+    () => [
+      {
+        name: 'name', //simple recommended way to define a column
+        header: '코인 이름',
+        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+      },
+      {
+        name: 'amount', //simple recommended way to define a column
+        header: '수량',
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        name: 'average', //simple recommended way to define a column
+        header: '평균 매수 가격',
+        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+      },
+      {
+        name: 'percent', //simple recommended way to define a column
+        header: '수익률',
+      },
+    ],
+    [],
+  );
 
   return (
     <MyPageBlock>
@@ -294,6 +318,11 @@ function MypagePage() {
                 ></BalanceRefreshBtn>
               </div>
             </CashBlock>
+            </div>
+
+            <GraphBlock>
+              {socketData && <DoughnutChart socketData={socketData} wallet={wallet} />}
+            </GraphBlock>
           </div>
 
           <GraphBlock>
@@ -310,18 +339,21 @@ function MypagePage() {
               muiTableBodyRowProps={({ row }) => ({
                 onClick: (event) => {
                   console.info(event, row.id);
-                },
-              })}
+                }
+                })}
               columns={columns}
               data={data}
               enableFullScreenToggle={false}
               enableGlobalFilter={false} //turn off a feature
               enableDensityToggle={false}
               enableHiding={false}
-              initialState={{ density: "compact" }}
-            />
-          )}
-        </WalletBlock>
+              initialState={{ density: 'compact' }}
+              />
+            }
+            <hr />
+            {data && <CustomTable data={data} columns={customColumns} />}
+            </WalletBlock>
+          </ProfileBlock>
       </MyBlock>
     </MyPageBlock>
   );

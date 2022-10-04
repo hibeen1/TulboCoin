@@ -14,7 +14,7 @@ function WalletTable({ wallet, socketData }) {
           code: coin.code,
           amount: tmp.coinAmount,
           average: tmp.coinAverage,
-          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
+          percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`
         }
       });
       setData(newData)
@@ -52,11 +52,11 @@ function WalletTable({ wallet, socketData }) {
   return <>
     {(data.length >= 1) && 
       <MaterialReactTable
-      muiTableBodyRowProps={({ row }) => ({
-        onClick: (event) => {
-          console.info(event, row.id);
-        }
-        })}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: (event) => {
+            console.info(event, row.id);
+          }
+          })}
         columns={columns}
         data={data}
         enableFullScreenToggle={false}
