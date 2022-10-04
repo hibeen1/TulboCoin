@@ -77,7 +77,7 @@ const SearchButton = styled.div`
 `
 const CenterBlock = styled.div`
   width: 91vw;
-  height: 65vh;
+  height: 55vh;
   display: flex;
   justify-content: start;
   align-items: center; 
@@ -90,7 +90,7 @@ const CenterBlock = styled.div`
 `
 const CenterLeftBlock = styled.div`
   width: 30vw;
-  height: 65vh;
+  height: 55vh;
   display: flex;
   justify-content: start;
   align-items: center; 
@@ -101,53 +101,54 @@ const CenterLeftBlock = styled.div`
 // 가나다순 차트
 const AlphabetChart = styled.div`
   width: 30vw;
-  height: 30vh;
+  height: 10vh;
   display: flex;
   justify-content: start;
   align-items: center; 
   border: solid blue 3px;
   flex-direction: column;
+  margin-top:2vh;
   
 `
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
   width: 30vw;
-  height: 30vh;
+  height: 40vh;
   display: flex;
   justify-content: start;
   align-items: center; 
   border: solid purple 3px;
   flex-direction: column;
-  margin-top: 5vh;
+  /* margin-top: 5vh; */
 `
 // 코인 이름 정보 + 코인 차트
 const CoinChartBlock = styled.div`
   width: 60vw;
-  height: 65vh;
+  height: 55vh;
   display: flex;
   justify-content: start;
   align-items: center; 
   border: solid skyblue 3px;
   flex-direction: column;
 `
-const CoinNameMsg = styled.div`
-  width: 60vw;
-  height: 15vh;
-  display: flex;
-  border: solid yellow 3px;
+// const CoinNameMsg = styled.div`
+//   width: 60vw;
+//   height: 15vh;
+//   display: flex;
+//   border: solid yellow 3px;
   
-`
-const ChartBlock = styled.div`
-  width: 60vw;
-  height: 55vh;
-  display: flex;
-  border: solid pink 3px;
+// `
+// const ChartBlock = styled.div`
+//   width: 60vw;
+//   height: 55vh;
+//   display: flex;
+//   border: solid pink 3px;
   
-`
+// `
 
 const NewsBlock = styled.div`
   width: 91vw;
-  height: 15vh;
+  height: 20vh;
   display: flex;
   justify-content: start;
   align-items: center; 
@@ -170,17 +171,17 @@ function Sise() {
         <CenterBlock>
           {/* 차트 두개 세로로 나열 */}
           <CenterLeftBlock>
-            <AlphabetChart>가나다순 차트</AlphabetChart>
+            <AlphabetChart>차트 제목</AlphabetChart>
             <div><MoneyAmountChart>거래대금 순 차트</MoneyAmountChart></div>
           </CenterLeftBlock>
 
           {/* coinChart Block */}
           <CoinChartBlock>
-            <CoinNameMsg><CoinList></CoinList></CoinNameMsg>
+           {/* <CoinList></CoinList> */}
 
 
             {/* <div>코인 그래프</div> */}
-            <ChartBlock><CoinChart></CoinChart></ChartBlock>
+            <CoinChart></CoinChart>
           </CoinChartBlock>
 
         </CenterBlock>

@@ -10,8 +10,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CustomTable from "./CustomTable";
 import styled from "styled-components";
-
+import CoinChart from "./CoinChart";
+const WholeCoinChartBlock = styled.div`
+  width: 60vw;
+  height: 55vh;
+  display: flex;
+  justify-content: start;
+  align-items: center; 
+`
 const CoinLogo = styled.div`
+width: 5vmin;
+height: 5vmin;
+border: 3px solid grey;
   
 `
 const CoinName = styled.div`
@@ -20,6 +30,19 @@ const CoinName = styled.div`
 const CompareYesterDay = styled.div`
 `
 
+
+
+const CoinDetails = styled.div`
+`
+const CoinChartBlock = styled.div`
+  width: 60vw;
+  height: 55vh;
+  display: flex;
+  justify-content: start;
+  align-items: center; 
+  border: solid skyblue 3px;
+  flex-direction: column;
+`
 
 
 
@@ -34,8 +57,7 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
     }
   }
   return (
-    <div>
-
+    <WholeCoinChartBlock>
         <CoinLogo>
         <img
           src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
@@ -52,11 +74,14 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
         {targetSocketData.signed_change_price > 0 ? "+" : null}
         {targetSocketData.signed_change_price}
       </CompareYesterDay>
-      {/* <p>고가 : {targetSocketData.high_price}</p>
+      <CoinDetails>
+      <p>고가 : {targetSocketData.high_price}</p>
       <p>저가 : {targetSocketData.low_price}</p>
       <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
-      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p> */}
-    </div>
+      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+      </CoinDetails>
+      <CoinChartBlock><CoinChart></CoinChart></CoinChartBlock>
+      </WholeCoinChartBlock>
   );
 });
 
@@ -154,7 +179,7 @@ const Coin = memo(function Coin({ socketData }) {
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
           </>
         ) : (
-          <div>Ticker Loading...</div>
+          <div>정보를 가져오고 있습니다...</div>
         )}
       </div>
       {/* {data && (
@@ -218,7 +243,7 @@ function CoinPage() {
 
   return (
     <>
-      {socketData ? <Coin socketData={socketData} /> : <div>Ticker Loading...</div>}
+      {socketData ? <Coin socketData={socketData} /> : <div>정보를 가져오고 있습니다...</div>}
     </>
   );
 }

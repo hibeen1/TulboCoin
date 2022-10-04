@@ -1,3 +1,5 @@
+
+/* 시세페이지 그래프 디자인 */
 .container {
   display: flex;
   flex-direction: column;
@@ -21,7 +23,7 @@
 }
 .chart {
   display: flex;
-  flex: 1;
+  /* flex: 1; */
 }
 .menu {
   display: flex;
@@ -37,7 +39,7 @@ button {
   cursor: pointer;
   background-color: #243ead;
   border-radius: 2px;
-  margin-right: 1vw;
+  margin-left: 8vw;
   height: 24px;
   line-height: 26px;
   padding: 0 6px;
