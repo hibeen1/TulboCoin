@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("news")
@@ -21,10 +24,10 @@ public class NewsController {
     public ResponseEntity<?> news(@PathVariable String query){
         HttpStatus status;
 
-        Object res = newsService.conveyNews(query);
+        LinkedHashMap res = newsService.conveyNews(query);
 
         status = HttpStatus.OK;
 
-        return new ResponseEntity<Object>(res, status);
+        return new ResponseEntity<LinkedHashMap>((LinkedHashMap<String, String>) res, status);
     }
 }

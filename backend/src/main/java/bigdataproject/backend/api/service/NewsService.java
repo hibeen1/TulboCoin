@@ -1,5 +1,7 @@
 package bigdataproject.backend.api.service;
 
+import java.util.LinkedHashMap;
+
 public interface NewsService {
-    Object conveyNews(String query);
+    LinkedHashMap conveyNews(String query);
 }
