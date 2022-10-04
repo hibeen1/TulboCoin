@@ -64,9 +64,9 @@ export default function account(state = initialState, action) {
       localStorage.removeItem("likedCoin");
       return {
         ...state,
-        user: JSON.stringify({}),
-        wallet: JSON.stringify([]),
-        likedCoin: JSON.stringify([])
+        user: '{}',
+        wallet: '[]',
+        likedCoin: '[]'
       };
     case FETCH_RANKING:
       return {
