@@ -94,7 +94,7 @@ export const newsApi = async (body) => {
 
 // 좋아요 코인 불러오기
 export const fetchLikedCoinApi = async () => {
-  return await axios.post('/likes', null, {
+  return await axios.get('/likes', {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   })
 }

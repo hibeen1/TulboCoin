@@ -23,13 +23,13 @@ export const fetchLikedCoin = (data) => ({ type: FETCH_LIKED_COIN, meta: data })
 // 초기 값
 const initialState = {
   isLoggedin: false,
-  user: {},
-  wallet: [],
+  user: '{}',
+  wallet: '[]',
   rankinglist: [],
   historylist: [],
   otheruser: {},
   myHistory: [],
-  likedCoin: []
+  likedCoin: '[]'
 };
 
 // 리듀서 선언
@@ -92,7 +92,7 @@ export default function account(state = initialState, action) {
       localStorage.setItem("likedCoin", JSON.stringify(action.meta));
       return {
         ...state,
-        likedCoin: action.meta
+        likedCoin: JSON.stringify(action.meta)
       }
     default:
       return state;
