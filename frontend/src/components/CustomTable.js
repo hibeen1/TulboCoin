@@ -1,20 +1,27 @@
-import { useState, useEffect } from "react"
-import CustomTableDetail from "./CustomTableDetail"
+import { useState, useEffect } from "react";
+import CustomTableDetail from "./CustomTableDetail";
 
-function CustomTable({ data, columns }) {
-  const [ customData, setCustomData ] = useState()
-  const [ customColumns, setCustomColumns ] = useState()
+function CustomTable({ tableStyle, columnStyle, data, columns }) {
+  const [customData, setCustomData] = useState();
+  const [customColumns, setCustomColumns] = useState();
 
   useEffect(() => {
-    setCustomColumns(columns)
-    setCustomData(data)
-  }, [data])
+    setCustomColumns(columns);
+    setCustomData(data);
+  }, [data]);
 
-  return <>
-  {customData &&
-    <CustomTableDetail data={customData} columns={customColumns} />
-  }
-  </>
+  return (
+    <>
+      {customData && (
+        <CustomTableDetail
+          tableStyle={tableStyle}
+          columnStyle={columnStyle}
+          data={customData}
+          columns={customColumns}
+        />
+      )}
+    </>
+  );
 }
 
-export default CustomTable
+export default CustomTable;
