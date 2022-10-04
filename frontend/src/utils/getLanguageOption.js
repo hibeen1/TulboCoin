@@ -1,9 +1,8 @@
 const getLanguageOption = () => {
   return {
     candle: {
-      tooltip: {
-        labels: ['T: ', 'O: ', 'C: ', 'H: ', 'L: ', 'V: ']
-      }
+      type: 'area',
+      tooltip: {showRule: 'none'}
     }
   }
 }
