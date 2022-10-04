@@ -80,24 +80,6 @@ const WalletBlock = styled.div`
   /* margin-left: 1vw;
   margin-top: 5vw; */
 `;
-// 회원정보 수정하기 버튼
-const SettingButton = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  background: url(${GreySetting}) no-repeat center;
-  background-size: 10vmin 10vmin;
-  width: 15vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  /* border: 3px black solid; */
-  :hover {
-    background: url(${BlueSetting}) center no-repeat;
-    background-size: 1.5vw 3vh;
-  }
-`;
 
 // 잔액 표시된 하얀 네모
 const CashBlock = styled.div`
@@ -220,7 +202,21 @@ const EmailMsg = styled.div`
   font-size: 3vmin;
 `;
 const ProfileImg = styled.div`
-  width: 5vw;
+width: 5vw; 
+height: 100%;
+display: flex;
+justify-content: end;
+align-items: center; 
+padding: 0.1vh 1vw;
+`
+
+// 회원정보 수정하기 버튼
+const SettingButton = styled.div`
+  width: 5vmin;
+  height: 5vmin;
+  background: url(${GreySetting}) no-repeat center;
+  background-size: 5vmin 5vmin;
+  width: 15vw; 
   height: 100%;
   display: flex;
   justify-content: end;
@@ -388,7 +384,7 @@ function MypagePage() {
   const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
 
   useEffect(() => {
-    if (wallet.length > 0) {
+    if (wallet) {
       const tmp = wallet.map((ele) => ({ market: ele.coinCode }));
       setCoinInWallet(tmp);
     }
@@ -575,7 +571,7 @@ function MypagePage() {
 
           <GraphBackground>
             <GraphBlock>
-              {data.length >= 1 ? (
+              {data ? (
                 <DoughnutChart socketData={socketData} wallet={wallet} />
               ) : (
                 <div>아무것도 없음</div>

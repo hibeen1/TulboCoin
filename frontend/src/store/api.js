@@ -91,3 +91,11 @@ export const newsApi = async (body) => {
   return await axios.get(`/news/${body}`);
 };
 // 뉴스 정보 요청 끝
+
+// 좋아요 코인 불러오기
+export const fetchLikedCoinApi = async () => {
+  return await axios.post('/likes', null, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  })
+}
+// 좋아요 코인 불러오기 끝

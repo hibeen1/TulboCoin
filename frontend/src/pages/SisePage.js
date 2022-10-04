@@ -165,7 +165,6 @@ function Sise() {
           {/* coinChart Block */}
           <CoinChartBlock>
             {/* <div>코인 이름 정보</div> */}
-          {/* <CoinList></CoinList> */}
             {/* <div>코인 그래프</div> */}
             <ChartBlock><CoinChart></CoinChart></ChartBlock>
           </CoinChartBlock>
@@ -179,10 +178,9 @@ function Sise() {
 
         </NewsBlock>
 
-
+        <CoinList></CoinList>
       </SiseBlock>
     </SisePageBlock>
-    <CoinChart></CoinChart>
     </>
   );
 }
