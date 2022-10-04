@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react"
-import CustomTableDetail from "./CustomTableDetail"
+import { useState, useEffect } from "react";
+import CustomTableDetail from "./CustomTableDetail";
 
-function CustomTable({ data, columns, rowFunction }) {
-  const [ customData, setCustomData ] = useState()
-  const [ customColumns, setCustomColumns ] = useState()
+function CustomTable({ tableStyle, columnStyle, data, columns, rowFunction }) {
+  const [customData, setCustomData] = useState();
+  const [customColumns, setCustomColumns] = useState();
 
   useEffect(() => {
-    setCustomColumns(columns)
-    setCustomData(data)
-  }, [data])
+    setCustomColumns(columns);
+    setCustomData(data);
+  }, [data]);
 
   const propRowFunction = (row) => {
     if (rowFunction) {
@@ -20,9 +20,9 @@ function CustomTable({ data, columns, rowFunction }) {
 
   return <>
   {customData &&
-    <CustomTableDetail data={customData} columns={customColumns} propRowFunction={propRowFunction} />
+    <CustomTableDetail tableStyle={tableStyle} columnStyle={columnStyle} data={customData} columns={customColumns} propRowFunction={propRowFunction} />
   }
   </>
 }
 
-export default CustomTable
+export default CustomTable;
