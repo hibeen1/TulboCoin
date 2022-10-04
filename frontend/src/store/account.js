@@ -24,6 +24,7 @@ const initialState = {
   rankinglist: [],
   historylist: [],
   otheruser: {},
+  myHistory: [],
 };
 
 // 리듀서 선언
