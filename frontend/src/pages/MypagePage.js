@@ -309,7 +309,7 @@ function MypagePage() {
         <BalanceAndGraphBlock>
           <h3>잔고</h3>
 
-          <div style={{ display: "inline" }}>
+
             <CashBlock>
               <PiggyBankImg></PiggyBankImg>
               <div>
@@ -322,7 +322,6 @@ function MypagePage() {
                 ></BalanceRefreshBtn>
               </div>
             </CashBlock>
-          </div>
           <GraphBlock>
             {data.length >= 1 && (
               <DoughnutChart socketData={socketData} wallet={wallet} />
@@ -355,5 +354,5 @@ function MypagePage() {
       </MyBlock>
     </MyPageBlock>
   );
-}
+              }
 export default MypagePage;
