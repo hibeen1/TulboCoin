@@ -291,7 +291,9 @@ function MypagePage() {
           code: coin.code,
           amount: tmp.coinAmount,
           average: tmp.coinAverage,
-          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`,
+          percent: `${(
+            (coin.trade_price / tmp.coinAverage - 1) * 100
+          ).toFixed(2)} %`,
         };
       });
       setCash(newCash)
