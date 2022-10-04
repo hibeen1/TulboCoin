@@ -192,12 +192,12 @@ function MypagePage() {
     setIsChangeForm(!isChangeForm);
   };
 
+  const wallet = JSON.parse(useSelector(state => state.account.wallet))
+  const [ data, setData ] = useState([])
+  const [ cash, setCash ] = useState(0)
   const handleBalanceReset = () => {
     dispatch(resetWalletAsync());
   };
-
-  const wallet = JSON.parse(useSelector((state) => state.account.wallet));
-  const [data, setData] = useState([]);
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
@@ -215,8 +215,10 @@ function MypagePage() {
   }, []);
   useEffect(() => {
     if (socketData) {
+      let newCash = 0
       const newData = socketData.map((coin) => {
-        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
+        newCash += coin.trade_price * tmp.coinAmount
         return {
           name: `${tmp.coinName}(${coin.code})`,
           code: coin.code,
@@ -228,7 +230,8 @@ function MypagePage() {
           ).toFixed(2)} %`,
         };
       });
-      setData(newData);
+      setCash(newCash)
+      setData(newData)
     }
   }, [socketData]);
 
@@ -283,7 +286,7 @@ function MypagePage() {
     ],
     [],
   );
-
+  console.log(cash)
   return (
     <MyPageBlock>
       <NavBlock>
@@ -323,22 +326,17 @@ function MypagePage() {
                 ></BalanceRefreshBtn>
               </div>
             </CashBlock>
-
-
-            <GraphBlock>
-              {socketData && <DoughnutChart socketData={socketData} wallet={wallet} />}
-            </GraphBlock>
-
           <GraphBlock>
             {data.length >= 1 && (
               <DoughnutChart socketData={socketData} wallet={wallet} />
             )}
           </GraphBlock>
         </BalanceAndGraphBlock>
+        <br />
         <WalletBlock>
           <p>나의 보유 코인</p>
           <hr />
-          {data.length >= 1 && (
+          {(data.length >= 1) && 
             <MaterialReactTable
               muiTableBodyRowProps={({ row }) => ({
                 onClick: (event) => {
@@ -353,10 +351,10 @@ function MypagePage() {
               enableHiding={false}
               initialState={{ density: 'compact' }}
               />
-            )}
-            <hr />
-            {data && <CustomTable data={data} columns={customColumns} />}
-            </WalletBlock>
+            }
+          <hr />
+          {data && <CustomTable data={data} columns={customColumns} />}
+        </WalletBlock>
       </MyBlock>
     </MyPageBlock>
   );
