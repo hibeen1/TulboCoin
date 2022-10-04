@@ -19,7 +19,7 @@ function DoughnutChart({ socketData, wallet }) {
   const [ amount, setAmount ] = useState([])
 
   useEffect(() => {
-    if (socketData.length >= 1) {
+    if (socketData) {
       const labels = socketData.map((coin) => {
         const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
         return `${tmp.coinName}(${coin.code})`})

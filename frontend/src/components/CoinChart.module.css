@@ -9,8 +9,6 @@
   border: 3px solid black;
   width: 55vw;
   height: 55vh;
-  justify-content: start;
-  align-items: end;
   padding: 16px 6px 16px 16px;
 }
 .title {

@@ -1,13 +1,13 @@
 import { memo, useEffect, useState, useMemo } from "react";
-import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { useDispatch, useSelector } from "react-redux";
+import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { selectCoin, selectNews } from "../store/coin";
 import { newsAsync } from "../store/coinSaga";
+import CustomTable from "./CustomTable";
 import CoinDeal from "./CoinDeal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CustomTable from "./CustomTable";
 
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   let targetSocketData = [];
