@@ -117,6 +117,7 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body);
     if (response.status === 200) {
       yield put(fetchUserAsync());
+      yield alert('변신 완료!')
     }
   } catch (error) {
     alert(error.response.data.message);
@@ -158,7 +159,6 @@ function* deleteUserSaga() {
 
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
-  console.log("지갑정보 가져오기 작동");
   try {
     const response = yield call(fetchWalletApi);
     if (response.status === 200) {
@@ -176,7 +176,9 @@ function* resetWalletSaga() {
     try {
       const response = yield call(resetWalletApi);
       if (response.status === 200) {
-        yield delay(fetchWalletAsync(), 1000);
+        yield put(fetchUserAsync())
+        yield put(fetchWalletAsync())
+        yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
       }
     } catch (error) {
       alert(error.response.data.message);
