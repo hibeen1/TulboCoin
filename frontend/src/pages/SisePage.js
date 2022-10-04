@@ -94,12 +94,12 @@ const CenterBlock = styled.div`
   font-size: 4vmin;
   font-weight: bold;
   /* padding: 0.1vh 1vw; */
-  border: solid yellow 3px;
+  border: solid black 3px;
   flex-direction: row;
   
 `
 const CenterLeftBlock = styled.div`
-  width: 30vw;
+  width: 20vw;
   height: 55vh;
   display: flex;
   justify-content: start;
@@ -108,27 +108,29 @@ const CenterLeftBlock = styled.div`
   flex-direction: column;
   
 `
-// 가나다순 차트
-const AlphabetChart = styled.div`
-  width: 30vw;
+// 이름순 거래대금순 코인이름순을 묶은 디브
+const ChangeChartBtnBlock = styled.div`
+  width: 20vw;
   height: 10vh;
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center; 
   border: solid blue 3px;
-  flex-direction: column;
+  flex-direction: row;
   margin-top:2vh;
   
 `
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
-  width: 30vw;
+  width: 20vw;
   height: 40vh;
   display: flex;
   justify-content: start;
   align-items: center; 
   border: solid purple 3px;
   flex-direction: column;
+  font-size: 3vmin;
+  overflow: auto;
   /* margin-top: 5vh; */
 `
 // 코인 이름 정보 + 코인 차트
@@ -164,6 +166,23 @@ const NewsBlock = styled.div`
   align-items: center; 
   border: solid purple 3px;
   flex-direction: column;
+  overflow: auto;
+`
+
+// 이름순 거래대금순 관심코인순
+const ChangeChartBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  cursor: pointer;
+  border: 3px yellow solid;
+  font-size: 2vmin;
+  /* margin-left: 1vw; */
+  /* margin-right: 1vw; */
+  width: 7vw;
+  height:5vh;
+
+  
 `
 
 
@@ -301,13 +320,11 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
         <CenterBlock>
           {/* 차트 두개 세로로 나열 */}
           <CenterLeftBlock>
-            <AlphabetChart>
-              <p>
-                <button onClick={() => handleWhatTable('name')}>이름순</button>
-                <button onClick={() => handleWhatTable('amount')}>거래대금순</button>
-                <button onClick={() => handleWhatTable('like')}>관심코인</button>
-              </p>
-            </AlphabetChart>
+            <ChangeChartBtnBlock>
+                <ChangeChartBtn onClick={() => handleWhatTable('name')}>이름순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable('amount')}>거래대금순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable('like')}>관심코인</ChangeChartBtn>
+            </ChangeChartBtnBlock>
             <div>
               <MoneyAmountChart>
                 {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
@@ -323,8 +340,8 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
             {/* <div>코인 그래프</div> */}
             {(selectedCoin && socketData) ? (
               <>
-                <button onClick={handleModal} name='sell' >코인 판매</button>
-                <button onClick={handleModal} name='buy' >코인 구매</button>
+                {/* <button onClick={handleModal} name='sell' >코인 판매</button>
+                <button onClick={handleModal} name='buy' >코인 구매</button> */}
                 {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />}
                 <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
               </>
@@ -338,7 +355,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
 
 
         <NewsBlock>
-          <div>해당 뉴스를 확인하세요</div>
+        {/* <div>해당 뉴스를 확인하세요</div> */}
           <div>뉴스 정보</div>
           {selectedNews ? (
           <div className="carousel">
