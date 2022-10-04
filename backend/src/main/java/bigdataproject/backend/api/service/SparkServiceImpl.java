@@ -1,8 +1,11 @@
 package bigdataproject.backend.api.service;
 
+import bigdataproject.backend.db.entity.Coin;
+import bigdataproject.backend.db.repository.CoinRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,14 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class SparkServiceImpl implements SparkService {
 
-    @Autowired
-    JavaSparkContext sc;
+    private final JavaSparkContext sc;
+
+    private final CoinRepository coinRepository;
 
     @Override
     public Map<String, Long> getCount(LocalDateTime ldt, LocalDateTime now, int cnt) {
         Map<String, Long> wordCounts = new HashMap<>();
+        Map<String, Long> coinNameCounts = new HashMap<>();
         JavaRDD<String> coinMap = null;
         int testCnt = 0;
         while (true) {
@@ -29,7 +36,15 @@ public class SparkServiceImpl implements SparkService {
                 System.out.println("현재" + now);
                 wordCounts = coinMap.countByValue();
                 System.out.println("너 얼마나 돌았니??  " + testCnt);
-                return wordCounts;
+                for (Map.Entry<String, Long> entry : wordCounts.entrySet()){
+                    try {
+                        coinNameCounts.put(coinRepository.findCoinByCoinCode(entry.getKey()).getCoinName(), entry.getValue());
+                    } catch (NullPointerException nullPointerException){
+                        log.info("Coin 테이블에 존재하지않는 코인이 워드 카운트에 존재함");
+                    }
+                }
+//                log.info(coinNameCounts.toString());
+                return coinNameCounts;
             }
             testCnt += 1;
 
@@ -61,7 +76,7 @@ public class SparkServiceImpl implements SparkService {
             sb.append(".csv");
             String filePath = sb.toString();
             System.out.println(filePath);
-//            filePath = "src/main/resources/40.csv";
+//            String filePath = "src/main/resources/40.csv";
 
 
             JavaRDD<String> testFile = sc.textFile(filePath);
