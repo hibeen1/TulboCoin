@@ -14,6 +14,7 @@ import GreyRefresh from "../media/images/icons/GreyRefresh1.png";
 import BlueRefresh from "../media/images/icons/BlueRefresh.png";
 import PiggyBank from "../media/images/PiggyBank.png";
 import DoughnutChart from "../components/DoughnutChart";
+import CustomTable from "../components/CustomTable";
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -65,25 +66,7 @@ const WalletBlock = styled.div`
   /* margin-left: 1vw;
   margin-top: 5vw; */
 `;
-// 회원정보 수정하기 버튼
-const SettingButton = styled.div`
-  width: 10vmin;
-  height: 10vmin;
-  background: url(${GreySetting}) no-repeat center;
-  background-size: 10vmin 10vmin;
-  width: 15vw; 
-height: 100%;
-display: flex;
-justify-content: center;
-align-items: center; 
-  cursor: pointer;
-  /* border: 3px black solid; */
-  :hover {
-    background: url(${BlueSetting}) center no-repeat;
-    background-size: 1.5vw 3vh;
 
-  }
-`;
 
 // 잔액 표시된 하얀 네모
 const CashBlock = styled.div`
@@ -143,16 +126,18 @@ const BalanceAndGraphBlock = styled.div`
 `;
 
 const GreetingMsg = styled.div`
-width: 30vw; 
+width: 50vw; 
 height: 100%;
 display: flex;
-justify-content: center;
+justify-content: start;
 align-items: center; 
-font-size: 3vmin;
+font-size: 4vmin;
+font-weight: bold;
+padding: 0.1vh 1vw;
 `
 
 const EmailMsg = styled.div`
-width: 40vw; 
+width: 20vw; 
 height: 100%;
 display: flex;
 justify-content: center;
@@ -160,13 +145,33 @@ align-items: center;
 font-size: 3vmin;
 `
 const ProfileImg = styled.div`
-width: 15vw; 
+width: 5vw; 
 height: 100%;
 display: flex;
-justify-content: center;
+justify-content: end;
 align-items: center; 
+padding: 0.1vh 1vw;
   
 `
+
+// 회원정보 수정하기 버튼
+const SettingButton = styled.div`
+  width: 5vmin;
+  height: 5vmin;
+  background: url(${GreySetting}) no-repeat center;
+  background-size: 5vmin 5vmin;
+  width: 15vw; 
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center; 
+  cursor: pointer;
+  /* border: 3px black solid; */
+  :hover {
+    background: url(${BlueSetting}) center no-repeat;
+    background-size: 5vmin 5vmin;
+  }
+`;
 
 // ==============================================================
 function MypagePage() {
