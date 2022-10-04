@@ -3,169 +3,12 @@ import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCoin, selectNews } from "../store/coin";
-import { buyAsync, sellAsync, newsAsync } from "../store/coinSaga";
-import { fetchUserAsync } from "../store/accountSaga";
-import { fetchWalletAsync } from "../store/accountSaga";
+import { newsAsync } from "../store/coinSaga";
 import CoinDeal from "./CoinDeal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CustomTable from "./CustomTable";
-
-const CoinSell = memo(function CoinSell({ socketData, detailCoinData }) {
-  let targetSocketData = [];
-  for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData.code) {
-      targetSocketData = socketData[i];
-      break;
-    }
-  }
-  const [sellForm, setSellForm] = useState({
-    sellCoinAmount: 0,
-    sellCoinName: detailCoinData.name,
-    sellCoinCode: detailCoinData.code,
-    sellCoinPrice: targetSocketData.trade_price,
-  });
-
-  const handleChange = (e) => {
-    console.log(e);
-    console.log(e.target.name);
-    console.log(e.target.value);
-    setSellForm({
-      ...sellForm,
-      [e.target.name]: Number(e.target.value),
-    });
-  };
-
-  useEffect(() => {
-    setSellForm({
-      ...sellForm,
-      sellCoinName: detailCoinData.name,
-      sellCoinCode: detailCoinData.code,
-      sellCoinPrice: targetSocketData.trade_price,
-    });
-  }, [socketData, detailCoinData]);
-
-  const dispatch = useDispatch();
-  const handleSell = function (e) {
-    const { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice } = sellForm;
-    const body = { sellCoinAmount, sellCoinName, sellCoinCode, sellCoinPrice };
-    // console.log(body);
-    dispatch(sellAsync(body));
-    setTimeout(() => {
-      dispatch(fetchWalletAsync());
-      dispatch(fetchUserAsync());
-    }, 300);
-    // dispatch(fetchWalletAsync());
-    // dispatch(fetchUserAsync());
-  };
-  return (
-    <div>
-      <form>
-        {/* <p>{JSON.stringify(buyForm)}</p> */}
-        <div>
-          <label>판매가능수량</label>
-          <div>
-            {localStorage.getItem("wallet") &&
-              JSON.parse(localStorage.getItem("wallet")).map((coin) =>
-                coin.coinName === detailCoinData.name ? coin.coinAmount : null
-              )}
-          </div>
-        </div>
-        <div>
-          <label>매도가격(KRW)</label> <br />
-          <label>{targetSocketData.trade_price}</label>
-        </div>
-        <div>
-          <label htmlFor="sellCoinAmount">판매수량</label>
-          <input id="sellCoinAmount" type="number" name="sellCoinAmount" onChange={handleChange} />
-        </div>
-        <div>
-          <p htmlFor="sellCoinPrice">판매총액</p>
-          <p id="sellCoinPrice" name="sellCoinPrice" onChange={handleChange}>
-            {sellForm.sellCoinAmount * targetSocketData.trade_price}
-          </p>
-        </div>
-      </form>
-      <button onClick={handleSell}>매도</button>
-    </div>
-  );
-});
-
-const CoinBuy = memo(function CoinBuy({ socketData, detailCoinData }) {
-  // console.log(detailCoinData);
-  let targetSocketData = [];
-  for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData.code) {
-      targetSocketData = socketData[i];
-      break;
-    }
-  }
-
-  const [buyForm, setBuyForm] = useState({
-    buyCoinAmount: 1,
-    buyCoinName: detailCoinData.name,
-    buyCoinPrice: targetSocketData.trade_price,
-    buyCoinCode: detailCoinData.code,
-  });
-
-  const handleChange = (e) => {
-    setBuyForm({
-      ...buyForm,
-      [e.target.name]: Number(e.target.value),
-    });
-  };
-
-  useEffect(() => {
-    setBuyForm({
-      ...buyForm,
-      buyCoinName: detailCoinData.name,
-      buyCoinCode: detailCoinData.code,
-      buyCoinPrice: targetSocketData.trade_price,
-    });
-  }, [socketData, detailCoinData]);
-
-  const dispatch = useDispatch();
-  const handleBuy = function (e) {
-    const { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode } = buyForm;
-    const body = { buyCoinAmount, buyCoinName, buyCoinPrice, buyCoinCode };
-    // console.log(body);
-    dispatch(buyAsync(body));
-    setTimeout(() => {
-      dispatch(fetchWalletAsync());
-      dispatch(fetchUserAsync());
-    }, 300);
-    // 유저정보 요청보내기
-    // dispatch(fetchWalletAsync());
-    // dispatch(fetchUserAsync());
-  };
-  return (
-    <div>
-      <form>
-        {/* <p>{JSON.stringify(buyForm)}</p> */}
-        <div>
-          <label>주문가능</label>
-          <label>{JSON.parse(localStorage.getItem("user")).balance}KRW</label>
-        </div>
-        <div>
-          <label>매수가격(KRW)</label> <br />
-          <label>{targetSocketData.trade_price}</label>
-        </div>
-        <div>
-          <label htmlFor="buyCoinAmount">주문수량</label>
-          <input id="buyCoinAmount" type="number" name="buyCoinAmount" onChange={handleChange} />
-        </div>
-        <div>
-          <p htmlFor="buyCoinPrice">주문총액</p>
-          <p id="buyCoinPrice" name="buyCoinPrice" onChange={handleChange}>
-            {buyForm.buyCoinAmount * targetSocketData.trade_price}
-          </p>
-        </div>
-      </form>
-      <button onClick={handleBuy}>매수</button>
-    </div>
-  );
-});
 
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -233,29 +76,30 @@ const Coin = memo(function Coin({ socketData }) {
   useEffect(() => {
     dispatch(newsAsync("비트코인"));
   }, []);
+
   // 테이블 컬럼
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "name", //simple recommended way to define a column
-        header: "코인 이름",
-        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
-      },
-      {
-        accessorKey: "trade_price", //simple recommended way to define a column
-        header: "현재 가격",
-        enableColumnFilter: false,
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-      },
-      {
-        accessorKey: "volume", //simple recommended way to define a column
-        header: "거래대금(백만)",
-        enableColumnFilter: false,
-        enableSorting: false,
-      },
-    ],
-    []
-  );
+  // const columns = useMemo(
+  //   () => [
+  //     {
+  //       accessorKey: "name", //simple recommended way to define a column
+  //       header: "코인 이름",
+  //       // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+  //     },
+  //     {
+  //       accessorKey: "trade_price", //simple recommended way to define a column
+  //       header: "현재 가격",
+  //       enableColumnFilter: false,
+  //       // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+  //     },
+  //     {
+  //       accessorKey: "volume", //simple recommended way to define a column
+  //       header: "거래대금(백만)",
+  //       enableColumnFilter: false,
+  //       enableSorting: false,
+  //     },
+  //   ],
+  //   []
+  // );
   // 테이블 컬럼 끝
 
   function selectDetailCoin(coin) {
@@ -297,7 +141,7 @@ const Coin = memo(function Coin({ socketData }) {
           <div>Ticker Loading...</div>
         )}
       </div>
-      {data && (
+      {/* {data && (
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
             onClick: (event) => {
@@ -312,7 +156,7 @@ const Coin = memo(function Coin({ socketData }) {
           enableHiding={false}
           initialState={{ density: 'compact' }}
         />
-      )}
+      )} */}
       {/* {data && <CustomTable data={data} columns={columns} />} */}
       <div>
         {selectedNews ? (
