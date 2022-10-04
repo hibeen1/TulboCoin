@@ -25,7 +25,7 @@ const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  position: relative;
+  /* position: relative; */
   display: flex;
 `;
 
@@ -188,7 +188,7 @@ const BalanceAndGraphBlock = styled.div`
   width: 91vw;
   flex-direction: row;
 `;
-
+// 좋은 하루 되세요
 const GreetingMsg = styled.div`
   width: 50vw;
   height: 100%;
@@ -404,7 +404,9 @@ function MypagePage() {
           code: coin.code,
           amount: tmp.coinAmount,
           average: tmp.coinAverage,
-          percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`,
+          percent: `${(
+            (coin.trade_price / tmp.coinAverage - 1) * 100
+          ).toFixed(2)} %`,
         };
       });
       setCash(newCash);

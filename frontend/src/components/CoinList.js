@@ -1,6 +1,5 @@
 import { memo, useEffect, useState, useMemo } from "react";
 import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
-import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCoin, selectNews } from "../store/coin";
 import { newsAsync } from "../store/coinSaga";
@@ -50,10 +49,8 @@ const Coin = memo(function Coin({ socketData }) {
   const [data, setData] = useState();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
-  console.log("뉴스으으으", selectedNews);
   const [ modal, setModal ] = useState('');
-  const { sortBy, setSortBy } = useState();
-
+  
   useEffect(() => {
     const newData = socketData.map((coin) => {
       let tmp = "";
@@ -78,28 +75,15 @@ const Coin = memo(function Coin({ socketData }) {
   }, []);
 
   // 테이블 컬럼
-  // const columns = useMemo(
-  //   () => [
-  //     {
-  //       accessorKey: "name", //simple recommended way to define a column
-  //       header: "코인 이름",
-  //       // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
-  //     },
-  //     {
-  //       accessorKey: "trade_price", //simple recommended way to define a column
-  //       header: "현재 가격",
-  //       enableColumnFilter: false,
-  //       // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-  //     },
-  //     {
-  //       accessorKey: "volume", //simple recommended way to define a column
-  //       header: "거래대금(백만)",
-  //       enableColumnFilter: false,
-  //       enableSorting: false,
-  //     },
-  //   ],
-  //   []
-  // );
+  const columns = useMemo(
+    () => [
+      {
+        name: "name", //simple recommended way to define a column
+        header: "코인 이름",
+      },
+    ],
+    []
+  );
   // 테이블 컬럼 끝
 
   function selectDetailCoin(coin) {
@@ -127,6 +111,7 @@ const Coin = memo(function Coin({ socketData }) {
   const modalClose = () => {
     setModal('')
   }
+
   return (
     <div>
       <div style={{marginBottom: '300px'}}>
@@ -141,23 +126,7 @@ const Coin = memo(function Coin({ socketData }) {
           <div>Ticker Loading...</div>
         )}
       </div>
-      {/* {data && (
-        <MaterialReactTable
-          muiTableBodyRowProps={({ row }) => ({
-            onClick: (event) => {
-              selectDetailCoin({ code: row.original.code, name: row.original.name });
-            },
-          })}
-          columns={columns}
-          data={data}
-          enableFullScreenToggle={false}
-          enableGlobalFilter={false} //turn off a feature
-          enableDensityToggle={false}
-          enableHiding={false}
-          initialState={{ density: 'compact' }}
-        />
-      )} */}
-      {/* {data && <CustomTable data={data} columns={columns} />} */}
+      {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
       <div>
         {selectedNews ? (
           <div className="carousel">

@@ -6,8 +6,11 @@
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   background-color: #ffffff;
-  width: 620px;
-  height: 480px;
+  border: 3px solid black;
+  width: 55vw;
+  height: 55vh;
+  justify-content: start;
+  align-items: end;
   padding: 16px 6px 16px 16px;
 }
 .title {
@@ -30,6 +33,7 @@
   color: #606060;
 }
 button {
+  /* position: absolute; */
   cursor: pointer;
   background-color: #2196f3;
   border-radius: 2px;

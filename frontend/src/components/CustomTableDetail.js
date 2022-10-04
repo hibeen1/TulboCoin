@@ -1,4 +1,5 @@
-function CustomTableDetail({ tableStyle, data, columns }) {
+
+function CustomTableDetail({ tableStyle, data, columns, propRowFunction }) {
   return (
     <>
       <table style={tableStyle}>
@@ -10,13 +11,7 @@ function CustomTableDetail({ tableStyle, data, columns }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((ele) => (
-            <tr style={ele.rowStyle}>
-              {columns.map((column) => (
-                <td style={column.columnStyle}>{ele[column.name]}</td>
-              ))}
-            </tr>
-          ))}
+          {data.map((ele) => <tr style={ele.rowStyle} onClick={()=>propRowFunction(ele)} >{columns.map(column => <td style={column.columnStyle}>{ele[column.name]}</td>)}</tr>)}
         </tbody>
       </table>
     </>

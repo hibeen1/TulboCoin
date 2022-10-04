@@ -56,7 +56,7 @@ const CoinChart = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.title}>{selectedCoin.name}({selectedCoin.code})</div>
+      {/* <div className={classes.title}>{selectedCoin.name}({selectedCoin.code})</div> */}
       <div className={classes.menu}>
         {timetypes.map(({ key, text }) => {
           return (
