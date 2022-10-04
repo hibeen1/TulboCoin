@@ -8,7 +8,6 @@ import CoinDeal from "./CoinDeal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CustomTable from "./CustomTable";
 import styled from "styled-components";
 import CoinChart from "./CoinChart";
 const WholeCoinChartBlock = styled.div`
