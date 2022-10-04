@@ -24,7 +24,7 @@ import {
   fetchRanking,
   fetchHistory,
   fetchOtherUser,
-  changeIsLoading,
+  fetchMyHistory
 } from "./account";
 
 // 액션의 타입
@@ -40,6 +40,7 @@ const RESET_WALLET_ASYNC = "RESET_WALLET_ASYNC";
 const RANKING_ASYNC = "RANKING_ASYNC";
 const HISTORY_ASYNC = "HISTORY_ASYNC";
 const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
+const FETCH_MY_HISTORY_ASYNC = 'FETCH_MY_HISTORY_ASYNC'
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -54,6 +55,7 @@ export const resetWalletAsync = () => ({ type: RESET_WALLET_ASYNC });
 export const rankingAsync = () => ({ type: RANKING_ASYNC });
 export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
 export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
+export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta:userId})
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
@@ -217,6 +219,18 @@ function* fetchOtherUserSaga(action) {
     console.log(error);
   }
 }
+
+function* fetchMyHistorySaga(action) {
+  try{
+    const response = yield call(historyApi, action.meta)
+    if (response.status === 200) {
+      yield put(fetchMyHistory(response.data))
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
   yield takeLatest(LOGIN_ASYNC, loginSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
@@ -231,4 +245,5 @@ export function* accountSaga() {
   yield takeLatest(RANKING_ASYNC, rankingSaga); // 지갑 리셋
   yield takeLatest(HISTORY_ASYNC, historySaga); // 지갑 리셋
   yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
+  yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga)
 }

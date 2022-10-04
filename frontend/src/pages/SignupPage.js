@@ -10,6 +10,7 @@ import LoginComponent from "../components/LoginComponent";
 import SignUpForm from "../components/SignUpForm";
 
 
+
 const SignUpPageBlock = styled.div`
   height: 100vh;
   width: 100vw;

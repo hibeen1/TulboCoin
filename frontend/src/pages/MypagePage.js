@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resetWalletAsync } from "../store/accountSaga";
+import { resetWalletAsync, fetchMyHistoryAsync } from "../store/accountSaga";
 import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
-import MaterialReactTable from "material-react-table";
 import Navbar from "../components/Navbar";
 import ChangeMyInfoModal from "../components/ChangeMyInfoModal";
 import styled from "styled-components";
@@ -15,6 +14,8 @@ import BlueRefresh from "../media/images/icons/BlueRefresh.png";
 import PiggyBank from "../media/images/PiggyBank.png";
 import DoughnutChart from "../components/DoughnutChart";
 import CustomTable from "../components/CustomTable";
+import BlueCoin from "../media/images/icons/BlueCoin.png";
+
 const MyPageBlock = styled.div`
   display: flex;
 `;
@@ -61,6 +62,7 @@ const WalletBlock = styled.div`
   border: solid red 3px;
   width: 91vw;
   height: 50vh;
+  overflow: auto;
   /* margin-left: 1vw;
   margin-top: 5vw; */
 `;
@@ -87,31 +89,38 @@ const SettingButton = styled.div`
 const CashBlock = styled.div`
   background-color: #ffffff;
   width: 30vw;
-  height: 20vh;
-  margin-top: 5vh;
+  height: 12vh;
+  // margin-top: 5vh;
   flex-direction: row;
   display: flex;
   border: 0.911773px solid #e7e8f2;
   border-radius: 5.47064px;
+  align-items: center;
 `;
 const PiggyBankImg = styled.div`
-  width: 6vw;
-  height: 8.5vh;
+  width: 8.5vmin;
+  height: 8.5vmin;
   background: url(${PiggyBank}) no-repeat center;
-  background-size: 6vw 8.5vh;
-  margin-top: 2vh;
+  background-size: 8.5vmin 8.5vmin;
+  margin-left: 1vw;
+`;
+
+const TulboCoinImg = styled.div`
+  width: 8.5vmin;
+  height: 8.5vmin;
+  background: url(${BlueCoin}) no-repeat center;
+  background-size: 6.5vmin 6.5vmin;
   margin-left: 1vw;
 `;
 
 const BalanceRefreshBtn = styled.button`
-  width: 1.5vw;
-  height: 3vh;
+  
+  width: 1.5vmin;
+  height: 2vmin;
   background: url(${GreyRefresh}) no-repeat center;
   background-size: 1.5vw 3vh;
   margin-left: 3vw;
-  margin-top: 2vh;
   display: inline;
-  position: fixed;
   /* border: 3px black solid; */
   :hover {
     /* background: url(${BlueRefresh}) center no-repeat;
@@ -123,8 +132,8 @@ const BalanceRefreshBtn = styled.button`
 const GraphBlock = styled.div`
   background-color: #ffffff;
   width: 30vw;
-  height: 20vh;
-  margin-top: 5vh;
+  height: 30vh;
+  /* margin-top: 2.5vh; */
   flex-direction: row;
   display: flex;
   border: 0.911773px solid #e7e8f2;
@@ -132,38 +141,85 @@ const GraphBlock = styled.div`
 `;
 
 const BalanceAndGraphBlock = styled.div`
+
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: start;
   border: 3px purple solid;
-  height: 35vh;
+  height: 30vh;
   width: 91vw;
+  flex-direction: row;
 `;
 
 const GreetingMsg = styled.div`
-  width: 30vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3vmin;
-`;
+width: 50vw; 
+height: 100%;
+display: flex;
+justify-content: start;
+align-items: center; 
+font-size: 4vmin;
+font-weight: bold;
+padding: 0.1vh 1vw;
+`
+
+const GreetingProfitMsg = styled.div`
+width: 50vw; 
+height: 100%;
+display: flex;
+justify-content: start;
+align-items: center; 
+font-size: 3vmin;
+font-weight: bold;
+padding: 0.1vh 1vw;
+`
 
 const EmailMsg = styled.div`
-  width: 40vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3vmin;
-`;
+width: 20vw; 
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center; 
+font-size: 3vmin;
+`
 const ProfileImg = styled.div`
-  width: 15vw;
+width: 5vw; 
+height: 100%;
+display: flex;
+justify-content: end;
+align-items: center; 
+padding: 0.1vh 1vw;
+  
+`
+
+// 회원정보 수정하기 버튼
+const SettingButton = styled.div`
+  width: 5vmin;
+  height: 5vmin;
+  background: url(${GreySetting}) no-repeat center;
+  background-size: 5vmin 5vmin;
+  width: 15vw; 
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: end;
+  align-items: center; 
+  cursor: pointer;
+  /* border: 3px black solid; */
+  :hover {
+    background: url(${BlueSetting}) center no-repeat;
+    background-size: 5vmin 5vmin;
+  }
 `;
+
+
+const BalanceMsg = styled.div`
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 30vh;
+  margin-right: 15vw;
+`
+
 
 // ==============================================================
 function MypagePage() {
@@ -172,6 +228,8 @@ function MypagePage() {
   const isLoggedin = useSelector((state) => state.account.isLoggedin);
   const user = JSON.parse(useSelector((state) => state.account.user));
   const [isChangeForm, setIsChangeForm] = useState(false);
+  const myHistory = useSelector(state => state.account.myHistory)
+  const [historyData, setHistoryData] = useState([])
 
   useEffect(() => {
     if (!isLoggedin) {
@@ -179,17 +237,38 @@ function MypagePage() {
     }
   }, [isLoggedin]);
 
+  useEffect(() => {
+    dispatch(fetchMyHistoryAsync(user.userId))
+  }, [])
+
+  useEffect(() => {
+    const historyData = myHistory.map(function(ele){
+      if (ele.historyType === 'BUY') {
+        return {
+          ...ele,
+          rowStyle: {background:'blue'}
+        }
+      } else {
+        return {
+          ...ele,
+          rowStyle: {background:'pink'}
+        }
+      }
+    })
+    setHistoryData(historyData)
+  }, [myHistory])
+
   // 수정하기 버튼 누르면 모달창이 뜸
   const handlePageToForm = () => {
     setIsChangeForm(!isChangeForm);
   };
 
+  const wallet = JSON.parse(useSelector(state => state.account.wallet))
+  const [ data, setData ] = useState([])
+  const [ cash, setCash ] = useState(0)
   const handleBalanceReset = () => {
     dispatch(resetWalletAsync());
   };
-
-  const wallet = JSON.parse(useSelector((state) => state.account.wallet));
-  const [data, setData] = useState([]);
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
@@ -203,8 +282,10 @@ function MypagePage() {
   }, []);
   useEffect(() => {
     if (socketData) {
+      let newCash = 0
       const newData = socketData.map((coin) => {
-        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
+        newCash += coin.trade_price * tmp.coinAmount
         return {
           name: `${tmp.coinName}(${coin.code})`,
           code: coin.code,
@@ -213,61 +294,60 @@ function MypagePage() {
           percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`,
         };
       });
-      setData(newData);
+      setCash(newCash)
+      setData(newData)
     }
   }, [socketData]);
 
-  const columns = useMemo(
+  const customCoinColumns = useMemo(
     () => [
       {
-        accessorKey: "name", //simple recommended way to define a column
-        header: "코인 이름",
+        name: 'name', //simple recommended way to define a column
+        header: '코인 이름',
         // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
       },
       {
-        accessorKey: "amount", //simple recommended way to define a column
-        header: "수량",
-        enableColumnFilter: false,
+        name: 'amount', //simple recommended way to define a column
+        header: '수량',
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
       {
-        accessorKey: "average", //simple recommended way to define a column
-        header: "평균 매수 가격",
-        enableColumnFilter: false,
+        name: 'average', //simple recommended way to define a column
+        header: '평균 매수 가격',
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
       {
-        accessorKey: "percent", //simple recommended way to define a column
-        header: "수익률",
-        enableColumnFilter: false,
+        name: 'percent', //simple recommended way to define a column
+        header: '수익률',
       },
     ],
-    []
+    [],
   );
-  const customColumns = useMemo(
+
+  const customHistoryColumns = useMemo(
     () => [
       {
-        name: "name", //simple recommended way to define a column
-        header: "코인 이름",
-        // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
+        name: 'historyTime', //simple recommended way to define a column
+        header: '날짜',
       },
       {
-        name: "amount", //simple recommended way to define a column
-        header: "수량",
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+        name: 'historyCoinName', //simple recommended way to define a column
+        header: '이름',
       },
       {
-        name: "average", //simple recommended way to define a column
-        header: "평균 매수 가격",
-        // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
+        name: 'historyCoinAmount', //simple recommended way to define a column
+        header: '수량',
       },
       {
-        name: "percent", //simple recommended way to define a column
-        header: "수익률",
+        name: 'historyCoinPrice', //simple recommended way to define a column
+        header: '거래가격',
       },
-    ],
-    []
-  );
+      {
+        name: 'historyType', //simple recommended way to define a column
+        header: '거래종류',
+      },
+    ],[]
+  )
 
   return (
     <MyPageBlock>
@@ -292,49 +372,49 @@ function MypagePage() {
             />
           </ProfileImg>
         </ProfileBlock>
+        <div>
+          <GreetingProfitMsg>{user.userId}님의 수익률은 현재 {(((user.balance+cash-10000000)/10000000)*100).toFixed(2)}%입니다</GreetingProfitMsg>
+        </div>
+
         <BalanceAndGraphBlock>
-          <h3>잔고</h3>
-
-          <CashBlock>
-            <PiggyBankImg></PiggyBankImg>
-            <div>
-              <p>잔액 : {user.balance} 원</p>
-            </div>
-            {/* 잔액 초기화 버튼 */}
-            <div>
-              <BalanceRefreshBtn onClick={handleBalanceReset}></BalanceRefreshBtn>
-            </div>
-          </CashBlock>
-
+          <BalanceMsg>
+            <CashBlock>
+              <PiggyBankImg></PiggyBankImg>
+              <div>
+                <p>잔고 : {user.balance} 원</p>
+              </div>
+              {/* 잔액 초기화 버튼 */}
+              <div>
+                <BalanceRefreshBtn
+                  onClick={handleBalanceReset}
+                ></BalanceRefreshBtn>
+              </div>
+            </CashBlock>
+            <CashBlock>
+              <TulboCoinImg></TulboCoinImg>
+              <div>
+                <p>자산 : {cash} 원</p>
+              </div>
+            </CashBlock>
+          </BalanceMsg>
           <GraphBlock>
-            {socketData && <DoughnutChart socketData={socketData} wallet={wallet} />}
-          </GraphBlock>
-
-          <GraphBlock>
-            {data.length >= 1 && <DoughnutChart socketData={socketData} wallet={wallet} />}
+            {data.length >= 1 ? (
+              <DoughnutChart socketData={socketData} wallet={wallet} />
+            ) : 
+              <div>
+                아무것도 없음
+              </div>
+          }
           </GraphBlock>
         </BalanceAndGraphBlock>
+        <br />
         <WalletBlock>
           <p>나의 보유 코인</p>
           <hr />
-          {data.length >= 1 && (
-            <MaterialReactTable
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: (event) => {
-                  console.info(event, row.id);
-                },
-              })}
-              columns={columns}
-              data={data}
-              enableFullScreenToggle={false}
-              enableGlobalFilter={false} //turn off a feature
-              enableDensityToggle={false}
-              enableHiding={false}
-              initialState={{ density: "compact" }}
-            />
-          )}
+          {data && <><CustomTable data={data} columns={customCoinColumns} /> <hr /></>}
+          <p>나의 코인 거래 기록</p>
           <hr />
-          {data && <CustomTable data={data} columns={customColumns} />}
+          {myHistory && <><CustomTable data={historyData} columns={customHistoryColumns} /> <hr /></>}
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>
