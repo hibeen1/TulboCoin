@@ -175,6 +175,7 @@ function MypagePage() {
 
   const wallet = JSON.parse(useSelector(state => state.account.wallet))
   const [ data, setData ] = useState([])
+  const [ cash, setCash ] = useState(0)
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [ coinInWallet, setCoinInWallet ] = useState([])
@@ -188,8 +189,10 @@ function MypagePage() {
   }, [])
   useEffect(() => {
     if (socketData) {
+      let newCash = 0
       const newData = socketData.map((coin) => {
         const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code)
+        newCash += coin.trade_price * tmp.coinAmount
         return {
           name: `${tmp.coinName}(${coin.code})`,
           code: coin.code,
@@ -198,6 +201,7 @@ function MypagePage() {
           percent: `${((coin.trade_price / tmp.coinAverage) * tmp.coinAmount).toFixed(2)} %`
         }
       });
+      setCash(newCash)
       setData(newData)
     }
   }, [socketData])
@@ -253,7 +257,7 @@ function MypagePage() {
     ],
     [],
   );
-
+  console.log(cash)
   return (
     <MyPageBlock>
       <NavBlock>
@@ -285,26 +289,26 @@ function MypagePage() {
           
           <br />
             <WalletBlock>
-            <p>나의 보유 코인</p>
-          <hr />
-          {(data.length >= 1) && 
-            <MaterialReactTable
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: (event) => {
-                  console.info(event, row.id);
+              <p>나의 보유 코인</p>
+              <hr />
+              {(data.length >= 1) && 
+                <MaterialReactTable
+                  muiTableBodyRowProps={({ row }) => ({
+                    onClick: (event) => {
+                      console.info(event, row.id);
+                    }
+                    })}
+                  columns={columns}
+                  data={data}
+                  enableFullScreenToggle={false}
+                  enableGlobalFilter={false} //turn off a feature
+                  enableDensityToggle={false}
+                  enableHiding={false}
+                  initialState={{ density: 'compact' }}
+                  />
                 }
-                })}
-              columns={columns}
-              data={data}
-              enableFullScreenToggle={false}
-              enableGlobalFilter={false} //turn off a feature
-              enableDensityToggle={false}
-              enableHiding={false}
-              initialState={{ density: 'compact' }}
-              />
-            }
-            <hr />
-            {data && <CustomTable data={data} columns={customColumns} />}
+              <hr />
+              {data && <CustomTable data={data} columns={customColumns} />}
             </WalletBlock>
           </ProfileBlock>
       </MyBlock>
