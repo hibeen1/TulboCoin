@@ -1,9 +1,9 @@
 import { memo, useEffect, useState, useMemo } from "react";
-import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
-import MaterialReactTable from "material-react-table";
 import { useDispatch, useSelector } from "react-redux";
+import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import { selectCoin, selectNews } from "../store/coin";
 import { newsAsync } from "../store/coinSaga";
+import CustomTable from "./CustomTable";
 import CoinDeal from "./CoinDeal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -95,67 +95,81 @@ const Coin = memo(function Coin({ socketData }) {
   const [data, setData] = useState();
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
-  // console.log("뉴스으으으", selectedNews);
+  const likedCoin = useSelector(state => state.coinReducer.likedCoin)
   const [ modal, setModal ] = useState('');
-  const { sortBy, setSortBy } = useState();
+  // name, amount, like
+  const [ whatTable, setWhatTable ] = useState('amount')
 
   useEffect(() => {
-    const newData = socketData.map((coin) => {
-      let tmp = "";
-      for (let i = 0; i < marketCodes.length; i += 1) {
-        if (marketCodes[i].market === coin.code) {
-          tmp = marketCodes[i].korean_name;
-          break;
+    if (whatTable === 'amount'){
+      const newData = socketData.map((coin) => {
+        let tmp = "";
+        for (let i = 0; i < marketCodes.length; i += 1) {
+          if (marketCodes[i].market === coin.code) {
+            tmp = marketCodes[i].korean_name;
+            break;
+          }
         }
-      }
-      return {
-        name: tmp,
-        code: coin.code,
-        trade_price: coin.trade_price,
-        volume: Math.ceil(convertMillonWon(coin.acc_trade_price_24h)).toLocaleString("ko-KR"),
-      };
-    });
-    setData(newData);
-  }, [socketData]);
+        return {
+          name: tmp,
+          code: coin.code,
+          volume: coin.acc_trade_price_24h,
+        };
+      });
+      newData.sort(function(a, b) {
+        return b.volume - a.volume;
+      })
+      setData(newData.slice(0, 20));
+    } else if (whatTable === 'name') {
+      const newData = socketData.map((coin) => {
+        let tmp = "";
+        for (let i = 0; i < marketCodes.length; i += 1) {
+          if (marketCodes[i].market === coin.code) {
+            tmp = marketCodes[i].korean_name;
+            break;
+          }
+        }
+        return {
+          name: tmp,
+          code: coin.code,
+        };
+      });
+      newData.sort(function(a, b) {
+        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+      })
+      setData(newData);
+    } else if (whatTable === 'like') {
+      const newData = JSON.parse(likedCoin).map((coin) => {
+        return {
+          name: coin.coinName,
+          code: coin.coinCode
+        }})
+      setData(newData);
+    }
+  }, [whatTable, socketData]);
 
   useEffect(() => {
     dispatch(newsAsync("비트코인"));
+    setWhatTable('name')
   }, []);
 
   // 테이블 컬럼
-  // const columns = useMemo(
-  //   () => [
-  //     {
-  //       accessorKey: "name", //simple recommended way to define a column
-  //       header: "코인 이름",
-  //       // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
-  //     },
-  //     {
-  //       accessorKey: "trade_price", //simple recommended way to define a column
-  //       header: "현재 가격",
-  //       enableColumnFilter: false,
-  //       // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
-  //     },
-  //     {
-  //       accessorKey: "volume", //simple recommended way to define a column
-  //       header: "거래대금(백만)",
-  //       enableColumnFilter: false,
-  //       enableSorting: false,
-  //     },
-  //   ],
-  //   []
-  // );
+  const columns = useMemo(
+    () => [
+      {
+        name: "name", //simple recommended way to define a column
+        header: "코인 이름",
+      },
+    ],
+    []
+  );
   // 테이블 컬럼 끝
 
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
     dispatch(newsAsync(coin.name));
   }
-  const convertMillonWon = (value) => {
-    const MILLION = 1000000;
-    const extractedValue = value / MILLION;
-    return extractedValue;
-  };
+
   const settings = {
     dots: false,
     infinite: false,
@@ -172,6 +186,11 @@ const Coin = memo(function Coin({ socketData }) {
   const modalClose = () => {
     setModal('')
   }
+
+  const handleWhatTable = (what) => {
+    setWhatTable(what)
+  }
+
   return (
     <div>
       <div style={{marginBottom: '300px'}}>
@@ -186,23 +205,10 @@ const Coin = memo(function Coin({ socketData }) {
           <div>정보를 가져오고 있습니다...</div>
         )}
       </div>
-      {/* {data && (
-        <MaterialReactTable
-          muiTableBodyRowProps={({ row }) => ({
-            onClick: (event) => {
-              selectDetailCoin({ code: row.original.code, name: row.original.name });
-            },
-          })}
-          columns={columns}
-          data={data}
-          enableFullScreenToggle={false}
-          enableGlobalFilter={false} //turn off a feature
-          enableDensityToggle={false}
-          enableHiding={false}
-          initialState={{ density: 'compact' }}
-        />
-      )} */}
-      {/* {data && <CustomTable data={data} columns={columns} />} */}
+      <button onClick={() => handleWhatTable('name')}>이름순</button>
+      <button onClick={() => handleWhatTable('amount')}>거래대금순</button>
+      <button onClick={() => handleWhatTable('like')}>관심코인</button>
+      {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
       <div>
         {selectedNews ? (
           <div className="carousel">
@@ -243,7 +249,6 @@ function CoinPage() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   // const { socket, isConnected, socketData } = useUpbitWebSocket(
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
-
 
   return (
     <>

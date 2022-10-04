@@ -193,10 +193,9 @@ function Sise() {
 
         </NewsBlock>
 
-
+        <CoinList></CoinList>
       </SiseBlock>
     </SisePageBlock>
-    {/* <CoinChart></CoinChart> */}
     </>
   );
 }

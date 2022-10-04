@@ -7,6 +7,8 @@ const FETCH_WALLET = "FETCH_WALLET";
 const FETCH_RANKING = "FETCH_RANKING";
 const FETCH_HISTORY = "FETCH_HISTORY";
 const FETCH_OTHER_USER = "FETCH_OTHER_USER";
+const FETCH_MY_HISTORY = 'FETCH_MY_HISTORY'
+const FETCH_LIKED_COIN = 'FETCH_LIKED_COIN'
 // 액션 생성 함수 만들기
 export const changeIsLoggedIn = (data) => ({ type: CHANGE_IS_LOGGED_IN, meta: data });
 export const token = (data) => ({ type: TOKEN, meta: data }); // localStorage에 토큰 저장하기
@@ -16,6 +18,8 @@ export const fetchWallet = (data) => ({ type: FETCH_WALLET, meta: data }); // lo
 export const fetchRanking = (data) => ({ type: FETCH_RANKING, meta: data });
 export const fetchHistory = (data) => ({ type: FETCH_HISTORY, meta: data });
 export const fetchOtherUser = (data) => ({ type: FETCH_OTHER_USER, meta: data }); // localStorage에 유저 정보 저장하기
+export const fetchMyHistory = (data) => ({ type: FETCH_MY_HISTORY, meta: data }) // redux에 myHistory에 히스토리 저장
+export const fetchLikedCoin = (data) => ({ type: FETCH_LIKED_COIN, meta: data }) // 리덕스랑 로컬스토리지에 관심코인 바꾸기
 // 초기 값
 const initialState = {
   isLoggedin: false,
@@ -24,6 +28,8 @@ const initialState = {
   rankinglist: [],
   historylist: [],
   otheruser: {},
+  myHistory: [],
+  likedCoin: []
 };
 
 // 리듀서 선언
@@ -55,10 +61,12 @@ export default function account(state = initialState, action) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("wallet");
+      localStorage.removeItem("likedCoin");
       return {
         ...state,
         user: JSON.stringify({}),
-        wallet: JSON.stringify([])
+        wallet: JSON.stringify([]),
+        likedCoin: JSON.stringify([])
       };
     case FETCH_RANKING:
       return {
@@ -75,6 +83,17 @@ export default function account(state = initialState, action) {
         ...state,
         otheruser: action.meta,
       };
+    case FETCH_MY_HISTORY:
+      return {
+        ...state,
+        myHistory: action.meta
+      };
+    case FETCH_LIKED_COIN:
+      localStorage.setItem("likedCoin", JSON.stringify(action.meta));
+      return {
+        ...state,
+        likedCoin: action.meta
+      }
     default:
       return state;
   }
