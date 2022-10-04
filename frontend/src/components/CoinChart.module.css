@@ -1,17 +1,17 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin: 15px;
-  margin-bottom: 100px;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-left: 5vw;
+  /* margin-bottom: 100px; */
+  /* border-radius: 2px; */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
   background-color: #ffffff;
   border: 3px solid black;
   width: 55vw;
   height: 55vh;
-  justify-content: start;
-  align-items: end;
-  padding: 16px 6px 16px 16px;
+/* justify-content: start; */
+  /* align-items: end; */
+  /* padding: 16px 6px 16px 16px; */
 }
 .title {
   margin: 0;
@@ -35,9 +35,9 @@
 button {
   /* position: absolute; */
   cursor: pointer;
-  background-color: #2196f3;
+  background-color: #243ead;
   border-radius: 2px;
-  margin-right: 8px;
+  margin-right: 1vw;
   height: 24px;
   line-height: 26px;
   padding: 0 6px;

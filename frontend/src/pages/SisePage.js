@@ -120,7 +120,7 @@ const MoneyAmountChart = styled.div`
   flex-direction: column;
   margin-top: 5vh;
 `
-// 코인 이름 정보
+// 코인 이름 정보 + 코인 차트
 const CoinChartBlock = styled.div`
   width: 60vw;
   height: 65vh;
@@ -129,6 +129,20 @@ const CoinChartBlock = styled.div`
   align-items: center; 
   border: solid skyblue 3px;
   flex-direction: column;
+`
+const CoinNameMsg = styled.div`
+  width: 60vw;
+  height: 15vh;
+  display: flex;
+  border: solid yellow 3px;
+  
+`
+const ChartBlock = styled.div`
+  width: 60vw;
+  height: 55vh;
+  display: flex;
+  border: solid pink 3px;
+  
 `
 
 const NewsBlock = styled.div`
@@ -141,9 +155,7 @@ const NewsBlock = styled.div`
   flex-direction: column;
 `
 
-const ChartBlock = styled.div`
-  
-`
+
 
 function Sise() {
   return (
@@ -164,8 +176,9 @@ function Sise() {
 
           {/* coinChart Block */}
           <CoinChartBlock>
-            {/* <div>코인 이름 정보</div> */}
-          {/* <CoinList></CoinList> */}
+            <CoinNameMsg><CoinList></CoinList></CoinNameMsg>
+
+
             {/* <div>코인 그래프</div> */}
             <ChartBlock><CoinChart></CoinChart></ChartBlock>
           </CoinChartBlock>
@@ -182,7 +195,7 @@ function Sise() {
 
       </SiseBlock>
     </SisePageBlock>
-    <CoinChart></CoinChart>
+    {/* <CoinChart></CoinChart> */}
     </>
   );
 }

@@ -9,6 +9,21 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CustomTable from "./CustomTable";
+import styled from "styled-components";
+
+const CoinLogo = styled.div`
+  
+`
+const CoinName = styled.div`
+`
+
+const CompareYesterDay = styled.div`
+`
+
+
+
+
+
 
 const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   let targetSocketData = [];
@@ -20,26 +35,27 @@ const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
   }
   return (
     <div>
-      <h1>
+
+        <CoinLogo>
         <img
           src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
           alt=""
-          width={64}
-          height={64}
         />
-
+        </CoinLogo>
+        <CoinName>
         {detailCoinData.name}
-      </h1>
-      <h3>
+        </CoinName>
+
+      <CompareYesterDay>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
         {targetSocketData.signed_change_price > 0 ? "+" : null}
         {targetSocketData.signed_change_price}
-      </h3>
-      <p>고가 : {targetSocketData.high_price}</p>
+      </CompareYesterDay>
+      {/* <p>고가 : {targetSocketData.high_price}</p>
       <p>저가 : {targetSocketData.low_price}</p>
       <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
-      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p> */}
     </div>
   );
 });
