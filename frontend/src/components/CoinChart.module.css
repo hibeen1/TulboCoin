@@ -4,11 +4,11 @@
   flex-direction: column;
   margin-left: 2vw;
   /* margin-bottom: 100px; */
-  /* border-radius: 2px; */
+  border-radius: 20px;
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
   background-color: #ffffff;
 
-  width: 40vw;
+  width: 42vw;
   height: 50vh;
   /* justify-content: start; */
   /* align-items: end; */

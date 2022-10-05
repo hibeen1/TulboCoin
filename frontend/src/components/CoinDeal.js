@@ -6,10 +6,10 @@ import styled from "styled-components";
 
 const StyledModal = styled.div`
   width: 35vw;
-  height: 60%;
+  height: 62%;
   position: absolute;
   top: 50%;
-  left: 35%;
+  left: 30%;
   transform: translate(-50%, -50%);
   /* background-color: gray; */
   border: 1px solid black;
@@ -38,6 +38,14 @@ const InputBlock = styled.div`
     font-size: 25px;
     margin-left: 2vw;
     border-radius: 5px;
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    ::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
 `;
 const BottomButton = styled.div`
@@ -140,13 +148,13 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
               {deal === "sell" ? (
                 <>
                   <div>
-                    <label>판매가능수량</label>
-                    <div>
+                    <label>판매가능수량 : </label>
+                    <label>
                       {wallet &&
                         wallet.map((coin) =>
                           coin.coinName === detailCoinData.name ? coin.coinAmount : null
                         )}
-                    </div>
+                    </label>
                   </div>
                   <br />
                   <div>

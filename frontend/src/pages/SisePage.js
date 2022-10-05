@@ -69,6 +69,11 @@ const CoinSearchBar = styled.input`
   border-radius: 50px;
   margin-left: 10vw;
   background-color: #f0f6fc;
+  /* width: 5vw;
+    height: 4vh; */
+  /* border-radius: 5px; */
+  font-family: "Jua", sans-serif;
+  font-size: 25px;
 `;
 // 검색 버튼
 const BlueSearchButton = styled.div`
@@ -122,15 +127,26 @@ const ChangeChartBtnBlock = styled.div`
 `;
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
-  width: 20vw;
+  width: 18vw;
   height: 40vh;
   display: flex;
   justify-content: start;
-  align-items: center;
+  align-items: start;
   /* border: solid purple 3px; */
   flex-direction: column;
   font-size: 3vmin;
   overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+    background-color: #f3f3f3;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    border-radius: 5px;
+    background-color: #697ed9;
+  }
+  /* margin-left: 4vw; */
   /* margin-top: 5vh; */
 `;
 // 코인 이름 정보 + 코인 차트
@@ -163,10 +179,7 @@ const NewsBlock = styled.div`
   height: 20vh;
   display: flex;
   justify-content: start;
-  // align-items: center; 
-  /* border: solid purple 3px; */
   flex-direction: column;
-  // overflow: auto;
 `;
 
 // 이름순 거래대금순 관심코인순
@@ -177,12 +190,36 @@ const ChangeChartBtn = styled.div`
   cursor: pointer;
   /* border: 3px yellow solid; */
   font-size: 2vmin;
-  /* margin-left: 1vw; */
-  /* margin-right: 1vw; */
   width: 7vw;
   height: 5vh;
 `;
-
+const CoinSummaryDealBlock = styled.div`
+  display: flex;
+  height: 55vh;
+  flex-direction: column;
+  /* border: 2px solid blue; */
+`;
+const CoinDealButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    width: 6vw;
+    height: 4vh;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 20px;
+  }
+`;
+const NewsItem = styled.div`
+  /* margin-left: 1vw; */
+  width: 25vw;
+  padding-left: 2vw;
+`;
+const NewsMsg = styled.div`
+  font-size: 30px;
+  margin-left: 2vw;
+`;
 function Sise() {
   // fetch all marketcode custom hook
   const { isLoading, marketCodes } = useFetchMarketCode();
@@ -209,7 +246,7 @@ function Sise() {
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
   const likedCoin = JSON.parse(useSelector((state) => state.account.likedCoin));
   // name, amount, like
-  const [ whatTable, setWhatTable ] = useState('name')
+  const [whatTable, setWhatTable] = useState("name");
 
   useEffect(() => {
     if (socketData) {
@@ -272,7 +309,7 @@ function Sise() {
     () => [
       {
         name: "name", //simple recommended way to define a column
-        header: "코인 이름",
+        // header: "코인 이름",
       },
     ],
     []
@@ -285,10 +322,11 @@ function Sise() {
   }
 
   const settings = {
-    dots: false,
+    arrows: false,
+    dots: true,
     infinite: false,
     speed: 300,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: false,
   };
@@ -305,82 +343,93 @@ function Sise() {
     setWhatTable(what);
   };
 
-  const [ searchWord, setSearchWord ] = useState('')
-  const [ matchWord, setMatchWord ] = useState([])
+  const [searchWord, setSearchWord] = useState("");
+  const [matchWord, setMatchWord] = useState([]);
 
   useEffect(() => {
     if (searchWord) {
-      const matchWord = targetMarketCode.filter(coin => coin.korean_name.includes(searchWord)).map(coin => {
-        return {
-          name: coin.korean_name,
-          code: coin.market
-        }
-      })
-      setMatchWord(matchWord)
-    } else (
-      setMatchWord([])
-    )
-  }, [searchWord])
+      const matchWord = targetMarketCode
+        .filter((coin) => coin.korean_name.includes(searchWord))
+        .map((coin) => {
+          return {
+            name: coin.korean_name,
+            code: coin.market,
+          };
+        });
+      setMatchWord(matchWord);
+    } else setMatchWord([]);
+  }, [searchWord]);
 
   const handleSearchInput = (e) => {
-    const searchWord = e.target.value
-    setSearchWord(searchWord)
-  }
+    const searchWord = e.target.value;
+    setSearchWord(searchWord);
+  };
 
   const handleSearchForm = (e) => {
-    e.preventDefault()
-    const [targetWord] = targetMarketCode.filter(coin => coin.korean_name===searchWord)
+    e.preventDefault();
+    const [targetWord] = targetMarketCode.filter((coin) => coin.korean_name === searchWord);
     if (targetWord) {
-      selectDetailCoin({name:targetWord.korean_name, code: targetWord.market})
-      setSearchWord('')
+      selectDetailCoin({ name: targetWord.korean_name, code: targetWord.market });
+      setSearchWord("");
     } else {
-      alert('코인 이름이 이상한데요?')
-      return
+      alert("코인 이름이 이상한데요?");
+      return;
     }
-  }
+  };
 
   const handleSearchWordClick = (coin) => {
-    selectDetailCoin(coin)
-    setSearchWord('')
-  }
+    selectDetailCoin(coin);
+    setSearchWord("");
+  };
 
   return (
     <>
-    <SisePageBlock>
-      <NavBlock>
-      <Navbar></Navbar>
-      </NavBlock>
-      <SiseBlock>
-        <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
-        <SearchBlock onSubmit={handleSearchForm}>
-          <CoinSearchBar onChange={handleSearchInput} value={searchWord} /><BlueSearchButton />
-          {/* 자동완성으로 추천되는 검색어(코인이름) */} 
-          {(matchWord.length > 0) &&
-            <div>
-              {matchWord.map(coin => {
-                return <div onClick={(e) => handleSearchWordClick(coin)}>{coin.name}</div>
-              })}
-            </div>
-          }
-        </SearchBlock>
-        <CenterBlock>
-          {/* 차트 두개 세로로 나열 */}
-          <CenterLeftBlock>
-            <ChangeChartBtnBlock>
-                <ChangeChartBtn onClick={() => handleWhatTable('name')}>이름순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable('amount')}>거래대금순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable('like')}>관심코인</ChangeChartBtn>
-            </ChangeChartBtnBlock>
-            <div>
-              <MoneyAmountChart>
-                {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
-              </MoneyAmountChart>
-            </div>
-          </CenterLeftBlock>
+      <SisePageBlock>
+        <NavBlock>
+          <Navbar></Navbar>
+        </NavBlock>
+        <SiseBlock>
+          <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
+          <SearchBlock onSubmit={handleSearchForm}>
+            <CoinSearchBar onChange={handleSearchInput} value={searchWord} />
+            <BlueSearchButton />
+            {/* 자동완성으로 추천되는 검색어(코인이름) */}
+            {matchWord.length > 0 && (
+              <div>
+                {matchWord.map((coin) => {
+                  return <div onClick={(e) => handleSearchWordClick(coin)}>{coin.name}</div>;
+                })}
+              </div>
+            )}
+          </SearchBlock>
+          <CenterBlock>
+            {/* 차트 두개 세로로 나열 */}
+            <CenterLeftBlock>
+              <ChangeChartBtnBlock>
+                <ChangeChartBtn onClick={() => handleWhatTable("name")}>이름순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("amount")}>
+                  거래대금순
+                </ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("like")}>관심코인</ChangeChartBtn>
+              </ChangeChartBtnBlock>
+              <div>
+                <MoneyAmountChart>
+                  {data && (
+                    <CustomTable
+                      data={data}
+                      columns={columns}
+                      rowFunction={(row) => {
+                        selectDetailCoin({ code: row.code, name: row.name });
+                      }}
+                    />
+                  )}
+                </MoneyAmountChart>
+              </div>
+            </CenterLeftBlock>
 
-          {/* coinChart Block */}
-          {/* <CoinChartBlock> */}
-           {/* <CoinList></CoinList> */}
+            {/* coinChart Block */}
+            {/* <CoinChartBlock> */}
+            {/* <CoinList></CoinList> */}
 
             {/* coinChart Block */}
             {/* <CoinChartBlock> */}
@@ -389,12 +438,6 @@ function Sise() {
             {/* <div>코인 그래프</div> */}
             {selectedCoin && socketData ? (
               <>
-                <button onClick={handleModal} name="sell">
-                  코인 판매
-                </button>
-                <button onClick={handleModal} name="buy">
-                  코인 구매
-                </button>
                 {modal && (
                   <CoinDeal
                     deal={modal}
@@ -403,7 +446,17 @@ function Sise() {
                     detailCoinData={selectedCoin}
                   />
                 )}
-                <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
+                <CoinSummaryDealBlock>
+                  <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
+                  <CoinDealButton>
+                    <button onClick={handleModal} name="sell">
+                      코인 판매
+                    </button>
+                    <button onClick={handleModal} name="buy">
+                      코인 구매
+                    </button>
+                  </CoinDealButton>
+                </CoinSummaryDealBlock>
               </>
             ) : (
               <div>정보를 가져오고 있습니다...</div>
@@ -414,16 +467,20 @@ function Sise() {
 
           <NewsBlock>
             {/* <div>해당 뉴스를 확인하세요</div> */}
-            <div>뉴스 정보</div>
+            <NewsMsg>
+              <div>뉴스 정보</div>
+            </NewsMsg>
             {/* <div className="carousel"> */}
             <Slider {...settings}>
               {selectedNews.items
                 ? selectedNews.items.map((news) => {
                     return (
                       <div>
-                        <p>{news.title}</p>
-                        <p>{news.description}</p>
-                        <a href={news.link}>링크</a>
+                        <NewsItem>
+                          <p>{news.title}</p>
+                          <p>{news.description}</p>
+                          <a href={news.link}>링크</a>
+                        </NewsItem>
                       </div>
                     );
                   })
