@@ -262,7 +262,7 @@ function Sise() {
           return {
             name: tmp,
             code: coin.code,
-            volume: coin.acc_trade_price_24h,
+            volume: coin.acc_trade_price_24h.toLocaleString('ko-KR'),
           };
         });
         newData.sort(function (a, b) {

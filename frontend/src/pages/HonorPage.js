@@ -409,7 +409,7 @@ function Honor() {
                         </td>
                         <td className="HistoryCoin">{history.historyCoinName}</td>
                         <td className="HistoryAmount">{history.historyCoinAmount}</td>
-                        <td className="HistoryPrice">{history.historyCoinPrice}</td>
+                        <td className="HistoryPrice">{history.historyCoinPrice.toLocaleString('ko-KR')}</td>
                         <td className="HistoryType">{history.historyType}</td>
                       </tr>
                     ))}
@@ -447,7 +447,7 @@ function Honor() {
                   <tr key={rank.user.userId}>
                     <td className="RankIdx">{idx + 1} 등</td>
                     <td className="RankUser">{rank.user.userId}</td>
-                    <td className="RankBalance">{rank.expectedBalance}</td>
+                    <td className="RankBalance">{rank.expectedBalance.toLocaleString('ko-KR')}</td>
                     {/* <td className="RankPercent">{rank.percent}%</td> */}
                     <td className="RankPercent">{rank.percent.toFixed(2)}%</td>
                     <td className="RankHistory">
