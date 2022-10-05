@@ -48,7 +48,7 @@ const GreetingMsg = styled.div`
   flex-direction: row;
 `
 
-const SearchBlock = styled.div`
+const SearchBlock = styled.form`
   width: 91vw;
   height: 10vh;
   display: flex;
@@ -169,7 +169,7 @@ const NewsBlock = styled.div`
   height: 20vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  // align-items: center; 
   /* border: solid purple 3px; */
   flex-direction: column;
   // overflow: auto;
@@ -219,7 +219,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
   const likedCoin = JSON.parse(useSelector(state => state.account.likedCoin))
   // name, amount, like
-  const [ whatTable, setWhatTable ] = useState('amount')
+  const [ whatTable, setWhatTable ] = useState('name')
 
   useEffect(() => {
     if (socketData) {
@@ -314,6 +314,45 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
     setWhatTable(what)
   }
 
+  const [ searchWord, setSearchWord ] = useState('')
+  const [ matchWord, setMatchWord ] = useState([])
+
+  useEffect(() => {
+    if (searchWord) {
+      const matchWord = targetMarketCode.filter(coin => coin.korean_name.includes(searchWord)).map(coin => {
+        return {
+          name: coin.korean_name,
+          code: coin.market
+        }
+      })
+      setMatchWord(matchWord)
+    } else (
+      setMatchWord([])
+    )
+  }, [searchWord])
+
+  const handleSearchInput = (e) => {
+    const searchWord = e.target.value
+    setSearchWord(searchWord)
+  }
+
+  const handleSearchForm = (e) => {
+    e.preventDefault()
+    const [targetWord] = targetMarketCode.filter(coin => coin.korean_name===searchWord)
+    if (targetWord) {
+      selectDetailCoin({name:targetWord.korean_name, code: targetWord.market})
+      setSearchWord('')
+    } else {
+      alert('코인 이름이 이상한데요?')
+      return
+    }
+  }
+
+  const handleSearchWordClick = (coin) => {
+    selectDetailCoin(coin)
+    setSearchWord('')
+  }
+
   return (
     <>
     <SisePageBlock>
@@ -322,7 +361,17 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
       </NavBlock>
       <SiseBlock>
         <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
-        <SearchBlock><CoinSearchBar></CoinSearchBar><BlueSearchButton></BlueSearchButton></SearchBlock>
+        <SearchBlock onSubmit={handleSearchForm}>
+          <CoinSearchBar onChange={handleSearchInput} value={searchWord} /><BlueSearchButton />
+          {/* 자동완성으로 추천되는 검색어(코인이름) */} 
+          {(matchWord.length > 0) &&
+            <div>
+              {matchWord.map(coin => {
+                return <div onClick={(e) => handleSearchWordClick(coin)}>{coin.name}</div>
+              })}
+            </div>
+          }
+        </SearchBlock>
         <CenterBlock>
           {/* 차트 두개 세로로 나열 */}
           <CenterLeftBlock>
