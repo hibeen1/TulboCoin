@@ -32,7 +32,7 @@ const NavBlock = styled.div`
 const MyBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  width: 94vw;
+  max-width: 94vw;
   height: 100vh;
   /* position: relative; */
   display: flex;

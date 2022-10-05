@@ -3,35 +3,38 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { coinLikeAsync, coinLikeDeleteAsync } from '../store/accountSaga'
-
+import { coinLikeAsync, coinLikeDeleteAsync } from '../store/accountSaga';
+import EmptyHeart from '../media/images/icons/Heart.png';
+import FullHeart from "../media/images/icons/darkHeart.png"
 const WholeCoinChartBlock = styled.div`
   width: 25vw;
   height: 55vh;
   display: flex;
   justify-content: center;
   align-items: center; 
-  border: solid skyblue 3px;
+  /* border: solid skyblue 3px; */
   flex-direction: column;
 `
 const LogoAndName = styled.div`
   width: 25vw;
   height: 10vh;
-  border: solid yellow 3px;
+  /* border: solid yellow 3px; */
   flex-direction: row;
   display: flex;
+  align-items:center;
+  justify-content:center;
   
 `
 const CoinLogo = styled.div`
 width: 10vmin;
 height: 10vmin;
-border: 3px solid grey;
+/* border: 3px solid grey; */
   
 `
 const CoinName = styled.div`
 width: 70%;
 height: 10vmin;
-border: 3px solid grey;
+/* border: 3px solid grey; */
 display:flex;
 justify-content: center;
 align-items: center; 
@@ -40,16 +43,33 @@ align-items: center;
 const CoinDetails = styled.div`
   width: 25vw;
   height: 45vh;
-  border: 3px solid navy;
+  /* border: 3px solid navy; */
   font-size: 2.5vmin;
 `
 
-const LikeButton = styled.div`
-width:5vw;
-height:10vmin;
-cursor: pointer;
-border: 3px solid purple;
+// const LikeButton = styled.div`
+// width:5vw;
+// height:10vmin;
+// cursor: pointer;
+// /* background:url(${EmptyHeart}) center no-repeat; */
+// background-size: 5vw 10vmin;
   
+// `
+
+const EmptyButton = styled.div`
+  width:2.5vw;
+height:5vmin;
+cursor: pointer;
+background:url(${EmptyHeart}) center no-repeat;
+background-size: 2.5vw 5vmin;
+`
+
+const FullButton = styled.div`
+  width:2.5vw;
+height:5vmin;
+cursor: pointer;
+background:url(${FullHeart}) center no-repeat;
+background-size: 2.5vw 5vmin;
 `
 
 
@@ -87,12 +107,12 @@ function CoinSummary({ socketData, detailCoinData }) {
           <CoinName>
           {detailCoinData.name}
           </CoinName>
-                    <LikeButton>
+                    {/* <LikeButton> */}
                     {isLikedCoin ? 
-                      <button onClick={handleLikeDelete}>좋아요한 코인</button>  
+                      <EmptyButton onClick={handleLikeDelete}></EmptyButton>  
                       :
-                      <button onClick={handleLike}>좋아요 안한 코인</button>  
-                    }</LikeButton>
+                      <FullButton onClick={handleLike}></FullButton>  
+                    }
         </LogoAndName>
 
         <CoinDetails>
