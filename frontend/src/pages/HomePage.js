@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import WordCloud from "../utils/WordCloud";
-
-import TurboHugging from "../media/images/TurboImg.png";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { wordCouldAsync } from "../store/coinSaga";

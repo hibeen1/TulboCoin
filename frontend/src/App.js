@@ -21,16 +21,15 @@ function App() {
   }, [])
 
   return (<>
-    {/* <Navbar /> */}
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path='/home' element={<HomePage />} />
-      <Route path='sise' element={<SisePage />} />
-      <Route path='info' element={<InfoPage />} />
-      <Route path='honor' element={<HonorPage />} />
-      <Route path='login' element={<LoginPage />} />
-      <Route path='signup' element={<SignupPage />} />
-      <Route path='mypage' element={<MypagePage />} />
+      <Route path='/sise' element={<SisePage />} />
+      <Route path='/info' element={<InfoPage />} />
+      <Route path='/honor' element={<HonorPage />} />
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/signup' element={<SignupPage />} />
+      <Route path='/mypage' element={<MypagePage />} />
     </Routes>
   </>
   );
