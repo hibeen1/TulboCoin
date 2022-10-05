@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import WordCloud from "../utils/WordCloud";
+
 import TurboHugging from "../media/images/TurboImg.png";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { wordCouldAsync } from "../store/coinSaga";
 import CloudImg from "../media/images/Cloud.png";
+
 const HomePageBlock = styled.div`
   display: flex;
 `;
@@ -20,6 +22,7 @@ const NavBlock = styled.div`
 
 const HomeBlock = styled.div`
   background-color: #f3f3f3;
+
   /* border: solid black 3px; */
   width: 94vw;
   height: 300vh;
@@ -84,6 +87,7 @@ function HomePage() {
       </NavBlock>
       <HomeBlock>
         {/* <h1>워드클라우드 및 소개 페이지입니다</h1> */}
+
         {/* {selectedWordCloud.map(data => data.entrise)} */}
         {/* {worldcloudlist.map((data) => data && <div>{data.key}</div>)} */}
         <Cloud>
