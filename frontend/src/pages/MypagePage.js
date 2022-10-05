@@ -373,7 +373,7 @@ function MypagePage() {
   };
 
   const wallet = JSON.parse(useSelector((state) => state.account.wallet));
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [cash, setCash] = useState(0);
   const handleBalanceReset = () => {
     dispatch(resetWalletAsync());
@@ -390,25 +390,30 @@ function MypagePage() {
     }
   }, []);
   useEffect(() => {
-    if (socketData) {
-      let newCash = 0;
-      const newData = socketData.map((coin) => {
-        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
-        newCash += coin.trade_price * tmp.coinAmount;
-        return {
-          name: `${tmp.coinName}(${coin.code})`,
-          code: coin.code,
-          amount: tmp.coinAmount,
-          average: tmp.coinAverage,
-          percent: `${(
-            (coin.trade_price / tmp.coinAverage - 1) * 100
-          ).toFixed(2)} %`,
-        };
-      });
-      setCash(newCash);
-      setData(newData);
+    if (socketData && wallet) {
+      try {
+        let newCash = 0;
+        const newData = socketData.map((coin) => {
+          const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+          newCash += coin.trade_price * tmp.coinAmount;
+          return {
+            name: `${tmp.coinName}(${coin.code})`,
+            code: coin.code,
+            amount: tmp.coinAmount,
+            average: tmp.coinAverage,
+            percent: `${(
+              (coin.trade_price / tmp.coinAverage - 1) * 100
+            ).toFixed(2)} %`,
+          };
+        });
+        setCash(newCash);
+        setData(newData);
+      } catch (e) {
+        setCash(0);
+        setData(null);
+      }
     }
-  }, [socketData]);
+  }, [socketData, wallet]);
 
   const customCoinColumns = useMemo(
     () => [

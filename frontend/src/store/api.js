@@ -94,11 +94,27 @@ export const newsApi = async (body) => {
 
 // 좋아요 코인 불러오기
 export const fetchLikedCoinApi = async () => {
-  return await axios.post("/likes", null, {
+  return await axios.get('/likes', {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
-};
+  })
+}
 // 좋아요 코인 불러오기 끝
+
+// 관심코인 등록
+export const coinLikeApi = async (body) => {
+  return await axios.post('/likes', body, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  })
+}
+// 관심코인 등록 끝
+
+// 관심코인 삭제
+export const coinLikeDeleteApi = async (body) => {
+  return await axios.delete('/likes', {data: body,
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  })
+}
+// 관심코인 삭제 끝
 
 // 워드 클라우드 요청
 export const wordCloudApi = async (body) => {

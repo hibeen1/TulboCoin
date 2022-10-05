@@ -10,34 +10,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import CoinChart from "./CoinChart";
-const WholeCoinChartBlock = styled.div`
-  width: 60vw;
-  height: 55vh;
-  display: flex;
-  justify-content: start;
-  align-items: center; 
-  border: solid skyblue 3px;
-  flex-direction: column;
-`
-const CoinLogo = styled.div`
-width: 5vmin;
-height: 5vmin;
-border: 3px solid grey;
-  
-`
-const CoinName = styled.div`
-width: 5vmin;
-height: 5vmin;
-border: 3px solid grey;
-`
+import CoinSummary from "./CoinSummary";
 
-const CompareYesterDay = styled.div`
-`
-
-
-
-const CoinDetails = styled.div`
-`
 const CoinChartBlock = styled.div`
   width: 40vw;
   height: 50vh;
@@ -45,57 +19,14 @@ const CoinChartBlock = styled.div`
 
 `
 
-
-
-
-
-const CoinSummary = memo(function CoinSummary({ socketData, detailCoinData }) {
-  let targetSocketData = [];
-  for (let i = 0; i < socketData.length; i += 1) {
-    if (socketData[i].code === detailCoinData.code) {
-      targetSocketData = socketData[i];
-      break;
-    }
-  }
-  return (
-    <WholeCoinChartBlock>
-        <CoinLogo>
-        <img
-          src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
-          alt=""
-          width={64}
-          height={64}
-
-        />
-        </CoinLogo>
-        <CoinName>
-        {detailCoinData.name}
-        </CoinName>
-
-      <CompareYesterDay>
-        전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
-        {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
-        {targetSocketData.signed_change_price > 0 ? "+" : null}
-        {targetSocketData.signed_change_price}
-      </CompareYesterDay>
-      <CoinDetails>
-      <p>고가 : {targetSocketData.high_price}</p>
-      <p>저가 : {targetSocketData.low_price}</p>
-      <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
-      <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
-      </CoinDetails>
-      </WholeCoinChartBlock>
-  );
-});
-
 const Coin = memo(function Coin({ socketData }) {
   const dispatch = useDispatch();
   const { marketCodes } = useFetchMarketCode();
   const [data, setData] = useState();
+  const [ modal, setModal ] = useState('');
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
   const likedCoin = useSelector(state => state.coinReducer.likedCoin)
-  const [ modal, setModal ] = useState('');
   // name, amount, like
   const [ whatTable, setWhatTable ] = useState('amount')
 
@@ -197,7 +128,7 @@ const Coin = memo(function Coin({ socketData }) {
           <>
             <button onClick={handleModal} name='sell' >코인 판매</button>
             <button onClick={handleModal} name='buy' >코인 구매</button>
-            {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />}
+            {/* {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />} */}
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
           </>
         ) : (
@@ -246,12 +177,11 @@ function CoinPage() {
   // throttle_time : socketData 업데이트 주기 max_length_queue : "trade" 유형에서 거래 내역 대기열의 최대 길이
   // throttle_time이 너무 낮으면(400ms 미만) 예기치 않은 버그가 발생할 수 있습니다. – max_length_queue가 너무 크면 메모리를 너무 많이 사용할 수 있습니다.
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  // const { socket, isConnected, socketData } = useUpbitWebSocket(
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
-
   return (
     <>
       {socketData ? <Coin socketData={socketData} /> : <div>정보를 가져오고 있습니다...</div>}
+      {/* {asdf ? <Coin socketData={asdf} /> : <div>정보를 가져오고 있습니다...</div>} */}
     </>
   );
 }
