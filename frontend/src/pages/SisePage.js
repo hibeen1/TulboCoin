@@ -163,10 +163,10 @@ const NewsBlock = styled.div`
   height: 20vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  // align-items: center; 
   border: solid purple 3px;
   flex-direction: column;
-  overflow: auto;
+  // overflow: auto;
 `
 
 // 이름순 거래대금순 관심코인순
@@ -291,7 +291,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
     dots: false,
     infinite: false,
     speed: 300,
-    slidesToShow: 3,
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: false,
   };
@@ -307,6 +307,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
   const handleWhatTable = (what) => {
     setWhatTable(what)
   }
+
   return (
     <>
     <SisePageBlock>
@@ -356,21 +357,20 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
         <NewsBlock>
         {/* <div>해당 뉴스를 확인하세요</div> */}
           <div>뉴스 정보</div>
-          {selectedNews ? (
-          <div className="carousel">
+          {/* <div className="carousel"> */}
             <Slider {...settings}>
-              {selectedNews.items.map((news) => (
-                <div>
-                  <a href={news.link}>
-                    <div>{news.title}</div>
-                    <div>{news.description}</div>
-                  </a>
-                  <hr />
-                </div>
-              ))}
+              {selectedNews.items ?
+                selectedNews.items.map((news) => {
+                  return <div>
+                      <p>{news.title}</p>
+                      <p>{news.description}</p>
+                    <a href={news.link}>링크</a>
+                  </div>
+                })
+              : null
+            }
             </Slider>
-          </div>
-        ) : null}
+          {/* </div> */}
         </NewsBlock>
       </SiseBlock>
     </SisePageBlock>
