@@ -13,7 +13,7 @@ function WalletTable({ wallet, socketData }) {
           name: `${tmp.coinName}(${coin.code})`,
           code: coin.code,
           amount: tmp.coinAmount,
-          average: tmp.coinAverage,
+          average: tmp.coinAverage.toLocaleString('ko-KR'),
           percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`
         }
       });

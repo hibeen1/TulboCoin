@@ -400,11 +400,11 @@ function MypagePage() {
             name: `${tmp.coinName}(${coin.code})`,
             code: coin.code,
             amount: tmp.coinAmount,
-            average: tmp.coinAverage,
+            average: tmp.coinAverage.toLocaleString('ko-KR'),
             percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
           };
         });
-        setCash(newCash);
+        setCash(newCash.toLocaleString('ko-KR'));
         setData(newData);
       } catch (e) {
         setCash(0);
@@ -556,7 +556,7 @@ function MypagePage() {
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
                 <div>
-                  <p>잔고 : {user.balance} 원</p>
+                  <p>잔고 : {user.balance.toLocaleString('ko-KR')} 원</p>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -566,7 +566,7 @@ function MypagePage() {
               <CashBlock>
                 <TulboCoinImg></TulboCoinImg>
                 <div>
-                  <p>자산 : {cash} 원</p>
+                  <p>자산 : {cash.toLocaleString('ko-KR')} 원</p>
                 </div>
               </CashBlock>
             </BalanceMsg>
