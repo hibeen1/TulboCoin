@@ -10,75 +10,73 @@ import CoinSummary from "../components/CoinSummary";
 import CoinChart from "../components/CoinChart";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar";
 import styled from "styled-components";
-import BlueButton from "../media/images/icons/SearchButton.png"
+import BlueButton from "../media/images/icons/SearchButton.png";
 
 const SisePageBlock = styled.div`
   display: flex;
-`
+`;
 
 const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
   display: flex;
-`
+`;
 
 const SiseBlock = styled.div`
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   /* border: solid black 3px; */
   max-width: 94vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-`
+`;
 // 궁금한 코인을 검색해보세요
 const GreetingMsg = styled.div`
   width: 91vw;
   height: 10vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   font-size: 4vmin;
   font-weight: bold;
   padding: 0.1vh 1vw;
   /* border: solid green 3px; */
   flex-direction: row;
-`
+`;
 
 const SearchBlock = styled.div`
   width: 91vw;
   height: 10vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   flex-direction: row;
   /* border: solid red 3px; */
-  
-`
+`;
 
 const CoinSearchBar = styled.input`
   width: 65vw;
   height: 5vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   flex-direction: row;
   border: solid #061e8c 3px;
   border-radius: 50px;
   margin-left: 10vw;
   background-color: #f0f6fc;
-
-`
+`;
 // 검색 버튼
 const BlueSearchButton = styled.div`
   width: 6vmin;
   height: 6vmin;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   flex-direction: row;
   /* border: solid blue 3px; */
   border-radius: 50px;
@@ -86,66 +84,62 @@ const BlueSearchButton = styled.div`
   background-size: 6vmin 6vmin;
   margin-left: 1vw;
   cursor: pointer;
-  :hover{
-    transform:scale(1.1);
+  :hover {
+    transform: scale(1.1);
   }
-  
-`
+`;
 const CenterBlock = styled.div`
   width: 91vw;
   height: 55vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   font-size: 4vmin;
   font-weight: bold;
   /* padding: 0.1vh 1vw; */
   /* border: solid black 3px; */
   flex-direction: row;
-  
-`
+`;
 const CenterLeftBlock = styled.div`
   width: 20vw;
   height: 55vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   /* border: solid orange 3px; */
   flex-direction: column;
-  
-`
+`;
 // 이름순 거래대금순 코인이름순을 묶은 디브
 const ChangeChartBtnBlock = styled.div`
   width: 20vw;
   height: 10vh;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   /* border: solid blue 3px; */
   flex-direction: row;
-  margin-top:2vh;
-  
-`
+  margin-top: 2vh;
+`;
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
   width: 20vw;
   height: 40vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   /* border: solid purple 3px; */
   flex-direction: column;
   font-size: 3vmin;
   overflow: auto;
   /* margin-top: 5vh; */
-`
+`;
 // 코인 이름 정보 + 코인 차트
 // const CoinChartBlock = styled.div`
 //   width: 60vw;
 //   height: 55vh;
 //   display: flex;
 //   justify-content: start;
-//   align-items: center; 
+//   align-items: center;
 //   border: solid skyblue 3px;
 //   flex-direction: column;
 // `
@@ -154,14 +148,14 @@ const MoneyAmountChart = styled.div`
 //   height: 15vh;
 //   display: flex;
 //   border: solid yellow 3px;
-  
+
 // `
 // const ChartBlock = styled.div`
 //   width: 60vw;
 //   height: 55vh;
 //   display: flex;
 //   border: solid pink 3px;
-  
+
 // `
 
 const NewsBlock = styled.div`
@@ -169,34 +163,30 @@ const NewsBlock = styled.div`
   height: 20vh;
   display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   /* border: solid purple 3px; */
   flex-direction: column;
   // overflow: auto;
-`
+`;
 
 // 이름순 거래대금순 관심코인순
 const ChangeChartBtn = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   cursor: pointer;
   /* border: 3px yellow solid; */
   font-size: 2vmin;
   /* margin-left: 1vw; */
   /* margin-right: 1vw; */
   width: 7vw;
-  height:5vh;
-
-  
-`
-
-
+  height: 5vh;
+`;
 
 function Sise() {
-// fetch all marketcode custom hook
-const { isLoading, marketCodes } = useFetchMarketCode();
-const [targetMarketCode, setTargetMarketCode] = useState([]);
+  // fetch all marketcode custom hook
+  const { isLoading, marketCodes } = useFetchMarketCode();
+  const [targetMarketCode, setTargetMarketCode] = useState([]);
 
   useEffect(() => {
     // 변경시 호출
@@ -214,16 +204,16 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
   const dispatch = useDispatch();
 
   const [data, setData] = useState();
-  const [ modal, setModal ] = useState('');
+  const [modal, setModal] = useState("");
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
   const selectedNews = useSelector((state) => state.coinReducer.selectedNews);
-  const likedCoin = JSON.parse(useSelector(state => state.account.likedCoin))
+  const likedCoin = JSON.parse(useSelector((state) => state.account.likedCoin));
   // name, amount, like
-  const [ whatTable, setWhatTable ] = useState('amount')
+  const [whatTable, setWhatTable] = useState("amount");
 
   useEffect(() => {
     if (socketData) {
-      if (whatTable === 'amount'){
+      if (whatTable === "amount") {
         const newData = socketData.map((coin) => {
           let tmp = "";
           for (let i = 0; i < marketCodes.length; i += 1) {
@@ -238,11 +228,11 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
             volume: coin.acc_trade_price_24h,
           };
         });
-        newData.sort(function(a, b) {
+        newData.sort(function (a, b) {
           return b.volume - a.volume;
-        })
+        });
         setData(newData.slice(0, 20));
-      } else if (whatTable === 'name') {
+      } else if (whatTable === "name") {
         const newData = socketData.map((coin) => {
           let tmp = "";
           for (let i = 0; i < marketCodes.length; i += 1) {
@@ -256,16 +246,17 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
             code: coin.code,
           };
         });
-        newData.sort(function(a, b) {
+        newData.sort(function (a, b) {
           return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
-        })
+        });
         setData(newData);
-      } else if (whatTable === 'like') {
+      } else if (whatTable === "like") {
         const newData = likedCoin.map((coin) => {
           return {
             name: coin.coinName,
-            code: coin.coinCode
-          }})
+            code: coin.coinCode,
+          };
+        });
         setData(newData);
       }
     }
@@ -273,7 +264,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
 
   useEffect(() => {
     dispatch(newsAsync("비트코인"));
-    setWhatTable('name')
+    setWhatTable("name");
   }, []);
 
   // 테이블 컬럼
@@ -303,83 +294,105 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
   };
 
   const handleModal = (e) => {
-    setModal(e.target.name)
-  }
+    setModal(e.target.name);
+  };
 
   const modalClose = () => {
-    setModal('')
-  }
+    setModal("");
+  };
 
   const handleWhatTable = (what) => {
-    setWhatTable(what)
-  }
+    setWhatTable(what);
+  };
 
   return (
     <>
-    <SisePageBlock>
-      <NavBlock>
-      <Navbar></Navbar>
-      </NavBlock>
-      <SiseBlock>
-        <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
-        <SearchBlock><CoinSearchBar></CoinSearchBar><BlueSearchButton></BlueSearchButton></SearchBlock>
-        <CenterBlock>
-          {/* 차트 두개 세로로 나열 */}
-          <CenterLeftBlock>
-            <ChangeChartBtnBlock>
-                <ChangeChartBtn onClick={() => handleWhatTable('name')}>이름순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable('amount')}>거래대금순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable('like')}>관심코인</ChangeChartBtn>
-            </ChangeChartBtnBlock>
-            <div>
-              <MoneyAmountChart>
-                {data && <CustomTable data={data} columns={columns} rowFunction={(row)=>{selectDetailCoin({code: row.code, name: row.name})}}/>}
-              </MoneyAmountChart>
-            </div>
-          </CenterLeftBlock>
+      <SisePageBlock>
+        <NavBlock>
+          <Navbar></Navbar>
+        </NavBlock>
+        <SiseBlock>
+          <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
+          <SearchBlock>
+            <CoinSearchBar></CoinSearchBar>
+            <BlueSearchButton></BlueSearchButton>
+          </SearchBlock>
+          <CenterBlock>
+            {/* 차트 두개 세로로 나열 */}
+            <CenterLeftBlock>
+              <ChangeChartBtnBlock>
+                <ChangeChartBtn onClick={() => handleWhatTable("name")}>이름순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("amount")}>
+                  거래대금순
+                </ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("like")}>관심코인</ChangeChartBtn>
+              </ChangeChartBtnBlock>
+              <div>
+                <MoneyAmountChart>
+                  {data && (
+                    <CustomTable
+                      data={data}
+                      columns={columns}
+                      rowFunction={(row) => {
+                        selectDetailCoin({ code: row.code, name: row.name });
+                      }}
+                    />
+                  )}
+                </MoneyAmountChart>
+              </div>
+            </CenterLeftBlock>
 
-          {/* coinChart Block */}
-          {/* <CoinChartBlock> */}
-           {/* <CoinList></CoinList> */}
-
+            {/* coinChart Block */}
+            {/* <CoinChartBlock> */}
+            {/* <CoinList></CoinList> */}
 
             {/* <div>코인 그래프</div> */}
-            {(selectedCoin && socketData) ? (
+            {selectedCoin && socketData ? (
               <>
-                {/* <button onClick={handleModal} name='sell' >코인 판매</button>
-                <button onClick={handleModal} name='buy' >코인 구매</button> */}
-                {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />}
+                <button onClick={handleModal} name="sell">
+                  코인 판매
+                </button>
+                <button onClick={handleModal} name="buy">
+                  코인 구매
+                </button>
+                {modal && (
+                  <CoinDeal
+                    deal={modal}
+                    modalClose={modalClose}
+                    socketData={socketData}
+                    detailCoinData={selectedCoin}
+                  />
+                )}
                 <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
               </>
             ) : (
               <div>정보를 가져오고 있습니다...</div>
             )}
             <CoinChart></CoinChart>
-          {/* </CoinChartBlock> */}
+            {/* </CoinChartBlock> */}
+          </CenterBlock>
 
-        </CenterBlock>
-
-
-        <NewsBlock>
-        {/* <div>해당 뉴스를 확인하세요</div> */}
-          <div>뉴스 정보</div>
-          {/* <div className="carousel"> */}
+          <NewsBlock>
+            {/* <div>해당 뉴스를 확인하세요</div> */}
+            <div>뉴스 정보</div>
+            {/* <div className="carousel"> */}
             <Slider {...settings}>
-              {selectedNews.items ?
-                selectedNews.items.map((news) => {
-                  return <div>
-                      <p>{news.title}</p>
-                      <p>{news.description}</p>
-                    <a href={news.link}>링크</a>
-                  </div>
-                })
-              : null
-            }
+              {selectedNews.items
+                ? selectedNews.items.map((news) => {
+                    return (
+                      <div>
+                        <p>{news.title}</p>
+                        <p>{news.description}</p>
+                        <a href={news.link}>링크</a>
+                      </div>
+                    );
+                  })
+                : null}
             </Slider>
-          {/* </div> */}
-        </NewsBlock>
-      </SiseBlock>
-    </SisePageBlock>
+            {/* </div> */}
+          </NewsBlock>
+        </SiseBlock>
+      </SisePageBlock>
     </>
   );
 }
