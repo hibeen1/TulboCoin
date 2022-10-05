@@ -94,8 +94,15 @@ export const newsApi = async (body) => {
 
 // 좋아요 코인 불러오기
 export const fetchLikedCoinApi = async () => {
-  return await axios.post('/likes', null, {
+  return await axios.post("/likes", null, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  })
-}
+  });
+};
 // 좋아요 코인 불러오기 끝
+
+// 워드 클라우드 요청
+export const wordCloudApi = async (body) => {
+  return await axios.get(`/spark?time=${body}`);
+  // return await axios.get("/spark", body);
+};
+// 워드 클라우드 요청 끝
