@@ -18,13 +18,13 @@ import clickhover from "../media/images/clickhover.png";
 
 const HonorPageBlock = styled.div`
   display: flex;
+  overflow: hidden;
 `;
 
 const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  position: relative;
   display: flex;
 `;
 
@@ -32,10 +32,10 @@ const HonorBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
   width: 94vw;
-  height: auto;
-  position: relative;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 const RankingCard = styled.div`
   width: 20vw;
@@ -79,7 +79,7 @@ const RankingTable = styled.div`
   /* border: 2px solid red; */
   margin-left: 3vmax;
   margin-right: 3vmax;
-  width: auto;
+  /* width: auto; */
   height: 34.9vh;
   justify-content: center;
   text-align: center;
@@ -215,9 +215,11 @@ const GreetingMsg = styled.div`
   width: 50vw;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  font-size: 3vmin;
+  font-size: 4vmin;
+  font-weight: bold;
+  padding: 0.1vh 1vw;
 `;
 const RankAlram = styled.div`
   width: 50vw;

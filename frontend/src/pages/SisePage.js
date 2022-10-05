@@ -12,6 +12,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Navbar from "../components/Navbar"
 import styled from "styled-components";
+import BlueButton from "../media/images/icons/SearchButton.png"
 
 const SisePageBlock = styled.div`
   display: flex;
@@ -27,10 +28,11 @@ const NavBlock = styled.div`
 const SiseBlock = styled.div`
   background-color: #F3F3F3;
   /* border: solid black 3px; */
-  width: 94vw;
+  max-width: 94vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `
 // 궁금한 코인을 검색해보세요
 const GreetingMsg = styled.div`
@@ -42,7 +44,7 @@ const GreetingMsg = styled.div`
   font-size: 4vmin;
   font-weight: bold;
   padding: 0.1vh 1vw;
-  border: solid green 3px;
+  /* border: solid green 3px; */
   flex-direction: row;
 `
 
@@ -53,7 +55,7 @@ const SearchBlock = styled.div`
   justify-content: start;
   align-items: center; 
   flex-direction: row;
-  border: solid red 3px;
+  /* border: solid red 3px; */
   
 `
 
@@ -64,25 +66,29 @@ const CoinSearchBar = styled.input`
   justify-content: start;
   align-items: center; 
   flex-direction: row;
-  border: solid red 3px;
+  border: solid #061e8c 3px;
   border-radius: 50px;
   margin-left: 10vw;
   background-color: #f0f6fc;
 
 `
 // 검색 버튼
-const SearchButton = styled.div`
-  width: 5.5vmin;
-  height: 5.5vmin;
+const BlueSearchButton = styled.div`
+  width: 6vmin;
+  height: 6vmin;
   display: flex;
   justify-content: start;
   align-items: center; 
   flex-direction: row;
-  border: solid blue 3px;
+  /* border: solid blue 3px; */
   border-radius: 50px;
-  background-color: #fff;
+  background: url(${BlueButton}) center no-repeat;
+  background-size: 6vmin 6vmin;
   margin-left: 1vw;
   cursor: pointer;
+  :hover{
+    transform:scale(1.1);
+  }
   
 `
 const CenterBlock = styled.div`
@@ -94,7 +100,7 @@ const CenterBlock = styled.div`
   font-size: 4vmin;
   font-weight: bold;
   /* padding: 0.1vh 1vw; */
-  border: solid black 3px;
+  /* border: solid black 3px; */
   flex-direction: row;
   
 `
@@ -104,7 +110,7 @@ const CenterLeftBlock = styled.div`
   display: flex;
   justify-content: start;
   align-items: center; 
-  border: solid orange 3px;
+  /* border: solid orange 3px; */
   flex-direction: column;
   
 `
@@ -115,7 +121,7 @@ const ChangeChartBtnBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center; 
-  border: solid blue 3px;
+  /* border: solid blue 3px; */
   flex-direction: row;
   margin-top:2vh;
   
@@ -127,7 +133,7 @@ const MoneyAmountChart = styled.div`
   display: flex;
   justify-content: start;
   align-items: center; 
-  border: solid purple 3px;
+  /* border: solid purple 3px; */
   flex-direction: column;
   font-size: 3vmin;
   overflow: auto;
@@ -164,7 +170,7 @@ const NewsBlock = styled.div`
   display: flex;
   justify-content: start;
   align-items: center; 
-  border: solid purple 3px;
+  /* border: solid purple 3px; */
   flex-direction: column;
   overflow: auto;
 `
@@ -175,7 +181,7 @@ const ChangeChartBtn = styled.div`
   justify-content: center;
   align-items: center; 
   cursor: pointer;
-  border: 3px yellow solid;
+  /* border: 3px yellow solid; */
   font-size: 2vmin;
   /* margin-left: 1vw; */
   /* margin-right: 1vw; */
@@ -315,7 +321,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
       </NavBlock>
       <SiseBlock>
         <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
-        <SearchBlock><CoinSearchBar></CoinSearchBar><SearchButton></SearchButton></SearchBlock>
+        <SearchBlock><CoinSearchBar></CoinSearchBar><BlueSearchButton></BlueSearchButton></SearchBlock>
         <CenterBlock>
           {/* 차트 두개 세로로 나열 */}
           <CenterLeftBlock>
@@ -356,7 +362,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
         <NewsBlock>
         {/* <div>해당 뉴스를 확인하세요</div> */}
           <div>뉴스 정보</div>
-          {selectedNews ? (
+          {/* {selectedNews ? (
           <div className="carousel">
             <Slider {...settings}>
               {selectedNews.items.map((news) => (
@@ -370,7 +376,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
               ))}
             </Slider>
           </div>
-        ) : null}
+        ) : null} */}
         </NewsBlock>
       </SiseBlock>
     </SisePageBlock>
