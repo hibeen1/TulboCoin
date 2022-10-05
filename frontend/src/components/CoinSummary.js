@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { coinLikeAsync, coinLikeDeleteAsync } from "../store/accountSaga";
 import EmptyHeart from "../media/images/icons/Heart.png";
 import FullHeart from "../media/images/icons/darkHeart.png";
+import ReactTooltip from "react-tooltip";
+
 const WholeCoinChartBlock = styled.div`
   width: 25vw;
   height: 55vh;
@@ -123,19 +125,30 @@ function CoinSummary({ socketData, detailCoinData }) {
       </LogoAndName>
 
       <CoinDetails>
-        전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
-        {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
-        {targetSocketData.signed_change_price > 0 ? "+" : null}
-        {targetSocketData.signed_change_price}
-        <HighPriceMsg>
+        <div data-for="difYesterday" data-tip>
+          전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
+          <ReactTooltip id="difYesterday" getContent={dataTip => "어제의 가격과 비교하여 차이나는 정도"} />
+          {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
+          {targetSocketData.signed_change_price > 0 ? "+" : null}
+          {targetSocketData.signed_change_price}
+        </div>
+        <p data-for="highPrice" data-tip>
           고가 : {targetSocketData.high_price}
-          <div className="hiddenMsg">
-            아아아아아ssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-          </div>
-        </HighPriceMsg>
-        <p>저가 : {targetSocketData.low_price}</p>
-        <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
-        <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+          <ReactTooltip id="highPrice" getContent={dataTip => "하루 중 가장 높은 가격을 뜻하는 용어"} />
+
+        </p>
+        <p data-for="lowPrice" data-tip>
+          저가 : {targetSocketData.low_price}
+          <ReactTooltip id="lowPrice" getContent={dataTip => "하루 중 가장 낮은 가격을 뜻하는 용어"} />
+        </p>
+        <p data-for="tradeAmount" data-tip>
+          거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}
+          <ReactTooltip id="tradeAmount" getContent={dataTip => "하루동안 거래된 금액의 양"} />
+          </p>
+        <p data-for="tradeCoinAmount" data-tip>
+          거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}
+          <ReactTooltip id="tradeCoinAmount" getContent={dataTip => "하루동안 거래된 코인의 수량"} />
+          </p>
       </CoinDetails>
     </WholeCoinChartBlock>
   );
