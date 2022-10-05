@@ -12,56 +12,10 @@ import styled from "styled-components";
 import CoinChart from "./CoinChart";
 import CoinSummary from "./CoinSummary";
 
-<<<<<<< HEAD
 const CoinChartBlock = styled.div`
   width: 40vw;
   height: 50vh;
   border: 3px solid black;
-=======
-const CoinNews = ({ detailCoinData }) => {
-  const [articles, setArticles] = useState();
-  // console.log(detailCoinData.code)
-  useEffect(() => {
-    const fetchEvents = async () => {
-      // const client_id = "oxUIYoVPhQ5PllruiWCD";
-      // const client_secret = "cTEbrfUhzN";
-      const client_id = "uIpJoI_5MAJ1oc7CNJ5i";
-      const client_secret = "sGgPJRu5IR";
-      try {
-        const res = await axios.get("https://openapi.naver.com/v1/search/news.json", {
-          params: {
-              query: `${detailCoinData.code}`,
-              display: 20,
-            },
-          headers: {
-              "X-Naver-Client-Id": client_id,
-              "X-Naver-Client-Secret": client_secret,
-            }
-          }
-        );
-        // const res = await axios.post("https://openapi.naver.com/v1/search/news.json", {
-        //   params: {
-        //     query: `${detailCoinData.code}`,
-        //     display: 20,
-        //   },
-        //   headers: {
-        //     "X-Naver-Client-Id": client_id,
-        //     "X-Naver-Client-Secret": client_secret,
-        //   }
-        // });
-        console.log(res)
-        setArticles(res.data);
-      } catch (e) {
-        console.log("에러", e);
-      }
-    };
-    fetchEvents();
-  }, [detailCoinData]);
-  // console.log(newsCoin);
-  // console.log("asdfasdf", articles);
-  return <div></div>;
-};
->>>>>>> jun
 
 `
 
