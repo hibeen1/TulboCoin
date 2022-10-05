@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import WordCloud from "../utils/WordCloud";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom'
 import { wordCouldAsync } from "../store/coinSaga";
 import CloudImg from "../media/images/Cloud.png";
 
@@ -59,24 +60,17 @@ const WordCloudBlock = styled.div`
 
 function HomePage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const isLoggedin = useSelector(state => state.account.isLoggedin)
+  useEffect(() => {
+    if (!isLoggedin) {
+      navigate('/')
+    }
+  }, [])
+
   useEffect(() => {
     dispatch(wordCouldAsync(10));
   }, []);
-  // const selectedWordCloud = useSelector((state) => state.coinReducer.selectedWordCloud);
-  // console.log("여기입니다아아아", selectedWordCloud);
-  // console.log("여기입니다아아아", typeof selectedWordCloud);
-  // console.log("여기입니다아아아", selectedWordCloud["웨이브"]);
-  // let worldcloudlist = {};
-  // for (const [key, value] of Object.entries(selectedWordCloud)) {
-  //   console.log(`${key}: ${value}`);
-  //   worldcloudlist += { key, value };
-  // }
-  // console.log("asdfasdf", worldcloudlist);
-  // console.log(
-  //   "asdfasdf",
-  //   worldcloudlist.map((data) => data)
-  // );
-  // console.log("asdfasdf", worldcloudlist.key);
 
   return (
     <HomePageBlock>

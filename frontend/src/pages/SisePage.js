@@ -263,8 +263,8 @@ function Sise() {
   }, [whatTable, socketData]);
 
   useEffect(() => {
-    dispatch(newsAsync("비트코인"));
-    setWhatTable("name");
+    dispatch(newsAsync(selectedCoin.name));
+    setWhatTable('name')
   }, []);
 
   // 테이블 컬럼
