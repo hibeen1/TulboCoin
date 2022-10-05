@@ -99,3 +99,19 @@ export const fetchLikedCoinApi = async () => {
   })
 }
 // 좋아요 코인 불러오기 끝
+
+// 관심코인 등록
+export const coinLikeApi = async (body) => {
+  return await axios.post('/likes', body, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  })
+}
+// 관심코인 등록 끝
+
+// 관심코인 삭제
+export const coinLikeDeleteApi = async (body) => {
+  return await axios.delete('/likes', {data: body,
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  })
+}
+// 관심코인 삭제 끝

@@ -2,6 +2,9 @@ import { memo } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { coinLikeAsync, coinLikeDeleteAsync } from '../store/accountSaga'
+
 const WholeCoinChartBlock = styled.div`
   width: 60vw;
   height: 55vh;
@@ -31,13 +34,26 @@ const CompareYesterDay = styled.div`
 const CoinDetails = styled.div`
 `
 
+
 function CoinSummary({ socketData, detailCoinData }) {
+  const dispatch = useDispatch()
   let targetSocketData = [];
   for (let i = 0; i < socketData.length; i += 1) {
     if (socketData[i].code === detailCoinData.code) {
       targetSocketData = socketData[i];
       break;
     }
+  }
+  const likedCoin = JSON.parse(useSelector(state => state.account.likedCoin))
+  const isLikedCoin = likedCoin.some(coin => coin.coinName===detailCoinData.name);
+
+  const handleLikeDelete = () => {
+    const body = {coinName: detailCoinData.name, coinCode: detailCoinData.code}
+    dispatch(coinLikeDeleteAsync(body))
+  }
+  const handleLike = () => {
+    const body = {coinName: detailCoinData.name, coinCode: detailCoinData.code}
+    dispatch(coinLikeAsync(body))
   }
   return (
     <WholeCoinChartBlock>
@@ -53,7 +69,11 @@ function CoinSummary({ socketData, detailCoinData }) {
         <CoinName>
         {detailCoinData.name}
         </CoinName>
-
+        {isLikedCoin ? 
+          <button onClick={handleLikeDelete}>좋아요한 코인</button>  
+          :
+          <button onClick={handleLike}>좋아요 안한 코인</button>  
+        }
       <CompareYesterDay>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
