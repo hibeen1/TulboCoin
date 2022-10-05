@@ -1,14 +1,16 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
-import { buyApi, sellApi, newsApi } from "./api";
+import { buyApi, sellApi, newsApi, wordCloudApi } from "./api";
 import { fetchWalletAsync, fetchUserAsync } from "./accountSaga";
-import { selectNews } from "./coin";
+import { selectNews, wordCloud } from "./coin";
 const BUY_ASYNC = "BUY_ASYNC";
 const SELL_ASYNC = "SELL_ASYNC";
 const NEWS_ASYNC = "NEWS_ASYNC";
+const WORDCOULD_ASYNC = "WORDCOULD_ASYNC";
 
 export const buyAsync = (body) => ({ type: BUY_ASYNC, meta: body });
 export const sellAsync = (body) => ({ type: SELL_ASYNC, meta: body });
 export const newsAsync = (body) => ({ type: NEWS_ASYNC, meta: body });
+export const wordCouldAsync = (body) => ({ type: WORDCOULD_ASYNC, meta: body });
 
 function* buySaga(action) {
   const body = action.meta;
@@ -46,9 +48,21 @@ function* newsSaga(action) {
     console.log(error);
   }
 }
-
+function* wordCouldSaga(action) {
+  const body = action.meta;
+  try {
+    const response = yield call(wordCloudApi, body);
+    if (response.status === 200) {
+      yield put(wordCloud(response.data));
+      console.log("워드 클라우드 성공", response.data);
+    }
+  } catch (error) {
+    console.log("여기 에러?", error);
+  }
+}
 export function* coinSaga() {
   yield takeLatest(BUY_ASYNC, buySaga);
   yield takeLatest(SELL_ASYNC, sellSaga);
   yield takeLatest(NEWS_ASYNC, newsSaga);
+  yield takeLatest(WORDCOULD_ASYNC, wordCouldSaga);
 }
