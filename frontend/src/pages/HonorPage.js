@@ -230,12 +230,16 @@ const RankAlram = styled.div`
   font-size: 2.5vmin;
 `;
 const ModalButton = styled.div`
-  position: absolute;
-  top: 4.5vh;
-  right: 6vw;
+  display: flex;
+  justify-content: center;
   button {
     width: 5vw;
-    background-color: red;
+    height: 4vh;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -375,21 +379,7 @@ function Honor() {
           )}
           {isOpenModal && (
             <Modal onClickToggleModal={onClickToggleModal}>
-              <h1>
-                {userInformation.user.userId}{" "}
-                <ModalButton>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (onClickToggleModal) {
-                        onClickToggleModal();
-                      }
-                    }}
-                  >
-                    X
-                  </button>
-                </ModalButton>
-              </h1>
+              <h1>{userInformation.user.userId} </h1>
               <h1>
                 <img
                   src={`${process.env.PUBLIC_URL}/profile/profile${userInformation.user.imagePath}.png`}
@@ -426,6 +416,18 @@ function Honor() {
                   </tbody>
                 </table>
               </RankingModalTable>
+              <ModalButton>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onClickToggleModal) {
+                      onClickToggleModal();
+                    }
+                  }}
+                >
+                  X
+                </button>
+              </ModalButton>
             </Modal>
           )}
           <br />
