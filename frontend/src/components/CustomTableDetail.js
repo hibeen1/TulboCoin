@@ -1,16 +1,21 @@
-function CustomTableDetail({ data, columns }) {
-  return <>
-    <table>
+
+function CustomTableDetail({ tableStyle, data, columns, propRowFunction }) {
+  return (
+    <>
+      <table style={tableStyle}>
         <thead>
           <tr>
-            {columns.map((column) => <th key={column.name}>{column.header}</th>)}
+            {columns.map((column) => (
+              <th key={column.name}>{column.header}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((ele) => <tr style={ele.rowStyle}>{columns.map(column => <td>{ele[column.name]}</td>)}</tr>)}
+          {data.map((ele) => <tr style={ele.rowStyle} onClick={()=>propRowFunction(ele)} >{columns.map(column => <td style={column.columnStyle}>{ele[column.name]}</td>)}</tr>)}
         </tbody>
       </table>
-  </>
+    </>
+  );
 }
 
-export default CustomTableDetail
+export default CustomTableDetail;
