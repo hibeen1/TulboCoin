@@ -1,7 +1,7 @@
 // 액션(대문자로)
 const SELECT_COIN = "SELECT_COIN";
 const SELECT_TIME = "SELECT_TIME";
-const SELECT_NEWS = "SELECT_NEW";
+const SELECT_NEWS = "SELECT_NEWS";
 const WORLD_CLOUD = "WORLD_CLOUD";
 // 액션 생성 함수(밖에서도 사용할거니까 export)
 export const selectCoin = (selectedCoin) => ({ type: SELECT_COIN, meta: selectedCoin });
