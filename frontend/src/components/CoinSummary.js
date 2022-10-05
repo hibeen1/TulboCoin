@@ -129,13 +129,13 @@ function CoinSummary({ socketData, detailCoinData }) {
         {targetSocketData.signed_change_price > 0 ? "+" : null}
         {targetSocketData.signed_change_price}
         <HighPriceMsg>
-          고가 : {targetSocketData.high_price}
+          고가 : {targetSocketData.high_price.toLocaleString('ko-KR')}
           <div className="hiddenMsg">
             아아아아아ssssssssssssssssssssssssssssssssssssssssssssssssssssssss
           </div>
         </HighPriceMsg>
-        <p>저가 : {targetSocketData.low_price}</p>
-        <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
+        <p>저가 : {targetSocketData.low_price.toLocaleString('ko-KR')}</p>
+        <p>거래대금 : {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString('ko-KR')}</p>
         <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
       </CoinDetails>
     </WholeCoinChartBlock>
