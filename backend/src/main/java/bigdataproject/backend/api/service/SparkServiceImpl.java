@@ -19,19 +19,17 @@ public class SparkServiceImpl implements SparkService {
     public Map<String, Long> getCount(LocalDateTime ldt, LocalDateTime now, int cnt) {
         Map<String, Long> wordCounts = new HashMap<>();
         JavaRDD<String> coinMap = null;
-        int testCnt = 0;
+//        int testCnt = 0;
         while (true) {
             cnt -= 1;
 
             if (cnt < 0) {
-                System.out.println("finished");
-                System.out.println("비교" + ldt);
-                System.out.println("현재" + now);
+                System.out.println("counting finished");
                 wordCounts = coinMap.countByValue();
-                System.out.println("너 얼마나 돌았니??  " + testCnt);
+//                System.out.println("너 얼마나 돌았니??  " + testCnt);
                 return wordCounts;
             }
-            testCnt += 1;
+//            testCnt += 1;
 
             String year = String.valueOf(ldt.getYear());
             String month = String.format("%02d", ldt.getMonth().getValue());
@@ -39,12 +37,7 @@ public class SparkServiceImpl implements SparkService {
             String hour = String.format("%02d", ldt.getHour());
             String minute = String.valueOf(ldt.getMinute() - (ldt.getMinute() % 10));
 
-
-            System.out.println("=============================================================================================");
-            System.out.println(ldt);
             ldt = ldt.plusMinutes(10);
-            System.out.println(ldt);
-            System.out.println("=============================================================================================");
 
             StringBuilder sb = new StringBuilder();
             String pwd = "/home/ubuntu/COININFO/";
@@ -60,8 +53,8 @@ public class SparkServiceImpl implements SparkService {
             sb.append(minute);
             sb.append(".csv");
             String filePath = sb.toString();
-            System.out.println(filePath);
 //            filePath = "src/main/resources/40.csv";
+
 
 
             JavaRDD<String> testFile = sc.textFile(filePath);
@@ -70,7 +63,7 @@ public class SparkServiceImpl implements SparkService {
                 coinMap = testSplit.map(s -> s[1]);
                 continue;
             }
-            coinMap.union(testSplit.map(s -> s[1]));
+            coinMap = coinMap.union(testSplit.map(s -> s[1]));
 //            JavaRDD<Double> testMap = testSplit.map(s -> Double.parseDouble(s[6])*Double.parseDouble(s[7]));
 
 
