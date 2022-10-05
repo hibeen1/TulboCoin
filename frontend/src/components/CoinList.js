@@ -128,7 +128,7 @@ const Coin = memo(function Coin({ socketData }) {
           <>
             <button onClick={handleModal} name='sell' >코인 판매</button>
             <button onClick={handleModal} name='buy' >코인 구매</button>
-            {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />}
+            {/* {modal && <CoinDeal deal={modal} modalClose={modalClose} socketData={socketData} detailCoinData={selectedCoin} />} */}
             <CoinSummary socketData={socketData} detailCoinData={selectedCoin} />
           </>
         ) : (
