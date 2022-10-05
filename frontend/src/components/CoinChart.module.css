@@ -3,7 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  /* margin-left: 5vw; */
+  margin-left: 2vw;
   /* margin-bottom: 100px; */
   /* border-radius: 2px; */
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
@@ -23,8 +23,8 @@
 }
 .chart {
   display: flex;
-  width: 40vw;
-  height: 50vh;
+  width: 42vw;
+  height: 52vh;
   /* flex: 1; */
 }
 .menu {
