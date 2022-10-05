@@ -75,19 +75,33 @@ function CoinSummary({ socketData, detailCoinData }) {
   }
   return (
     <WholeCoinChartBlock>
-      <LikeButton>
-        {isLikedCoin ? 
-          <button onClick={handleLikeDelete}>좋아요한 코인</button>  
-          :
-          <button onClick={handleLike}>좋아요 안한 코인</button>  
-        }</LikeButton>
-      <CompareYesterDay>
+      <LogoAndName>
+          <CoinLogo>
+          <img
+            src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
+            alt=""
+            // width={`10vmin`}
+            // height={`10vmin`}
+          />
+          </CoinLogo>
+          <CoinName>
+          {detailCoinData.name}
+          </CoinName>
+                    <LikeButton>
+                    {isLikedCoin ? 
+                      <button onClick={handleLikeDelete}>좋아요한 코인</button>  
+                      :
+                      <button onClick={handleLike}>좋아요 안한 코인</button>  
+                    }</LikeButton>
+        </LogoAndName>
+
+        <CoinDetails>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
         {targetSocketData.signed_change_price > 0 ? "+" : null}
         {targetSocketData.signed_change_price}
-      </CompareYesterDay>
-      <CoinDetails>
+
+      
       <p>고가 : {targetSocketData.high_price}</p>
       <p>저가 : {targetSocketData.low_price}</p>
       <p>거래대금 : {(targetSocketData.acc_trade_price_24h * 1).toFixed(0)}</p>
