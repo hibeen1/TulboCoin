@@ -272,7 +272,7 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
   }, [whatTable, socketData]);
 
   useEffect(() => {
-    dispatch(newsAsync("비트코인"));
+    dispatch(newsAsync(selectedCoin.name));
     setWhatTable('name')
   }, []);
 
