@@ -255,7 +255,6 @@ const [targetMarketCode, setTargetMarketCode] = useState([]);
         })
         setData(newData);
       } else if (whatTable === 'like') {
-        console.log(likedCoin)
         const newData = likedCoin.map((coin) => {
           return {
             name: coin.coinName,

@@ -14,7 +14,9 @@ import {
   rankingApi,
   historyApi,
   fetchOtherUserApi,
-  fetchLikedCoinApi
+  fetchLikedCoinApi,
+  coinLikeApi,
+  coinLikeDeleteApi
 } from "./api";
 import {
   logout,
@@ -44,6 +46,8 @@ const HISTORY_ASYNC = "HISTORY_ASYNC";
 const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
 const FETCH_MY_HISTORY_ASYNC = 'FETCH_MY_HISTORY_ASYNC'
 const FETCH_LIKED_COIN_ASYNC = 'FETCH_LIKED_COIN_ASYNC'
+const COIN_LIKE_ASYNC = 'COIN_LIKE_ASYNC'
+const COIN_LIKE_DELETE_ASYNC = 'COIN_LIKE_DELETE_ASYNC'
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -60,6 +64,10 @@ export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
 export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
 export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta:userId})
 export const fetchLikedCoinAsync = () => ({ type: FETCH_LIKED_COIN_ASYNC })
+export const coinLikeAsync = (body) => ({ type: COIN_LIKE_ASYNC, meta: body})
+export const coinLikeDeleteAsync = (body) => ({ type: COIN_LIKE_DELETE_ASYNC, meta: body})
+
+
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
@@ -117,6 +125,7 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body);
     if (response.status === 200) {
       yield put(fetchUserAsync());
+      yield alert('변신 완료!')
     }
   } catch (error) {
     alert(error.response.data.message);
@@ -158,7 +167,6 @@ function* deleteUserSaga() {
 
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
-  console.log("지갑정보 가져오기 작동");
   try {
     const response = yield call(fetchWalletApi);
     if (response.status === 200) {
@@ -176,7 +184,9 @@ function* resetWalletSaga() {
     try {
       const response = yield call(resetWalletApi);
       if (response.status === 200) {
-        yield delay(fetchWalletAsync(), 1000);
+        yield put(fetchUserAsync())
+        yield put(fetchWalletAsync())
+        yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -251,6 +261,34 @@ function* fetchLikedCoinSaga() {
 }
 // 관심코인 가져오기 끝
 
+// 관심코인 등록
+function* coinLikeSaga(action) {
+  const body = action.meta
+  try{
+    const response = yield call(coinLikeApi, body)
+    if (response.status === 200) {
+      yield put(fetchLikedCoinAsync())
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 등록 끝
+
+// 관심코인 삭제
+function* coinLikedDeleteSaga(action) {
+  const body = action.meta
+  try{
+    const response = yield call(coinLikeDeleteApi, body)
+    if (response.status === 200) {
+      yield put(fetchLikedCoinAsync())
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 삭제 끝
+
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
   yield takeLatest(LOGIN_ASYNC, loginSaga); // 가장 마지막으로 디스패치된 DECREASE_ASYNC 액션만을 처리
@@ -267,4 +305,6 @@ export function* accountSaga() {
   yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
   yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga)
   yield takeLatest(FETCH_LIKED_COIN_ASYNC, fetchLikedCoinSaga)
+  yield takeLatest(COIN_LIKE_ASYNC, coinLikeSaga)
+  yield takeLatest(COIN_LIKE_DELETE_ASYNC, coinLikedDeleteSaga)
 }
