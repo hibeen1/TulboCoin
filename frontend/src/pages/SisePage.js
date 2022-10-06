@@ -29,7 +29,7 @@ const NavBlock = styled.div`
 const SiseBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -223,6 +223,9 @@ const ChangeChartBtn = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  :hover{
+    transform: scale(1.1);
+  }
   /* border: 3px yellow solid; */
   /* color:white; */
   /* border-radius: 5px; */

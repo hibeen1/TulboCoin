@@ -33,7 +33,7 @@ const NavBlock = styled.div`
 const HonorBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  width: 94vw;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -441,9 +441,9 @@ function Honor() {
                 <table>
                   <thead>
                     <tr>
-                      <th className="HistoryDay">날짜</th>
+                      <th className="HistoryDay">거래 날짜</th>
                       <th className="HistoryCoin">코인 이름</th>
-                      <th className="HistoryAmount">양</th>
+                      <th className="HistoryAmount">수량</th>
                       <th className="HistoryPrice">가격</th>
                       <th className="HistoryType">타입</th>
                     </tr>

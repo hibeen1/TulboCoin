@@ -30,16 +30,13 @@ const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
 `;
 
 const MyBlock = styled.div`
   background-color: #f3f3f3;
-  /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
   flex-direction: column;
 `;
@@ -560,7 +557,7 @@ function MypagePage() {
       },
       {
         name: "historyCoinName", //simple recommended way to define a column
-        header: "이름",
+        header: "코인 이름",
         columnStyle: {
           textAlign: "center",
           width: "10vw",

@@ -39,10 +39,12 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   border-radius: 40px;
   height: 6vh;
-  width: 18vw;
+  width: 15vw;
   font-size: 3vmin;
   padding-bottom: 0;
   margin-top: 4vh;
+  margin-left: 0.5vw;
+  font-family: "Jua", sans-serif;
 
   color: #ffffff;
   background-color: #3a53c0;
@@ -69,6 +71,7 @@ const StyledContext = styled.div`
 const StyledText = styled.div`
   margin-top: 10vh;
   font-size: 3vmin;
+  margin-left: 0.5vw;
   color: #7a7a7a;
   cursor: pointer;
   &:hover {

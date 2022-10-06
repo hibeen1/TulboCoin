@@ -6,7 +6,14 @@ import { selectCoin } from "../store/coin";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 
-const WordCloudBlock = styled.div``;
+const TagCloudBlock = styled.div`
+  .myTagCloud span{ 
+    cursor: pointer;
+    :hover{
+      transform: scale(1.5);
+    }
+  }
+`
 
 function WordCloud() {
   const dispatch = useDispatch()
@@ -34,6 +41,7 @@ function WordCloud() {
   const selectedWordCloud = useSelector((state) => state.coinReducer.selectedWordCloud);
   const data = selectedWordCloud;
   return (
+    <TagCloudBlock>
     <TagCloud
       minSize={15}
       maxSize={90}
@@ -43,6 +51,7 @@ function WordCloud() {
       style={{ width: 800, textAlign: "center"}}
       className="myTagCloud"
     />
+    </TagCloudBlock>
   );
 }
 
