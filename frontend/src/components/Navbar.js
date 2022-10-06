@@ -46,7 +46,7 @@ const NavItem = styled.div`
 
   /* 홈 */
   &.home {
-    background: url(${GreyHome}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueHome}) center no-repeat` : `url(${GreyHome}) center no-repeat`)};
     background-size: 3vw 6vh;
     :hover {
       background: url(${BlueHome}) center no-repeat;
@@ -56,7 +56,7 @@ const NavItem = styled.div`
 
   /* 시세 */
   &.sise {
-    background: url(${GreyCoin}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueCoin}) center no-repeat` : `url(${GreyCoin}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueCoin}) center no-repeat;
@@ -66,7 +66,7 @@ const NavItem = styled.div`
 
   /* 명예의 전당 */
   &.honor {
-    background: url(${GreyGraph}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueGraph}) center no-repeat` : `url(${GreyGraph}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueGraph}) center no-repeat;
@@ -76,7 +76,7 @@ const NavItem = styled.div`
 
   /* 마이페이지 */
   &.myPage {
-    background: url(${GreyPerson}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BluePerson}) center no-repeat` : `url(${GreyPerson}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     &:hover {
       background: url(${BluePerson}) center no-repeat;
@@ -132,28 +132,25 @@ function Navbar() {
   return (
     <NavBlock>
       <Link to="/home">
-        <NavItem className="home"></NavItem>
+        <NavItem className="home" isActive={window.location.pathname==="/home"}></NavItem>
         {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
       </Link>
 
       {/* 시세 */}
       <Link to="/exchange">
-        <NavItem className="sise"></NavItem>
+        <NavItem className="sise" isActive={window.location.pathname==="/exchange"}></NavItem>
       </Link>
       {/* 명예의 전당 */}
       <Link to="/honor">
-        <NavItem className="honor"></NavItem>
+        <NavItem className="honor" isActive={window.location.pathname==="/honor"}></NavItem>
       </Link>
 
       {isLoggedin ? (
         <>
           {/* 마이페이지 */}
           <Link to="/mypage">
-            <NavItem className="myPage"></NavItem>
+            <NavItem className="myPage" isActive={window.location.pathname==="/mypage"}></NavItem>
           </Link>
-
-          {/* 세팅 페이지 만들기 */}
-          <NavItem className="setting"></NavItem>
 
           <LoginOutItem onClick={onLogout}>{/* 로그아웃 */}</LoginOutItem>
         </>

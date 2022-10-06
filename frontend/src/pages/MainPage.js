@@ -18,10 +18,10 @@ const MainPageBlock = styled.div`
 const BgImgBlock = styled.div`
   display: flex;
   height: 100vh;
-  width: 40vw;
+  width: 80vw;
   /* background-color: #352208; */
   background: url(${mainPage}) center no-repeat;
-  background-size: 40vw 100vh;
+  background-size: 80vw 100vh;
 `;
 
 const LoginPageBlock = styled.div`
