@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sellAsync, buyAsync } from "../store/coinSaga";
 import { fetchUserAsync, fetchWalletAsync } from "../store/accountSaga";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 const StyledModal = styled.div`
   width: 35vw;
@@ -115,6 +116,13 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
   const handleDeal = function (e) {
     e.preventDefault();
     const { CoinAmount, CoinName, CoinCode, CoinPrice } = dealForm;
+    if (CoinAmount*CoinPrice < 5000) {
+      Swal.fire({
+        icon: 'warning',
+        title: '5000원 이상만 거래 가능합니다'
+      })
+      return
+    }
     let body = {};
     if (deal === "sell") {
       body = {
@@ -168,6 +176,8 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                       id="CoinAmount"
                       type="number"
                       name="CoinAmount"
+                      min={0}
+                      step="0.0001"
                       onChange={handleChange}
                     />
                   </InputBlock>
@@ -202,6 +212,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                       type="number"
                       name="CoinAmount"
                       min={0}
+                      step="0.0001"
                       onChange={handleChange}
                     />
                   </InputBlock>

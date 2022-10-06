@@ -413,6 +413,7 @@ function MypagePage() {
       setCoinInWallet(tmp);
     }
   }, []);
+
   useEffect(() => {
     if (socketData && wallet) {
       try {
@@ -421,7 +422,7 @@ function MypagePage() {
           const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
           newCash += coin.trade_price * tmp.coinAmount;
           return {
-            name: `${tmp.coinName}(${coin.code})`,
+            name: tmp.coinName,
             code: coin.code,
             amount: tmp.coinAmount,
             average: tmp.coinAverage.toLocaleString('ko-KR'),
@@ -576,7 +577,7 @@ function MypagePage() {
                 <div>
                   <p data-for="assets" data-tip>
                     자산 : {cash} 원
-                    <ReactTooltip id="assets" getContent={dataTip => "현재 코인과 현금의 총합"} />
+                    <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
                     </p>
                 </div>
               </CashBlock>
@@ -595,15 +596,6 @@ function MypagePage() {
         </BalanceAndGraphBlock>
         <br />
         <WalletBlock>
-          {/* <MyCoinBlock>
-            <p>나의 보유 코인</p>
-            <hr />
-            {data && (
-              <>
-                <CustomTable data={data} columns={customCoinColumns} />
-              </>
-            )}
-          </MyCoinBlock> */}
           <MyCoinBlock>
             <MyCoinMsg>나의 보유 코인</MyCoinMsg>
             <hr />
@@ -627,19 +619,6 @@ function MypagePage() {
               </>
             )}
           </MyHistoryBlock>
-          {/* <MyHistoryBlock>
-            <p>나의 코인 거래 기록</p>
-            <hr />
-            {myHistory && (
-              <>
-                <CustomTable
-                  tableStyle={tableStyle}
-                  data={historyData}
-                  columns={customHistoryColumns}
-                />
-              </>
-            )}
-          </MyHistoryBlock> */}
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>
