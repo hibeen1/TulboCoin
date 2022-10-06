@@ -58,7 +58,6 @@ const SearchBlock = styled.form`
   flex-direction: row;
   /* border: solid red 3px; */
 `;
-
 const CoinSearchBar = styled.input`
   width: 65vw;
   height: 5vh;
@@ -69,14 +68,8 @@ const CoinSearchBar = styled.input`
   border: solid #061e8c 3px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  border-bottom-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  /* border-bottom-left-radius: ${(props) => (true ? "0px" : "10px")};
-  border-bottom-right-radius: ${(props) => (true ? "0px" : "10px")}; */
-  /* border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; */
-  /* border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px; */
+  border-bottom-left-radius: ${(props) => (props.borderChange ? "0px" : "10px")};
+  border-bottom-right-radius: ${(props) => (props.borderChange ? "0px" : "10px")};
   margin-left: 10vw;
   background-color: #f0f6fc;
   /* width: 5vw;
@@ -84,7 +77,7 @@ const CoinSearchBar = styled.input`
   /* border-radius: 5px; */
   font-family: "Jua", sans-serif;
   font-size: 25px;
-`;
+`
 const AutoSearch = styled.div`
   width: 65.3vw;
   max-height: 40vh;
@@ -395,6 +388,7 @@ function Sise() {
 
   const [searchWord, setSearchWord] = useState("");
   const [matchWord, setMatchWord] = useState([]);
+  const [ borderChange, setBorderChange] = useState(false)
 
   useEffect(() => {
     if (searchWord) {
@@ -414,6 +408,11 @@ function Sise() {
     const searchWord = e.target.value;
     setSearchWord(searchWord);
   };
+  useEffect(() => {
+    if (matchWord.length > 0) {
+      setBorderChange(true)
+    } else setBorderChange(false)
+  }, [matchWord])
 
   const handleSearchForm = (e) => {
     e.preventDefault();
@@ -430,6 +429,7 @@ function Sise() {
     }
   };
 
+
   const handleSearchWordClick = (coin) => {
     selectDetailCoin(coin);
     setSearchWord("");
@@ -444,7 +444,7 @@ function Sise() {
         <SiseBlock>
           <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
           <SearchBlock onSubmit={handleSearchForm}>
-            <CoinSearchBar onChange={handleSearchInput} value={searchWord} />
+            <CoinSearchBar onChange={handleSearchInput} value={searchWord} borderChange={borderChange} />
             <BlueSearchButton />
             {/* 자동완성으로 추천되는 검색어(코인이름) */}
             {matchWord.length > 0 && (
