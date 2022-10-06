@@ -201,6 +201,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                       id="CoinAmount"
                       type="number"
                       name="CoinAmount"
+                      min={0}
                       onChange={handleChange}
                     />
                   </InputBlock>
