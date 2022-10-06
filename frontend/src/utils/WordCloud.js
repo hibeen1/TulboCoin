@@ -40,7 +40,7 @@ function WordCloud() {
       colorOptions={options}
       tags={data}
       onClick={(tag) => handleClickTag(tag)}
-      style={{ width: 800, textAlign: "center" }}
+      style={{ width: 800, textAlign: "center"}}
       className="myTagCloud"
     />
   );

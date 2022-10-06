@@ -7,7 +7,7 @@
 
 body {
   font-family: "Jua", sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .swal-button {
   height: 100px;

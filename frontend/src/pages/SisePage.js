@@ -33,7 +33,6 @@ const SiseBlock = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 `;
 // 궁금한 코인을 검색해보세요
 const GreetingMsg = styled.div`
@@ -487,16 +486,6 @@ function Sise() {
                 </MoneyAmountChart>
               </div>
             </CenterLeftBlock>
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* <div>코인 그래프</div> */}
             {selectedCoin && socketData ? (
               <>
                 {modal && (

@@ -95,13 +95,13 @@ const NavItem = styled.div`
 `;
 
 const LoginOutItem = styled.div`
-  width: 3.5vw;
-  height: 6.5vh;
+  width: 4.5vw;
+  height: 7.5vh;
   background: url(${Exit}) center no-repeat;
-  background-size: 6vmin 6vmin;
+  background-size: 7vmin 7vmin;
   /* border: solid red 3px; */
   margin-top: 23vh;
-  margin-left: 0.2vw;
+  margin-left:-0.3vw;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);

@@ -54,8 +54,8 @@ const WordCloudBlock = styled.div`
   justify-content: center;
   align-items: center;
   /* border: red solid 3px; */
-  /* margin-top: 55vh;
-  margin-left: 5vw; */
+  margin-top: -7vh;
+  /* margin-left: 5vw; */
 `;
 const HomeMsg = styled.div`
   margin-left: 3vmin;
@@ -72,6 +72,27 @@ const HomeMsg = styled.div`
     }
   }
 `;
+
+const WordCloudMsg = styled.div`
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 4vmin;
+  font-weight: bold;
+  padding: 0.1vh 1vw;
+  margin-top: 2vh;
+  margin-left: -1vw;
+`
+
+const TimeButton = styled.button`
+  
+`
+
+const TimeButtonList = styled.div`
+  margin-left: 34vw;
+`
 function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,10 +119,12 @@ function HomePage() {
       </NavBlock>
       <HomeBlock>
         <HomeMsg>
-          <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
-          <button onClick={() => handlePeriod(10)}>10분</button>
-          <button onClick={() => handlePeriod(60)}>60분</button>
-          <button onClick={() => handlePeriod(180)}>180분</button>
+          <WordCloudMsg>지난 {period}분간 가장 뜨거운 코인입니다</WordCloudMsg>
+          <TimeButtonList>
+            <TimeButton onClick={() => handlePeriod(10)}>10분</TimeButton>
+            <TimeButton onClick={() => handlePeriod(60)}>60분</TimeButton>
+            <TimeButton onClick={() => handlePeriod(180)}>180분</TimeButton>
+          </TimeButtonList>
         </HomeMsg>
         <Cloud>
           <WordCloudBlock>
