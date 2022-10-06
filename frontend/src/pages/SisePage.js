@@ -99,7 +99,7 @@ const AutoSearch = styled.div`
   border-bottom-right-radius: 10px;
   background-color: #f0f6fc;
   position: absolute;
-  top: 19.2vh;
+  top: 19vh;
   left: 16.5vw;
   z-index: 100;
 `;
@@ -225,6 +225,11 @@ const ChangeChartBtn = styled.div`
   align-items: center;
   cursor: pointer;
   /* border: 3px yellow solid; */
+  /* color:white; */
+  /* border-radius: 5px; */
+  /* margin-left: 0.5vw; */
+  /* margin-right: 0.5vw; */
+  /* background-color: #061e8c; */
   font-size: 2.5vmin;
   width: 7vw;
   height: 5vh;
@@ -247,14 +252,17 @@ const CoinDealButton = styled.div`
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 15px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
 `;
 const NewsItem = styled.div`
   margin-left: 1vw;
   font-size: 13px;
   width: 28vw;
-  padding-left: 0.5vw;
-  padding-right: 0.5vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
   /* border: 2px solid black; */
   border-radius: 20px;
   background-color: white;

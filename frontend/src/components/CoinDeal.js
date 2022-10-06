@@ -64,6 +64,9 @@ const BottomButton = styled.div`
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
   /* border: 2px solid black; */
 `;
@@ -117,12 +120,12 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
   const handleDeal = function (e) {
     e.preventDefault();
     const { CoinAmount, CoinName, CoinCode, CoinPrice } = dealForm;
-    if (CoinAmount*CoinPrice < 5000) {
+    if (CoinAmount * CoinPrice < 5000) {
       Swal.fire({
-        icon: 'warning',
-        title: '5000원 이상만 거래 가능합니다'
-      })
-      return
+        icon: "warning",
+        title: "5000원 이상만 거래 가능합니다",
+      });
+      return;
     }
     let body = {};
     if (deal === "sell") {
