@@ -28,6 +28,8 @@ const LogoAndName = styled.div`
 const CoinLogo = styled.div`
   width: 10vmin;
   height: 10vmin;
+  /* max-width: 10vmin;
+  max-height: 10vmin; */
   /* border: 3px solid grey; */
 `;
 const CoinName = styled.div`
@@ -117,9 +119,9 @@ function CoinSummary({ socketData, detailCoinData }) {
         <CoinName>{detailCoinData.name}</CoinName>
         {/* <LikeButton> */}
         {isLikedCoin ? (
-          <EmptyButton onClick={handleLikeDelete}></EmptyButton>
+          <FullButton onClick={handleLikeDelete}></FullButton>
         ) : (
-          <FullButton onClick={handleLike}></FullButton>
+          <EmptyButton onClick={handleLike}></EmptyButton>
         )}
       </LogoAndName>
 
