@@ -1,8 +1,10 @@
 package bigdataproject.backend.api.service;
 
+import bigdataproject.backend.db.WebClient.WordCountDTO;
+
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 
 public interface SparkService {
-    Map<String, Long> getCount(LocalDateTime ldt, LocalDateTime now, int cnt);
+    List<WordCountDTO> getCount(LocalDateTime ldt, LocalDateTime now, int cnt);
 }

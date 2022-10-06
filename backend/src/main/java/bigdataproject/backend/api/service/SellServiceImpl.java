@@ -35,25 +35,6 @@ public class SellServiceImpl implements SellService{
     @Transactional
     public SellRes postSellRecord(User user, SellReq sellReq) {
 
-        Sell newSell = Sell.builder()
-                .user(user)
-                .sellCoinName(sellReq.getSellCoinName())
-                .sellCoinCode(sellReq.getSellCoinCode())
-                .sellCoinAmount(sellReq.getSellCoinAmount())
-                .sellCoinPrice(sellReq.getSellCoinPrice())
-                .build();
-        sellRepository.save(newSell);
-
-        History history = History.builder()
-                .user(user)
-                .historyCoinName(sellReq.getSellCoinName())
-                .historyCoinCode(sellReq.getSellCoinCode())
-                .historyCoinAmount(sellReq.getSellCoinAmount())
-                .historyCoinPrice(sellReq.getSellCoinPrice())
-                .historyType(HistoryType.SELL)
-                .build();
-        historyRepository.save(history);
-
         Wallet wallet = walletRepository.findWalletUserCoin(
                 user,
                 sellReq.getSellCoinName()
@@ -73,6 +54,24 @@ public class SellServiceImpl implements SellService{
                 walletRepository.save(wallet);
             }
         }
+        Sell newSell = Sell.builder()
+                .user(user)
+                .sellCoinName(sellReq.getSellCoinName())
+                .sellCoinCode(sellReq.getSellCoinCode())
+                .sellCoinAmount(sellReq.getSellCoinAmount())
+                .sellCoinPrice(sellReq.getSellCoinPrice())
+                .build();
+        sellRepository.save(newSell);
+
+        History history = History.builder()
+                .user(user)
+                .historyCoinName(sellReq.getSellCoinName())
+                .historyCoinCode(sellReq.getSellCoinCode())
+                .historyCoinAmount(sellReq.getSellCoinAmount())
+                .historyCoinPrice(sellReq.getSellCoinPrice())
+                .historyType(HistoryType.SELL)
+                .build();
+        historyRepository.save(history);
 
         SellRes sellRes = SellRes.of(newSell);
 

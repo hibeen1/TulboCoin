@@ -73,6 +73,11 @@ public class LikeController {
 
         LikeCoinRes res = likeService.postLikeCoin(user, coinReq);
 
+        if (res == null){
+            status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<BaseResponseBody>(BaseResponseBody.of(400, "없는 코인이름입니다"), status);
+        }
+
         status = HttpStatus.OK;
         return new ResponseEntity<LikeCoinRes>(res, status);
     }
