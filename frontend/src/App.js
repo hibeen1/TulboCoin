@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import SisePage from './pages/SisePage';
 import HonorPage from './pages/HonorPage';
-import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import MypagePage from './pages/MypagePage'
 import HomePage from './pages/HomePage';
@@ -23,9 +22,8 @@ function App() {
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path='/home' element={<HomePage />} />
-      <Route path='/sise' element={<SisePage />} />
+      <Route path='/exchange' element={<SisePage />} />
       <Route path='/honor' element={<HonorPage />} />
-      <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/mypage' element={<MypagePage />} />
     </Routes>
