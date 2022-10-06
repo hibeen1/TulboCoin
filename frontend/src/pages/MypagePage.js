@@ -17,6 +17,8 @@ import CustomTable from "../components/CustomTable";
 import BlueCoin from "../media/images/icons/BlueCoin.png";
 import buy from "../media/images/buy.png";
 import sell from "../media/images/sell.png";
+import ReactTooltip from "react-tooltip";
+
 const MyPageBlock = styled.div`
   display: flex;
 `;
@@ -556,7 +558,10 @@ function MypagePage() {
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
                 <div>
-                  <p>잔고 : {user.balance.toLocaleString('ko-KR')} 원</p>
+                  <p data-for="balance" data-tip>
+                    잔고 : {user.balance} 원
+                    <ReactTooltip id="balance" getContent={dataTip => "현재 보유하고 있는 현금"} />
+                    </p>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -566,7 +571,10 @@ function MypagePage() {
               <CashBlock>
                 <TulboCoinImg></TulboCoinImg>
                 <div>
-                  <p>자산 : {cash.toLocaleString('ko-KR')} 원</p>
+                  <p data-for="assets" data-tip>
+                    자산 : {cash} 원
+                    <ReactTooltip id="assets" getContent={dataTip => "현재 코인과 현금의 총합"} />
+                    </p>
                 </div>
               </CashBlock>
             </BalanceMsg>
