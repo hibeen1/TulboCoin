@@ -5,6 +5,7 @@ import { selectCoin, selectNews } from "../store/coin";
 import { newsAsync } from "../store/coinSaga";
 import CoinDeal from "../components/CoinDeal";
 import Slider from "react-slick";
+import Swal from 'sweetalert2'
 import CustomTable from "../components/CustomTable";
 import CoinSummary from "../components/CoinSummary";
 import CoinChart from "../components/CoinChart";
@@ -76,7 +77,7 @@ const CoinSearchBar = styled.input`
   font-size: 25px;
 `;
 // 검색 버튼
-const BlueSearchButton = styled.div`
+const BlueSearchButton = styled.button`
   width: 6vmin;
   height: 6vmin;
   display: flex;
@@ -262,7 +263,7 @@ function Sise() {
           return {
             name: tmp,
             code: coin.code,
-            volume: coin.acc_trade_price_24h,
+            volume: coin.acc_trade_price_24h.toLocaleString('ko-KR'),
           };
         });
         newData.sort(function (a, b) {
@@ -372,7 +373,10 @@ function Sise() {
       selectDetailCoin({ name: targetWord.korean_name, code: targetWord.market });
       setSearchWord("");
     } else {
-      alert("코인 이름이 이상한데요?");
+      Swal.fire({
+        text: "코인 이름이 이상한데요?",
+        icon: 'warning',
+      })
       return;
     }
   };

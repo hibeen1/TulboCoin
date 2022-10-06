@@ -2,7 +2,6 @@ import { useEffect, useMemo, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { historyAsync, rankingAsync } from "../store/accountSaga";
 import { useSelector } from "react-redux";
-import MaterialReactTable from "material-react-table";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { fetchOtherUser } from "../store/account";
@@ -409,7 +408,7 @@ function Honor() {
                         </td>
                         <td className="HistoryCoin">{history.historyCoinName}</td>
                         <td className="HistoryAmount">{history.historyCoinAmount}</td>
-                        <td className="HistoryPrice">{history.historyCoinPrice}</td>
+                        <td className="HistoryPrice">{history.historyCoinPrice.toLocaleString('ko-KR')}</td>
                         <td className="HistoryType">{history.historyType}</td>
                       </tr>
                     ))}
@@ -447,7 +446,7 @@ function Honor() {
                   <tr key={rank.user.userId}>
                     <td className="RankIdx">{idx + 1} 등</td>
                     <td className="RankUser">{rank.user.userId}</td>
-                    <td className="RankBalance">{rank.expectedBalance}</td>
+                    <td className="RankBalance">{rank.expectedBalance.toLocaleString('ko-KR')}</td>
                     {/* <td className="RankPercent">{rank.percent}%</td> */}
                     <td className="RankPercent">{rank.percent.toFixed(2)}%</td>
                     <td className="RankHistory">
@@ -459,21 +458,6 @@ function Honor() {
             </table>
           </RankingTable>
           {/* {rankinglist && <CustomTable data={rankinglist} columns={customcolumns} />} */}
-          {/* {rankinglist && (
-            <MaterialReactTable
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: (event) => onClickToggleModal(row.original),
-              })}
-              columns={columns}
-              data={rankinglist}
-              enableFullScreenToggle={false}
-              enableGlobalFilter={false} //turn off a feature
-              enableDensityToggle={false}
-              enableHiding={false}
-              enablePagination={false}
-              initialState={{ density: "compact" }}
-            />
-          )} */}
         </HonorBlock>
       </HonorPageBlock>
     </>

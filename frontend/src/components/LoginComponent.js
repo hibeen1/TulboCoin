@@ -5,6 +5,7 @@ import { loginAsync } from "../store/accountSaga";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 import logo from "../media/images/TulboCoin.png"
 
 const LoginPageBlock = styled.div`
@@ -124,10 +125,16 @@ function LoginComponent() {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     if (!loginForm.userId) {
-      alert('아이디를 입력했나요?')
+      Swal.fire({
+        icon: 'error',
+        text: '아이디를 입력했나요?'
+      })
       return
     } else if (!loginForm.password) {
-      alert('비밀번호를 입력했나요?')
+      Swal.fire({
+        icon: 'error',
+        text: '비밀번호를 입력했나요?'
+      })
       return
     }
     dispatch(loginAsync(loginForm));

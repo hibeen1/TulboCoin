@@ -2,6 +2,7 @@ import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { buyApi, sellApi, newsApi, wordCloudApi } from "./api";
 import { fetchWalletAsync, fetchUserAsync } from "./accountSaga";
 import { selectNews, wordCloud } from "./coin";
+import Swal from 'sweetalert2'
 const BUY_ASYNC = "BUY_ASYNC";
 const SELL_ASYNC = "SELL_ASYNC";
 const NEWS_ASYNC = "NEWS_ASYNC";
@@ -14,12 +15,20 @@ export const wordCouldAsync = (body) => ({ type: WORDCOULD_ASYNC, meta: body });
 
 function* buySaga(action) {
   const body = action.meta;
-  console.log("body", body);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1000,
+  })
   try {
     const response = yield call(buyApi, body);
     if (response.status === 200) {
-      yield put(fetchUserAsync());
-      yield delay(fetchWalletAsync(), 500);
+      yield 
+      Toast.fire({
+        icon: 'success',
+        title: '구매 성공'
+      })
     }
   } catch (error) {
     console.log(error);
@@ -27,10 +36,19 @@ function* buySaga(action) {
 }
 function* sellSaga(action) {
   const body = action.meta;
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1000,
+  })
   try {
     const response = yield call(sellApi, body);
     if (response.status === 200) {
-      console.log("매도 성공???", response.data);
+      yield Toast.fire({
+        icon: 'success',
+        title: '판매 성공'
+      })
     }
   } catch (error) {
     console.log(error);
@@ -42,7 +60,6 @@ function* newsSaga(action) {
     const response = yield call(newsApi, body);
     if (response.status === 200) {
       yield put(selectNews(response.data));
-      console.log("성공");
     }
   } catch (error) {
     console.log(error);
@@ -54,10 +71,9 @@ function* wordCouldSaga(action) {
     const response = yield call(wordCloudApi, body);
     if (response.status === 200) {
       yield put(wordCloud(response.data));
-      console.log("워드 클라우드 성공", response.data);
     }
   } catch (error) {
-    console.log("여기 에러?", error);
+    console.log(error);
   }
 }
 export function* coinSaga() {

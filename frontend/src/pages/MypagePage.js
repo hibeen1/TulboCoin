@@ -6,6 +6,7 @@ import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
 import Navbar from "../components/Navbar";
 import ChangeMyInfoModal from "../components/ChangeMyInfoModal";
+import Swal from 'sweetalert2'
 import styled from "styled-components";
 import GreySetting from "../media/images/icons/GreySetting.png";
 import BlueSetting from "../media/images/icons/BlueSetting.png";
@@ -376,7 +377,24 @@ function MypagePage() {
   const [data, setData] = useState(null);
   const [cash, setCash] = useState(0);
   const handleBalanceReset = () => {
-    dispatch(resetWalletAsync());
+    Swal.fire({
+      title: '투자 초기화',
+      text: "지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네!!!!',
+      cancelButtonText: '아니요',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(resetWalletAsync());
+      } else {
+        Swal.fire({
+          text: "휴 당신은 털보와 함께한 시간을 버릴뻔 했습니다",
+        })
+      }
+    })
   };
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
@@ -400,11 +418,11 @@ function MypagePage() {
             name: `${tmp.coinName}(${coin.code})`,
             code: coin.code,
             amount: tmp.coinAmount,
-            average: tmp.coinAverage,
+            average: tmp.coinAverage.toLocaleString('ko-KR'),
             percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
           };
         });
-        setCash(newCash);
+        setCash(newCash.toLocaleString('ko-KR'));
         setData(newData);
       } catch (e) {
         setCash(0);
@@ -556,7 +574,7 @@ function MypagePage() {
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
                 <div>
-                  <p>잔고 : {user.balance} 원</p>
+                  <p>잔고 : {user.balance.toLocaleString('ko-KR')} 원</p>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -566,7 +584,7 @@ function MypagePage() {
               <CashBlock>
                 <TulboCoinImg></TulboCoinImg>
                 <div>
-                  <p>자산 : {cash} 원</p>
+                  <p>자산 : {cash.toLocaleString('ko-KR')} 원</p>
                 </div>
               </CashBlock>
             </BalanceMsg>
