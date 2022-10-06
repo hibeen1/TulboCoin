@@ -237,9 +237,11 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
             <BottomButton>
               <button onClick={handlePageToForm}>닫기</button>
               <button>수정하기</button>
-              <button onClick={handleDelete}>회원탈퇴</button>
             </BottomButton>
           </form>
+          <BottomButton>
+            <button onClick={handleDelete}>회원탈퇴</button>
+          </BottomButton>
         </StyledModal>
       </StyledModalDiv>
     </>

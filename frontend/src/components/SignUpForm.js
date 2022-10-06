@@ -118,7 +118,7 @@ function SignupForm() {
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate('/sise', true)
+      navigate('/home', true)
     }
   }, [isLoggedin])
 
