@@ -183,6 +183,7 @@ function HomePage() {
       <HomeBlock>
         <HomeMsg>
           <WordCloudMsg><div style={{marginTop: '0.5vh'}}>지난</div> <span style={{fontSize:'7vmin'}}>{period}</span>분간 가장 뜨거운 코인입니다</WordCloudMsg>
+          <br></br>
           <StyledSpan>거래 횟수가 많은 코인이 더 크게 보입니다</StyledSpan><br />
           <StyledSpan>코인을 선택해 코인의 정보를 알아보세요</StyledSpan>
           <TimeButtonList>
