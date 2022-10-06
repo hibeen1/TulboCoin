@@ -1,4 +1,4 @@
-import { call, delay, put, takeLatest } from "redux-saga/effects";
+import { call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { buyApi, sellApi, newsApi, wordCloudApi } from "./api";
 import { fetchWalletAsync, fetchUserAsync } from "./accountSaga";
 import { selectNews, wordCloud } from "./coin";
@@ -85,8 +85,8 @@ function* wordCouldSaga(action) {
   }
 }
 export function* coinSaga() {
-  yield takeLatest(BUY_ASYNC, buySaga);
-  yield takeLatest(SELL_ASYNC, sellSaga);
+  yield takeEvery(BUY_ASYNC, buySaga);
+  yield takeEvery(SELL_ASYNC, sellSaga);
   yield takeLatest(NEWS_ASYNC, newsSaga);
   yield takeLatest(WORDCOULD_ASYNC, wordCouldSaga);
 }

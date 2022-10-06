@@ -1,14 +1,7 @@
-import { useState, useEffect } from "react";
+import { memo } from "react";
 import CustomTableDetail from "./CustomTableDetail";
 
 function CustomTable({ tableStyle, columnStyle, data, columns, rowFunction }) {
-  const [customData, setCustomData] = useState();
-  const [customColumns, setCustomColumns] = useState();
-
-  useEffect(() => {
-    setCustomColumns(columns);
-    setCustomData(data);
-  }, [data]);
 
   const propRowFunction = (row) => {
     if (rowFunction) {
@@ -19,10 +12,10 @@ function CustomTable({ tableStyle, columnStyle, data, columns, rowFunction }) {
   }
 
   return <>
-  {customData &&
-    <CustomTableDetail tableStyle={tableStyle} columnStyle={columnStyle} data={customData} columns={customColumns} propRowFunction={propRowFunction} />
+  {data &&
+    <CustomTableDetail tableStyle={tableStyle} columnStyle={columnStyle} data={data} columns={columns} propRowFunction={propRowFunction} />
   }
   </>
 }
 
-export default CustomTable;
+export default memo(CustomTable);
