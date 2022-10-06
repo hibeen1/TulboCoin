@@ -40,7 +40,9 @@
 
 ### Tech
 
-- 
+- Hadoop 3.2.3
+- Spark 3.1.3
+
 
 ### CI/CD
 
