@@ -149,7 +149,7 @@ function CoinSummary({ socketData, detailCoinData }) {
           />
           {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
           {targetSocketData.signed_change_price > 0 ? "+" : null}
-          {targetSocketData.signed_change_price}
+          {targetSocketData.signed_change_price.toLocaleString("ko-KR")} 원
         </div>
         {targetSocketData.trade_price && (
           <>

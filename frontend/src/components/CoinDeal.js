@@ -164,14 +164,14 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                     <label>
                       {wallet &&
                         wallet.map((coin) =>
-                          coin.coinName === detailCoinData.name ? coin.coinAmount : null
+                          coin.coinName === detailCoinData.name ? coin.coinAmount.toLocaleString("ko-KR") : null
                         )}
                     </label>
                   </div>
                   <br />
                   <div>
-                    <label>판매가격(KRW) : </label>
-                    <label>{targetSocketData.trade_price}</label>
+                    <label>판매가격(KRW)</label> <br />
+                    <label>{targetSocketData.trade_price.toLocaleString("ko-KR")}</label>
                   </div>
                   <br />
                   <InputBlock>
@@ -189,7 +189,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                   <div>
                     <div htmlFor="sellCoinPrice">판매총액</div>
                     <div id="CoinPrice" name="CoinPrice" onChange={handleChange}>
-                      {dealForm.CoinAmount * targetSocketData.trade_price}
+                      {(dealForm.CoinAmount * targetSocketData.trade_price).toLocaleString("ko-KR")}
                     </div>
                   </div>
                   <BottomButton>
@@ -201,12 +201,12 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                 <>
                   <div>
                     <label>주문가능 : </label>
-                    <label>{user.balance}KRW</label>
+                    <label>{user.balance.toLocaleString("ko-KR")}KRW</label>
                   </div>
                   <br />
                   <div>
-                    <label>매수가격(KRW) : </label>
-                    <label>{targetSocketData.trade_price}</label>
+                    <label>매수가격(KRW)</label> <br />
+                    <label>{targetSocketData.trade_price.toLocaleString("ko-KR")}</label>
                   </div>
                   <br />
                   <InputBlock>
@@ -224,7 +224,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                   <div>
                     <div htmlFor="CoinPrice">주문총액</div>
                     <div id="CoinPrice" name="CoinPrice" onChange={handleChange}>
-                      {dealForm.CoinAmount * targetSocketData.trade_price}
+                      {(dealForm.CoinAmount * targetSocketData.trade_price).toLocaleString("ko-KR")}
                     </div>
                     <BottomButton>
                       <button onClick={modalClose}>닫기</button>
