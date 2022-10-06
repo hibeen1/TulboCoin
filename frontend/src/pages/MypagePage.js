@@ -30,16 +30,13 @@ const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
 `;
 
 const MyBlock = styled.div`
   background-color: #f3f3f3;
-  /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
   flex-direction: column;
 `;
@@ -129,7 +126,8 @@ const BalanceRefreshBtn = styled.button`
   height: 3vh;
   background: url(${GreyRefresh}) no-repeat center;
   background-size: 1.5vw 3vh;
-  margin-left: 3vw;
+  margin-left: 1vw;
+  margin-bottom: 1.5vh;
   /* display: inline; */
   /* border: 3px black solid; */
   :hover {
@@ -144,8 +142,9 @@ const EmptySpace = styled.div`
   height: 3vh;
   /* background: url(${GreyRefresh}) no-repeat center; */
   background-size: 1.5vw 3vh;
-  margin-left: 3vw;
+  margin-left: 1vw;
   /* display: inline; */
+  /* border: solid 1px red; */
   
 `
 //  원그래프 블럭
@@ -217,7 +216,7 @@ const GreetingProfitMsg = styled.div`
   font-weight: bold;
   padding: 0.1vh 1vw;
 `;
-
+// email
 const EmailMsg = styled.div`
   width: 20vw;
   height: 100%;
@@ -324,7 +323,7 @@ const MyCoinMsg = styled.div`
 `;
 const MyHistoryMsg = styled.div`
   width: 30vw;
-  height: 5vh;
+  height: 2.9vh;
   padding-top: 1vh;
   padding-bottom: 1vh;
   /* border: 2px solid black; */
@@ -558,7 +557,7 @@ function MypagePage() {
       },
       {
         name: "historyCoinName", //simple recommended way to define a column
-        header: "이름",
+        header: "코인 이름",
         columnStyle: {
           textAlign: "center",
           width: "10vw",
@@ -642,7 +641,7 @@ function MypagePage() {
               <MoneyBlock></MoneyBlock>
                 <div>
                   <BalanceText data-for="assets" data-tip>
-                    총 평가 금액 : {cash} 원
+                    전체 평가 금액 : {cash.toLocaleString("ko-KR")} 원
                     <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
                     </BalanceText>
                 </div>

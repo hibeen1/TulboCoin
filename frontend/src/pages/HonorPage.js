@@ -13,11 +13,14 @@ import { nodeName } from "jquery";
 import CustomTable from "../components/CustomTable";
 import click from "../media/images/click.png";
 import clickhover from "../media/images/clickhover.png";
+import SellImage from "../media/images/sell.png"
+import BuyImage from "../media/images/buy.png"
+
 // import Carousel from "../components/Carousel";
 
 const HonorPageBlock = styled.div`
   display: flex;
-  overflow: hidden;
+  /* overflow: hidden; */
 `;
 
 const NavBlock = styled.div`
@@ -30,7 +33,7 @@ const NavBlock = styled.div`
 const HonorBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  width: 94vw;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -79,8 +82,9 @@ const RankingTable = styled.div`
   /* border: 2px solid red; */
   margin-left: 3vmax;
   margin-right: 3vmax;
+  margin-top: -2vh;
   /* width: auto; */
-  height: 34.9vh;
+  height: 31vh;
   justify-content: center;
   text-align: center;
   overflow: scroll;
@@ -212,6 +216,7 @@ const ProfileBlock = styled.div`
     /* border: solid black 3px; */
   }
 `;
+// 명예의 전당입니다. 고수들의 픽을 확인하세요
 const GreetingMsg = styled.div`
   width: 50vw;
   height: 100%;
@@ -247,6 +252,34 @@ const ModalButton = styled.div`
   }
 `;
 
+const RankMsg = styled.div`
+  width: 20vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vmin;
+`;
+
+const BuyImg = styled.div`
+  /* background: url(${BuyImage}) center no-repeat; */
+  width: 2.5vw;
+  height: 1.5vh;
+  /* background-size: 2.5vw 1.5vh; */
+  color: blue;
+  margin-left: 2.2vw;
+`
+
+const SellImg = styled.div`
+  /* background: url(${SellImage}) center no-repeat; */
+  width: 2.5vw;
+  height: 1.5vh;
+  /* background-size: 2.5vw 1.5vh;
+   */
+  color: red;
+  margin-left: 2.4vw;
+`
+
 function Honor() {
   useEffect(() => {
     dispatch(rankingAsync());
@@ -254,7 +287,7 @@ function Honor() {
   const dispatch = useDispatch();
   const rankinglist = useSelector((state) => state.account.rankinglist);
   // const otheruser = useSelector((state) => state.account.otheruser);
-  const historylist = useSelector((state) => state.account.historylist);
+  const historylist = useSelector((state) => state.account.historylist)
   const user = JSON.parse(useSelector((state) => state.account.user));
   // function selectUser(data) {
   //   dispatch(fetchOtherUser(data));
@@ -281,6 +314,17 @@ function Honor() {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: false,
+    appendDots: dots => (
+      <div
+        style={{
+          borderRadius: "10px",
+          padding: "0px",
+          marginBottom: "4vh"
+        }}
+      >
+        <ul style={{ margin: "0px" }}> {dots} </ul>
+      </div>
+    ),
   };
   const customcolumns = useMemo(
     () => [
@@ -345,9 +389,9 @@ function Honor() {
               {rankinglist.map(
                 (data, idx) =>
                   data.user.userId === user.userId && (
-                    <div>
+                    <RankMsg>
                       {user.userId}님은 {idx + 1} 등입니다.
-                    </div>
+                    </RankMsg>
                   )
               )}
             </RankAlram>
@@ -368,10 +412,10 @@ function Honor() {
                       </RankingProfile>
                       <div>
                         <h1 className="RankItem">{idx + 1} 등</h1>
-                        <h1 className="RankItem">{data.user.userId}</h1>
-                        <h2 className="RankItem">수익률 : {data.percent.toFixed(2)}%</h2>
-                        <h2 className="RankItem">
-                          가입날짜 : {data.user.investStartTime.substring(0, 10)} <></>
+                        <h1 className="RankItem" style={{fontSize: '35px', color:"#061e8c"}}>{data.user.userId}</h1>
+                        <h2 className="RankItem" style={{fontWeight: 'normal'}}>수익률 : {data.percent.toFixed(2)}%</h2>
+                        <h2 className="RankItem" style={{fontWeight: 'normal'}}>
+                          투자시작날짜 : {data.user.investStartTime.substring(0, 10)} <></>
                           {/* {data.user.investStartTime.substring(11, 16)} */}
                         </h2>
                       </div>
@@ -397,9 +441,9 @@ function Honor() {
                 <table>
                   <thead>
                     <tr>
-                      <th className="HistoryDay">날짜</th>
+                      <th className="HistoryDay">거래 날짜</th>
                       <th className="HistoryCoin">코인 이름</th>
-                      <th className="HistoryAmount">양</th>
+                      <th className="HistoryAmount">수량</th>
                       <th className="HistoryPrice">가격</th>
                       <th className="HistoryType">타입</th>
                     </tr>
@@ -416,7 +460,12 @@ function Honor() {
                         <td className="HistoryPrice">
                           {history.historyCoinPrice.toLocaleString("ko-KR")}
                         </td>
-                        <td className="HistoryType">{history.historyType}</td>
+                        <td className="HistoryType">
+                          {history.historyType === 'BUY' ? 
+                            <><BuyImg>BUY</BuyImg></>
+                          : <><SellImg>SELL</SellImg></>
+                          }
+                        </td>
                       </tr>
                     ))}
                   </tbody>
