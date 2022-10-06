@@ -20,6 +20,7 @@ import BlueCoin from "../media/images/icons/BlueCoin.png";
 import buy from "../media/images/buy.png";
 import sell from "../media/images/sell.png";
 import ReactTooltip from "react-tooltip";
+import MoneyImg from "../media/images/MoneyImg.png";
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -100,11 +101,19 @@ const CashBlock = styled.div`
   align-items: center;
 `;
 const PiggyBankImg = styled.div`
-  width: 8.5vmin;
-  height: 8.5vmin;
+  width: 10vw;
+  height: 8vh;
   background: url(${PiggyBank}) no-repeat center;
   background-size: 8.5vmin 8.5vmin;
-  margin-left: 1vw;
+  /* margin-right: 1vw; */
+`;
+
+const MoneyBlock = styled.div`
+  width: 10vw;
+  height: 8vh;
+  background: url(${MoneyImg}) no-repeat center;
+  background-size: 8.5vmin 8.5vmin;
+  /* margin-right: 1vw; */
 `;
 
 const TulboCoinImg = styled.div`
@@ -116,12 +125,12 @@ const TulboCoinImg = styled.div`
 `;
 
 const BalanceRefreshBtn = styled.button`
-  width: 1.5vmin;
-  height: 2vmin;
+  width: 1.5vw;
+  height: 3vh;
   background: url(${GreyRefresh}) no-repeat center;
   background-size: 1.5vw 3vh;
   margin-left: 3vw;
-  display: inline;
+  /* display: inline; */
   /* border: 3px black solid; */
   :hover {
     /* background: url(${BlueRefresh}) center no-repeat;
@@ -129,6 +138,16 @@ const BalanceRefreshBtn = styled.button`
     transform: scale(1.1);
   }
 `;
+
+const EmptySpace = styled.div`
+  width: 1.5vw;
+  height: 3vh;
+  /* background: url(${GreyRefresh}) no-repeat center; */
+  background-size: 1.5vw 3vh;
+  margin-left: 3vw;
+  /* display: inline; */
+  
+`
 //  원그래프 블럭
 const GraphBlock = styled.div`
   background-color: #ffffff;
@@ -341,6 +360,11 @@ const MyHistoryBlock = styled.div`
   }
 `;
 
+const BalanceText = styled.div`
+font-size: 20px;
+  
+`
+
 function MypagePage() {
   const tableStyle = { tableStyle: { backgroundColor: "red" }, theadStyle: {} };
   const dispatch = useDispatch();
@@ -367,13 +391,13 @@ function MypagePage() {
         return {
           ...ele,
           historyTime: ele.historyTime.substring(0, 10) + " " + ele.historyTime.substring(11, 16),
-          historyType: <img src={buy} alt="" width="100%" height="100%" />,
+          historyType: <img src={buy} alt="" width="60%" height="60%" />,
         };
       } else {
         return {
           ...ele,
           historyTime: ele.historyTime.substring(0, 10) + " " + ele.historyTime.substring(11, 16),
-          historyType: <img src={sell} alt="" width="100%" height="100%" />,
+          historyType: <img src={sell} alt="" width="60%" height="60%" />,
         };
       }
     });
@@ -530,6 +554,7 @@ function MypagePage() {
         header: "거래종류",
         columnStyle: {
           width: "5vw",
+          paddingLeft: "2.5vw",
           justifyContent: "center",
         },
       },
@@ -537,7 +562,8 @@ function MypagePage() {
     []
   );
 
-  return (
+  return (<>
+  
     <MyPageBlock>
       <NavBlock>
         <Navbar></Navbar>
@@ -568,13 +594,13 @@ function MypagePage() {
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
                 <div>
-                  <p data-for="balance" data-tip>
+                  <BalanceText data-for="balance" data-tip>
                     잔고 : {user.balance} 원
                     <ReactTooltip
                       id="balance"
                       getContent={(dataTip) => "현재 보유하고 있는 현금"}
                     />
-                  </p>
+                  </BalanceText>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -582,12 +608,15 @@ function MypagePage() {
                 </div>
               </CashBlock>
               <CashBlock>
-                <TulboCoinImg></TulboCoinImg>
+              <MoneyBlock></MoneyBlock>
                 <div>
-                  <p data-for="assets" data-tip>
+                  <BalanceText data-for="assets" data-tip>
                     자산 : {cash} 원
                     <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
-                    </p>
+                    </BalanceText>
+                </div>
+                <div>
+                  <EmptySpace onClick={handleBalanceReset}></EmptySpace>
                 </div>
               </CashBlock>
             </BalanceMsg>
@@ -631,6 +660,6 @@ function MypagePage() {
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>
-  );
+    </>);
 }
 export default MypagePage;
