@@ -15,7 +15,7 @@ const StyledImg = styled.img`
 
 const StyledModal = styled.div`
   padding: 3vmin;
-  width: 40vw;
+  width: 30vw;
   height: 65vh;
   position: fixed;
   top: 50%;
@@ -49,7 +49,7 @@ const ProfileChangeHeadMsg = styled.div`
 `;
 
 const ProfileImageSelect = styled.div`
-  width: 35vw;
+  width: 25vw;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -64,10 +64,11 @@ const BottomButton = styled.div`
   height: 5vh;
   justify-content: center;
   align-items: center;
-  padding-top: 10vh;
+  padding-top: 1vh;
   button {
-    width: 5vw;
-    height: 4vh;
+    margin: 1vmin;
+    width: 7vw;
+    height: 4.5vh;
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
@@ -76,7 +77,7 @@ const BottomButton = styled.div`
 `;
 const ErrorMsg = styled.div`
   color: red;
-  margin-left: 4vw;
+  margin-left: 5vw;
 `;
 const EmailChangeMsg = styled.div`
   display: flex;
@@ -84,8 +85,10 @@ const EmailChangeMsg = styled.div`
   align-items: center;
   height: 5vh;
   button {
+    /* justify-content: center;
+    align-items: center; */
     width: 5vw;
-    height: 3vh;
+    height: 4vh;
     padding: 0;
     border-radius: 5px;
     margin: 2vw;
@@ -93,11 +96,15 @@ const EmailChangeMsg = styled.div`
     font-size: 15px;
   }
   input {
+    width: 15vw;
     height: 3vh;
-    margin-left: 1vw;
+    /* margin-left: 1vw; */
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
+  }
+  label {
+    width: 5vw;
   }
 `;
 function ChangeMyInfoModal({ user, handlePageToForm }) {
@@ -208,14 +215,14 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
             <EmailChangeMsg>
               <label htmlFor="email">이메일 : </label>
               <input type="text" name="email" value={form.email} onChange={handleForm} />
-              <button>수정하기</button>
             </EmailChangeMsg>
             <ErrorMsg>{error.email && <p>{error.email}</p>}</ErrorMsg>
+            <BottomButton>
+              <button onClick={handlePageToForm}>닫기</button>
+              <button>수정하기</button>
+              <button onClick={handleDelete}>회원탈퇴</button>
+            </BottomButton>
           </form>
-          <BottomButton>
-            <button onClick={handlePageToForm}>취소</button>
-            <button onClick={handleDelete}>회원탈퇴</button>
-          </BottomButton>
         </StyledModal>
       </StyledModalDiv>
     </>

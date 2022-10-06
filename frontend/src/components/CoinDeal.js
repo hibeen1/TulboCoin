@@ -58,7 +58,7 @@ const BottomButton = styled.div`
   padding-top: 2vh;
   button {
     width: 5vw;
-    height: 4vh;
+    height: 5vh;
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
@@ -179,7 +179,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                     </div>
                   </div>
                   <BottomButton>
-                    <button onClick={modalClose}>X</button>
+                    <button onClick={modalClose}>닫기</button>
                     <button>매도</button>
                   </BottomButton>
                 </>
@@ -211,7 +211,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                       {dealForm.CoinAmount * targetSocketData.trade_price}
                     </div>
                     <BottomButton>
-                      <button onClick={modalClose}>X</button>
+                      <button onClick={modalClose}>닫기</button>
                       <button>매수</button>
                     </BottomButton>
                   </div>

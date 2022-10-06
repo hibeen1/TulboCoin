@@ -234,11 +234,11 @@ const ModalButton = styled.div`
   justify-content: center;
   button {
     width: 5vw;
-    height: 4vh;
+    height: 5vh;
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
-    margin: 0;
+    margin: 2vh;
     padding: 0;
   }
 `;
@@ -425,7 +425,7 @@ function Honor() {
                     }
                   }}
                 >
-                  X
+                  닫기
                 </button>
               </ModalButton>
             </Modal>
