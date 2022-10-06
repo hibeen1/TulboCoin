@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../store/accountSaga";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Swal from 'sweetalert2'
 import styled from "styled-components";
 import GreyHome from "../media/images/icons/GreyHome.png";
 import BlueHome from "../media/images/icons/BlueHome.png";
@@ -14,7 +16,6 @@ import BlueSetting from "../media/images/icons/BlueSetting.png";
 import GreyPerson from "../media/images/icons/GreyPerson.png";
 import BluePerson from "../media/images/icons/BluePerson.png";
 import Exit from "../media/images/icons/Exit.png";
-import { useEffect } from "react";
 
 const NavBlock = styled.div`
   width: 4vw;
@@ -100,7 +101,7 @@ const LoginOutItem = styled.div`
   background: url(${Exit}) center no-repeat;
   background-size: 7vmin 7vmin;
   /* border: solid red 3px; */
-  margin-top: 23vh;
+  margin-top: 35vh;
   margin-left: -0.3vw;
   cursor: pointer;
   &:hover {
@@ -115,12 +116,27 @@ function Navbar() {
     isLoggedin: state.account.isLoggedin,
   }));
   const navigate = useNavigate();
-
   // useDispatch 는 리덕스 스토어의 dispatch 를 함수에서 사용 할 수 있게 해주는 Hook 입니다.
   const dispatch = useDispatch();
   // 각 액션들을 디스패치하는 함수들을 만드세요
   const onLogout = () => {
-    dispatch(logoutAsync());
+    Swal.fire({
+      title: "정말로 로그아웃 하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네!!!!",
+      cancelButtonText: "아니요",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(logoutAsync());
+      } else {
+        Swal.fire({
+          text: "휴 당신이 방금 로그아웃 하는 줄 알았습니다",
+        });
+      }
+    });
   };
 
   useEffect(() => {

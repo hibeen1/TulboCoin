@@ -78,7 +78,7 @@ const CoinSearchBar = styled.input`
   font-size: 25px;
 `;
 const AutoSearch = styled.div`
-  width: 65.3vw;
+  width: 65.2vw;
   max-height: 40vh;
   overflow: auto;
   &::-webkit-scrollbar {
@@ -98,8 +98,8 @@ const AutoSearch = styled.div`
   border-bottom-right-radius: 10px;
   background-color: #f0f6fc;
   position: absolute;
-  top: 19vh;
-  left: 16.5vw;
+  top: 18.1vh;
+  left: 15.7vw;
   z-index: 100;
 `;
 // 검색 버튼

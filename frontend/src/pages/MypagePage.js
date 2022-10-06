@@ -474,30 +474,6 @@ function MypagePage() {
     }
   }
 
-  // useEffect(() => {
-  //   if (socketData && wallet) {
-  //     try {
-  //       let newCash = 0;
-  //       const newData = socketData.map((coin) => {
-  //         const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
-  //         newCash += coin.trade_price * tmp.coinAmount;
-  //         return {
-  //           name: tmp.coinName,
-  //           code: coin.code,
-  //           amount: tmp.coinAmount.toLocaleString("ko-KR"),
-  //           average: tmp.coinAverage.toLocaleString("ko-KR"),
-  //           percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
-  //         };
-  //       });
-  //       setCash(newCash.toLocaleString("ko-KR"));
-  //       setData(newData)
-  //     } catch (e) {
-  //       setCash(0);
-  //       setData(null);
-  //     }
-  //   }
-  // }, [socketData, wallet]);
-
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
     navigate("/exchange");
@@ -623,15 +599,17 @@ function MypagePage() {
             <BalanceMsg>
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
-                <div>
-                  <BalanceText data-for="balance" data-tip>
-                    보유 현금 자산 : {user.balance.toLocaleString("ko-KR")} 원
-                    <ReactTooltip
-                      id="balance"
-                      getContent={(dataTip) => "현재 보유하고 있는 현금"}
-                    />
-                  </BalanceText>
-                </div>
+                {user.balance &&
+                  <div>
+                    <BalanceText data-for="balance" data-tip>
+                      보유 현금 자산 : {user.balance.toLocaleString("ko-KR")} 원
+                      <ReactTooltip
+                        id="balance"
+                        getContent={(dataTip) => "현재 보유하고 있는 현금"}
+                      />
+                    </BalanceText>
+                  </div>
+                }
                 {/* 잔액 초기화 버튼 */}
                 <div>
                   <BalanceRefreshBtn onClick={handleBalanceReset}></BalanceRefreshBtn>
