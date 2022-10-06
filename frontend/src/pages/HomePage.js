@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import WordCloud from "../utils/WordCloud";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import { wordCouldAsync } from "../store/coinSaga";
@@ -62,6 +62,7 @@ function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const isLoggedin = useSelector(state => state.account.isLoggedin)
+  const [ period, setPeriod ] = useState(10)
   useEffect(() => {
     if (!isLoggedin) {
       navigate('/')
@@ -69,8 +70,12 @@ function HomePage() {
   }, [])
 
   useEffect(() => {
-    dispatch(wordCouldAsync(10));
-  }, []);
+    dispatch(wordCouldAsync(period));
+  }, [period]);
+
+  const handlePeriod = (period) => {
+    setPeriod(period)
+  }
 
   return (
     <HomePageBlock>
@@ -78,10 +83,10 @@ function HomePage() {
         <Navbar></Navbar>
       </NavBlock>
       <HomeBlock>
-        {/* <h1>워드클라우드 및 소개 페이지입니다</h1> */}
-
-        {/* {selectedWordCloud.map(data => data.entrise)} */}
-        {/* {worldcloudlist.map((data) => data && <div>{data.key}</div>)} */}
+        <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
+        <button onClick={() => handlePeriod(10)}>10</button>
+        <button onClick={() => handlePeriod(60)}>60</button>
+        <button onClick={() => handlePeriod(180)}>180</button>
         <Cloud>
           <WordCloudBlock>
             <WordCloud></WordCloud>
