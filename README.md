@@ -56,7 +56,11 @@
 
 ###  Frontend
 
-- 
+- ReactJs : 18.2.0
+- React-Redux : 8.0.2
+- Redux-Saga : 1.2.1
+- Nodejs: 16.16.0
+- Use-Upbit-Api : 1.1.3
 
 ### Tech
 
@@ -202,3 +206,4 @@
 - ![image-20221006121139307](README.assets/image-20221006121139307.png)
 
 - 첫번째 숫자가 PID이다.
+
