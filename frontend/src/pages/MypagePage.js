@@ -18,6 +18,8 @@ import CustomTable from "../components/CustomTable";
 import BlueCoin from "../media/images/icons/BlueCoin.png";
 import buy from "../media/images/buy.png";
 import sell from "../media/images/sell.png";
+import ReactTooltip from "react-tooltip";
+
 const MyPageBlock = styled.div`
   display: flex;
 `;
@@ -62,6 +64,7 @@ const StyledImg = styled.img`
 
 const WalletBlock = styled.div`
   /* border: solid red 3px; */
+  margin-bottom: 4vh;
   width: 91vw;
   height: 41vh;
   display: flex;
@@ -157,6 +160,7 @@ const GraphBackground = styled.div`
   align-items: center;
   width: 40vw;
   height: 40vh;
+  margin-right: 3vw;
   /* border: 2px solid red; */
   background-color: #d0e8fa;
   border-radius: 20px;
@@ -305,6 +309,7 @@ const MyHistoryMsg = styled.div`
   font-size: 20px;
 `;
 const MyHistoryBlock = styled.div`
+  margin-right: 3vw;
   width: 40vw;
   padding-top: 3vh;
   display: flex;
@@ -560,13 +565,7 @@ function MypagePage() {
             />
           </ProfileImg>
         </ProfileBlock>
-        <div>
-          <GreetingProfitMsg>
-            <br />
-            {/* {user.userId}님의 수익률은 현재{" "}
-            {(((user.balance + cash - 10000000) / 10000000) * 100).toFixed(2)}%입니다 */}
-          </GreetingProfitMsg>
-        </div>
+        <br />
 
         <BalanceAndGraphBlock>
           <BalanceBackGround>
@@ -574,7 +573,10 @@ function MypagePage() {
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
                 <div>
-                  <p>잔고 : {user.balance.toLocaleString('ko-KR')} 원</p>
+                  <p data-for="balance" data-tip>
+                    잔고 : {user.balance} 원
+                    <ReactTooltip id="balance" getContent={dataTip => "현재 보유하고 있는 현금"} />
+                    </p>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -584,7 +586,10 @@ function MypagePage() {
               <CashBlock>
                 <TulboCoinImg></TulboCoinImg>
                 <div>
-                  <p>자산 : {cash.toLocaleString('ko-KR')} 원</p>
+                  <p data-for="assets" data-tip>
+                    자산 : {cash} 원
+                    <ReactTooltip id="assets" getContent={dataTip => "현재 코인과 현금의 총합"} />
+                    </p>
                 </div>
               </CashBlock>
             </BalanceMsg>

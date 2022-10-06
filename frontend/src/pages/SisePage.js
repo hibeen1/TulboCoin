@@ -190,7 +190,7 @@ const ChangeChartBtn = styled.div`
   align-items: center;
   cursor: pointer;
   /* border: 3px yellow solid; */
-  font-size: 2vmin;
+  font-size: 3vmin;
   width: 7vw;
   height: 5vh;
 `;
@@ -214,7 +214,8 @@ const CoinDealButton = styled.div`
 `;
 const NewsItem = styled.div`
   /* margin-left: 1vw; */
-  width: 25vw;
+  font-size: 13px;
+  width: 28vw;
   padding-left: 2vw;
 `;
 const NewsMsg = styled.div`
@@ -302,7 +303,7 @@ function Sise() {
 
   useEffect(() => {
     dispatch(newsAsync(selectedCoin.name));
-    setWhatTable('name')
+    setWhatTable("name");
   }, []);
 
   // 테이블 컬럼
@@ -481,9 +482,10 @@ function Sise() {
                     return (
                       <div>
                         <NewsItem>
-                          <p>{news.title}</p>
+                          <a href={news.link}>{news.title}</a>
+                          {/* <p>{news.title}</p> */}
                           <p>{news.description}</p>
-                          <a href={news.link}>링크</a>
+                          {/* <a href={news.link}>링크</a> */}
                         </NewsItem>
                       </div>
                     );

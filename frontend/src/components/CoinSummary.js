@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { coinLikeAsync, coinLikeDeleteAsync } from "../store/accountSaga";
 import EmptyHeart from "../media/images/icons/Heart.png";
 import FullHeart from "../media/images/icons/darkHeart.png";
+import ReactTooltip from "react-tooltip";
+
 const WholeCoinChartBlock = styled.div`
   width: 25vw;
   height: 40vh;
@@ -28,6 +30,8 @@ const LogoAndName = styled.div`
 const CoinLogo = styled.div`
   width: 10vmin;
   height: 10vmin;
+  /* max-width: 10vmin;
+  max-height: 10vmin; */
   /* border: 3px solid grey; */
 `;
 const CoinName = styled.div`
@@ -117,28 +121,38 @@ function CoinSummary({ socketData, detailCoinData }) {
         <CoinName>{detailCoinData.name}</CoinName>
         {/* <LikeButton> */}
         {isLikedCoin ? (
-          <EmptyButton onClick={handleLikeDelete}></EmptyButton>
+          <FullButton onClick={handleLikeDelete}></FullButton>
         ) : (
-          <FullButton onClick={handleLike}></FullButton>
+          <EmptyButton onClick={handleLike}></EmptyButton>
         )}
       </LogoAndName>
       
       <CoinDetails>
-        전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
-        {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
-        {targetSocketData.signed_change_price > 0 ? "+" : null}
-        {targetSocketData.signed_change_price}
-        {targetSocketData.trade_price &&
-          <>
-            <p>현재가 : {targetSocketData.trade_price.toLocaleString('ko-KR')} KRW</p>
-            <p>고가 : {targetSocketData.high_price.toLocaleString('ko-KR')} KRW</p>
-            <p>저가 : {targetSocketData.low_price.toLocaleString('ko-KR')} KRW</p>
-            <p>거래대금 : {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString('ko-KR')} KRW</p>
-            <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
-          </>
-        }
+        <div data-for="difYesterday" data-tip>
+          전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
+          <ReactTooltip id="difYesterday" getContent={dataTip => "어제의 가격과 비교하여 차이나는 정도"} />
+          {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
+          {targetSocketData.signed_change_price > 0 ? "+" : null}
+          {targetSocketData.signed_change_price}
+        </div>
+        <p data-for="highPrice" data-tip>
+          고가 : {targetSocketData.high_price.toLocaleString('ko-KR')}
+          <ReactTooltip id="highPrice" getContent={dataTip => "하루 중 가장 높은 가격을 뜻하는 용어"} />
+
+        </p>
+        <p data-for="lowPrice" data-tip>
+          저가 : {targetSocketData.low_price.toLocaleString('ko-KR')}
+          <ReactTooltip id="lowPrice" getContent={dataTip => "하루 중 가장 낮은 가격을 뜻하는 용어"} />
+        </p>
+        <p data-for="tradeAmount" data-tip>
+          거래대금 : {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString('ko-KR')}
+          <ReactTooltip id="tradeAmount" getContent={dataTip => "하루동안 거래된 금액의 양"} />
+        </p>
+        <p data-for="tradeCoinAmount" data-tip>
+          거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}
+          <ReactTooltip id="tradeCoinAmount" getContent={dataTip => "하루동안 거래된 코인의 수량"} />
+        </p>
       </CoinDetails>
-      
     </WholeCoinChartBlock>
   );
 }
