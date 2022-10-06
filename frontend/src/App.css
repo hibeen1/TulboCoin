@@ -9,3 +9,6 @@ body {
   font-family: "Jua", sans-serif;
   overflow: hidden;
 }
+.swal-button {
+  height: 100px;
+}

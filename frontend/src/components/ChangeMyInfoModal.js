@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUserAsync, putUserAsync } from "../store/accountSaga";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import styled from "styled-components";
 
 const StyledImg = styled.img`
@@ -16,8 +16,8 @@ const StyledImg = styled.img`
 
 const StyledModal = styled.div`
   padding: 3vmin;
-  width: 30vw;
-  height: 65vh;
+  width: 40vw;
+  height: 80vh;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -32,6 +32,7 @@ const StyledModalDiv = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: 100;
   background-color: rgba(0, 0, 0, 0.4);
 `;
 const ProfileChangeHeadMsg = styled.div`
@@ -50,7 +51,7 @@ const ProfileChangeHeadMsg = styled.div`
 `;
 
 const ProfileImageSelect = styled.div`
-  width: 25vw;
+  width: 35vw;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -65,6 +66,7 @@ const BottomButton = styled.div`
   height: 5vh;
   justify-content: center;
   align-items: center;
+  margin-top: 3vh;
   padding-top: 1vh;
   button {
     margin: 1vmin;
@@ -97,7 +99,7 @@ const EmailChangeMsg = styled.div`
     font-size: 15px;
   }
   input {
-    width: 15vw;
+    width: 25vw;
     height: 3vh;
     /* margin-left: 1vw; */
     border-radius: 5px;
@@ -180,22 +182,22 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
 
   const handleDelete = () => {
     Swal.fire({
-      title: '정말로 회원탈퇴 하시겠습니까?',
-      icon: 'warning',
+      title: "정말로 회원탈퇴 하시겠습니까?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네!!!!',
-      cancelButtonText: '아니요',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네!!!!",
+      cancelButtonText: "아니요",
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteUserAsync());
       } else {
         Swal.fire({
           text: "휴 당신이 방금 털보를 배신하는 줄 알았습니다",
-        })
+        });
       }
-      })
+    });
   };
 
   return (
@@ -235,11 +237,13 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
             </EmailChangeMsg>
             <ErrorMsg>{error.email && <p>{error.email}</p>}</ErrorMsg>
             <BottomButton>
-              <button onClick={handlePageToForm}>닫기</button>
               <button>수정하기</button>
-              <button onClick={handleDelete}>회원탈퇴</button>
             </BottomButton>
           </form>
+          <BottomButton>
+            <button onClick={handlePageToForm}>닫기</button>
+            <button onClick={handleDelete}>회원탈퇴</button>
+          </BottomButton>
         </StyledModal>
       </StyledModalDiv>
     </>

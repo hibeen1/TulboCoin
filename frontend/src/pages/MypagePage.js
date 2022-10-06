@@ -6,7 +6,7 @@ import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
 import Navbar from "../components/Navbar";
 import ChangeMyInfoModal from "../components/ChangeMyInfoModal";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import styled from "styled-components";
 import GreySetting from "../media/images/icons/GreySetting.png";
 import BlueSetting from "../media/images/icons/BlueSetting.png";
@@ -227,6 +227,9 @@ const SettingButton = styled.div`
   justify-content: end;
   align-items: center;
   padding: 0.1vh 1vw;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 // 회원정보 수정하기 버튼
@@ -271,6 +274,9 @@ const MyCoinBlock = styled.div`
   /* padding-left: 1vw; */
   overflow: auto;
   margin-left: 3vw;
+  :hover {
+    cursor: pointer;
+  }
   &::-webkit-scrollbar {
     width: 10px;
     border-radius: 5px;
@@ -383,23 +389,23 @@ function MypagePage() {
   const [cash, setCash] = useState(0);
   const handleBalanceReset = () => {
     Swal.fire({
-      title: '투자 초기화',
+      title: "투자 초기화",
       text: "지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '네!!!!',
-      cancelButtonText: '아니요',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네!!!!",
+      cancelButtonText: "아니요",
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(resetWalletAsync());
       } else {
         Swal.fire({
           text: "휴 당신은 털보와 함께한 시간을 버릴뻔 했습니다",
-        })
+        });
       }
-    })
+    });
   };
 
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
@@ -423,11 +429,11 @@ function MypagePage() {
             name: `${tmp.coinName}(${coin.code})`,
             code: coin.code,
             amount: tmp.coinAmount,
-            average: tmp.coinAverage.toLocaleString('ko-KR'),
+            average: tmp.coinAverage.toLocaleString("ko-KR"),
             percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
           };
         });
-        setCash(newCash.toLocaleString('ko-KR'));
+        setCash(newCash.toLocaleString("ko-KR"));
         setData(newData);
       } catch (e) {
         setCash(0);
@@ -575,8 +581,11 @@ function MypagePage() {
                 <div>
                   <p data-for="balance" data-tip>
                     잔고 : {user.balance} 원
-                    <ReactTooltip id="balance" getContent={dataTip => "현재 보유하고 있는 현금"} />
-                    </p>
+                    <ReactTooltip
+                      id="balance"
+                      getContent={(dataTip) => "현재 보유하고 있는 현금"}
+                    />
+                  </p>
                 </div>
                 {/* 잔액 초기화 버튼 */}
                 <div>
@@ -588,8 +597,8 @@ function MypagePage() {
                 <div>
                   <p data-for="assets" data-tip>
                     자산 : {cash} 원
-                    <ReactTooltip id="assets" getContent={dataTip => "현재 코인과 현금의 총합"} />
-                    </p>
+                    <ReactTooltip id="assets" getContent={(dataTip) => "현재 코인과 현금의 총합"} />
+                  </p>
                 </div>
               </CashBlock>
             </BalanceMsg>

@@ -7,12 +7,12 @@ import styled from "styled-components";
 const StyledModal = styled.div`
   width: 35vw;
   height: 62%;
-  position: absolute;
+  position: relative;
   top: 50%;
-  left: 30%;
+  left: 50%;
   transform: translate(-50%, -50%);
   /* background-color: gray; */
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 8px;
   background-color: white;
   z-index: 100;
@@ -22,6 +22,7 @@ const StyledModalDiv = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
+  z-index: 100;
 `;
 const StyledModalBlock = styled.div`
   padding: 5vmin;
