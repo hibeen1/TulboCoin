@@ -39,10 +39,12 @@ const StyledInput = styled.input`
 const StyledButton = styled.button`
   border-radius: 40px;
   height: 6vh;
-  width: 18vw;
+  width: 15vw;
   font-size: 3vmin;
   padding-bottom: 0;
   margin-top: 4vh;
+  margin-left: 0.5vw;
+  font-family: "Jua", sans-serif;
 
   color: #ffffff;
   background-color: #3a53c0;
@@ -118,7 +120,7 @@ function SignupForm() {
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate('/sise', true)
+      navigate('/home', true)
     }
   }, [isLoggedin])
 
@@ -243,11 +245,12 @@ function SignupForm() {
           {error.password && <p>{error.password}</p>}
           {error.passwordCheck && <p>{error.passwordCheck}</p>}
         </ErrorBlock>
+        <Link to="/" style={{ textDecoration: 'none', marginLeft: '0.8vw'}}><StyledText>나는 이미 계정이 있어요!!</StyledText></Link>
         <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
         </StyledContext>
       </form>
       
-      <Link to="/" style={{ textDecoration: 'none' }}><StyledText>나는 이미 계정이 있어요!!</StyledText></Link>
+
 
     </SignUpPageBlock>
   </>
