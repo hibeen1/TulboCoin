@@ -25,14 +25,11 @@ public class SparkServiceImpl implements SparkService {
         Map<String, Long> wordCounts = new HashMap<>();
         Map<String, Long> coinNameCounts = new HashMap<>();
         JavaRDD<String> coinMap = null;
+        String pwd = "/home/ubuntu/COININFO/";
         int testCnt = 0;
         while (true) {
             cnt -= 1;
-
             if (cnt < 0) {
-                System.out.println("finished");
-                System.out.println("비교" + ldt);
-                System.out.println("현재" + now);
                 wordCounts = coinMap.countByValue();
                 List<WordCountDTO> countDTOList = new ArrayList<>();
 
@@ -58,15 +55,9 @@ public class SparkServiceImpl implements SparkService {
             String hour = String.format("%02d", ldt.getHour());
             String minute = String.valueOf(ldt.getMinute() - (ldt.getMinute() % 10));
 
-
-            System.out.println("=============================================================================================");
-            System.out.println(ldt);
             ldt = ldt.plusMinutes(10);
-            System.out.println(ldt);
-            System.out.println("=============================================================================================");
 
             StringBuilder sb = new StringBuilder();
-            String pwd = "/home/ubuntu/COININFO/";
             sb.append(pwd);
             sb.append(year);
             sb.append("/");
@@ -89,9 +80,8 @@ public class SparkServiceImpl implements SparkService {
                 coinMap = testSplit.map(s -> s[1]);
                 continue;
             }
-            coinMap.union(testSplit.map(s -> s[1]));
+            coinMap = coinMap.union(testSplit.map(s -> s[1]));
 //            JavaRDD<Double> testMap = testSplit.map(s -> Double.parseDouble(s[6])*Double.parseDouble(s[7]));
-
 
         }
     }
