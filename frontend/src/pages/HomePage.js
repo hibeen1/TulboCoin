@@ -27,10 +27,8 @@ const HomeBlock = styled.div`
   background-color: #f3f3f3;
 
   /* border: solid black 3px; */
-  width: 94vw;
+  width: 93.5vw;
   height: 100vh;
-  /* position: relative; */
-  /* display: flex; */
 `;
 
 const FirstPageBoard = styled.div`
@@ -39,29 +37,29 @@ const FirstPageBoard = styled.div`
   /* color: white; */
   background-color: #c9c9c9;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const SecondPageBoard = styled.div`
   width: 94vw;
   height: 100vh;
   background-color: #2a3da7;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const ThirdPageBoard = styled.div`
   width: 94vw;
   height: 100vh;
   /* color: white; */
   background-color: #c9c9c9;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const Cloud = styled.div`
   background: url(${CloudImg}) no-repeat center;
@@ -157,11 +155,6 @@ background-size: 91vmin 84vmin;
   
 `
 
-
-
-
-
-
 function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -186,7 +179,7 @@ function HomePage() {
       <NavBlock>
         <Navbar></Navbar>
       </NavBlock>
-      <div style={{display:'flex', flexDirection:'column'}}>
+      <div style={{display:'flex', flexDirection:'column', alignItems: "flex-end" }}>
       <HomeBlock>
         <HomeMsg>
           <WordCloudMsg><div style={{marginTop: '0.5vh'}}>지난</div> <span style={{fontSize:'7vmin'}}>{period}</span>분간 가장 뜨거운 코인입니다</WordCloudMsg>
@@ -208,6 +201,7 @@ function HomePage() {
         <FirstPageBoard><FirstImgBlock></FirstImgBlock></FirstPageBoard>
         <SecondPageBoard><SecondImgBlock></SecondImgBlock></SecondPageBoard>
         <ThirdPageBoard><ThirdImgBlock></ThirdImgBlock></ThirdPageBoard>
+
       </div>
     </HomePageBlock>
   );

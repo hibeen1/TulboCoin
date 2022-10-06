@@ -101,7 +101,7 @@ const LoginOutItem = styled.div`
   background-size: 7vmin 7vmin;
   /* border: solid red 3px; */
   margin-top: 23vh;
-  margin-left:-0.3vw;
+  margin-left: -0.3vw;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
