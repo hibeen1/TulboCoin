@@ -74,15 +74,19 @@ public class SparkServiceImpl implements SparkService {
 //            String filePath = "src/main/resources/40.csv";
 
 
-            JavaRDD<String> testFile = sc.textFile(filePath);
-            JavaRDD<String [] > testSplit = testFile.map(s -> s.split(","));
-            if (coinMap == null) {
-                coinMap = testSplit.map(s -> s[1]);
-                continue;
-            }
-            coinMap = coinMap.union(testSplit.map(s -> s[1]));
-//            JavaRDD<Double> testMap = testSplit.map(s -> Double.parseDouble(s[6])*Double.parseDouble(s[7]));
 
+            try {
+                JavaRDD<String> testFile = sc.textFile(filePath);
+                JavaRDD<String [] > testSplit = testFile.map(s -> s.split(","));
+                if (coinMap == null) {
+                    coinMap = testSplit.map(s -> s[1]);
+                    continue;
+                }
+                coinMap = coinMap.union(testSplit.map(s -> s[1]));
+//            JavaRDD<Double> testMap = testSplit.map(s -> Double.parseDouble(s[6])*Double.parseDouble(s[7]));
+            } catch (Exception e) {
+                return  null;
+            }
         }
     }
 }
