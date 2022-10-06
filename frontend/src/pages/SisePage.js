@@ -5,7 +5,7 @@ import { selectCoin, selectNews } from "../store/coin";
 import { newsAsync } from "../store/coinSaga";
 import CoinDeal from "../components/CoinDeal";
 import Slider from "react-slick";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import CustomTable from "../components/CustomTable";
 import CoinSummary from "../components/CoinSummary";
 import CoinChart from "../components/CoinChart";
@@ -124,7 +124,7 @@ const ChangeChartBtnBlock = styled.div`
   align-items: center;
   /* border: solid blue 3px; */
   flex-direction: row;
-  margin-top: 2vh;
+  margin-bottom: 2vh;
 `;
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
@@ -222,6 +222,7 @@ const NewsMsg = styled.div`
   font-size: 30px;
   margin-left: 2vw;
 `;
+
 function Sise() {
   // fetch all marketcode custom hook
   const { isLoading, marketCodes } = useFetchMarketCode();
@@ -264,7 +265,7 @@ function Sise() {
           return {
             name: tmp,
             code: coin.code,
-            volume: coin.acc_trade_price_24h.toLocaleString('ko-KR'),
+            volume: coin.acc_trade_price_24h.toLocaleString("ko-KR"),
           };
         });
         newData.sort(function (a, b) {
@@ -376,8 +377,8 @@ function Sise() {
     } else {
       Swal.fire({
         text: "코인 이름이 이상한데요?",
-        icon: 'warning',
-      })
+        icon: "warning",
+      });
       return;
     }
   };
