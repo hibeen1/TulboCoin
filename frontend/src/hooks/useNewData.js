@@ -8,10 +8,9 @@ const useNewData = () => {
   const [timer, setTimer] = useState(false);
   const data = [
     { ticket: "test" },
-    { type: "ticker", codes: [`${selectedCoin}`], isOnlyRealtime: true },
+    { type: "ticker", codes: [`${selectedCoin.code}`], isOnlyRealtime: true },
   ];
   const ws = useRef(null);
-
   useEffect(() => {
     // timer 종료 시 트리거
     if (timer) {

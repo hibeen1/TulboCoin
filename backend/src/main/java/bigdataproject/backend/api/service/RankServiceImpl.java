@@ -5,8 +5,10 @@ import bigdataproject.backend.api.response.UserRes;
 import bigdataproject.backend.api.response.WalletRes;
 import bigdataproject.backend.common.util.Variable;
 import bigdataproject.backend.db.WebClient.RealCoinDTO;
+import bigdataproject.backend.db.entity.Coin;
 import bigdataproject.backend.db.entity.User;
 import bigdataproject.backend.db.entity.Wallet;
+import bigdataproject.backend.db.repository.CoinRepository;
 import bigdataproject.backend.db.repository.UserRepository;
 import bigdataproject.backend.db.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ public class RankServiceImpl implements RankService{
 
     private final WalletRepository walletRepository;
 
+    private final CoinRepository coinRepository;
+
     @Override
     @Transactional
     public List<RankRes> getRankList() {
@@ -43,6 +47,18 @@ public class RankServiceImpl implements RankService{
             if (temp.toString().substring(8, 11).equals("KRW")){
                 String[] values = temp.toString().split(",");
                 String ticker = values[0].substring(8,values[0].length());
+
+                /**여기는 코인 정보 이름, 티커 저장하기 위해서 씀
+                String korName = values[1].substring(13, values[1].length());
+                Coin coin = coinRepository.findByCoinName(korName);
+                if (coin == null){
+                    Coin newCoin = Coin.builder()
+                            .coinName(korName)
+                            .coinCode(ticker)
+                            .build();
+                    coinRepository.save(newCoin);
+                }*/
+
                 tickerList.add(ticker);
             }
         }

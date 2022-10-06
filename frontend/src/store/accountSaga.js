@@ -3,6 +3,7 @@
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
 import { call, delay, put, takeLatest } from "redux-saga/effects";
+import Swal from 'sweetalert2'
 import {
   signupApi,
   fetchUserApi,
@@ -14,6 +15,9 @@ import {
   rankingApi,
   historyApi,
   fetchOtherUserApi,
+  fetchLikedCoinApi,
+  coinLikeApi,
+  coinLikeDeleteApi
 } from "./api";
 import {
   logout,
@@ -24,7 +28,8 @@ import {
   fetchRanking,
   fetchHistory,
   fetchOtherUser,
-  fetchMyHistory
+  fetchMyHistory,
+  fetchLikedCoin
 } from "./account";
 
 // 액션의 타입
@@ -41,6 +46,9 @@ const RANKING_ASYNC = "RANKING_ASYNC";
 const HISTORY_ASYNC = "HISTORY_ASYNC";
 const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
 const FETCH_MY_HISTORY_ASYNC = 'FETCH_MY_HISTORY_ASYNC'
+const FETCH_LIKED_COIN_ASYNC = 'FETCH_LIKED_COIN_ASYNC'
+const COIN_LIKE_ASYNC = 'COIN_LIKE_ASYNC'
+const COIN_LIKE_DELETE_ASYNC = 'COIN_LIKE_DELETE_ASYNC'
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -56,6 +64,11 @@ export const rankingAsync = () => ({ type: RANKING_ASYNC });
 export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
 export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
 export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta:userId})
+export const fetchLikedCoinAsync = () => ({ type: FETCH_LIKED_COIN_ASYNC })
+export const coinLikeAsync = (body) => ({ type: COIN_LIKE_ASYNC, meta: body})
+export const coinLikeDeleteAsync = (body) => ({ type: COIN_LIKE_DELETE_ASYNC, meta: body})
+
+
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
   if (localStorage.token !== undefined) {
@@ -74,10 +87,15 @@ function* loginSaga(action) {
     if (response.status === 200) {
       yield put(token(response.data));
       yield put(fetchWalletAsync());
+      yield put(fetchLikedCoinAsync())
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
-    alert(error.response.data.message)
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
   yield put(catchLogin());
 }
@@ -96,11 +114,18 @@ function* signupSaga(action) {
   try {
     const response = yield call(signupApi, body);
     if (response.status === 200) {
-      yield alert("회원가입 성공");
+      yield Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공!',
+      })
       yield put(loginAsync({userId: body.userId, password: body.password}))
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 회원가입 끝
@@ -112,10 +137,17 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body);
     if (response.status === 200) {
       yield put(fetchUserAsync());
+      yield Swal.fire({
+        icon: 'success',
+        title: '변신 완료!!',
+      })
     }
   } catch (error) {
-    alert(error.response.data.message);
-    // console.log(error)
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 내 정보 수정 끝
@@ -128,56 +160,69 @@ function* fetchUserSaga() {
       yield put(fetchUser(response.data));
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 내 정보 받아오기 끝
 
 // 회원탈퇴
 function* deleteUserSaga() {
-  if (window.confirm("정말로 회원탈퇴 하시겠습니까?")) {
-    try {
-      const response = yield call(deleteApi);
-      if (response.status === 200) {
-        yield put(logoutAsync());
-        yield alert("회원탈퇴되었습니다");
+  try {
+    const response = yield call(deleteApi);
+    if (response.status === 200) {
+      yield put(logoutAsync());
+      yield Swal.fire(
+        '탈퇴완료',
+        '회원탈퇴되었습니다',
+        'success'
+        )
       }
-    } catch (error) {
-      alert(error.response.data.message);
-    }
-  } else {
-    alert("휴 당신이 방금 털보를 배신하는 줄 알았습니다");
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 회원탈퇴 끝
-
+  
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
-  console.log("지갑정보 가져오기 작동");
   try {
     const response = yield call(fetchWalletApi);
     if (response.status === 200) {
       yield put(fetchWallet(response.data));
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 지갑 정보 가져오기 끝
 
 // 지갑 리셋
 function* resetWalletSaga() {
-  if (window.confirm("지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)")) {
-    try {
-      const response = yield call(resetWalletApi);
-      if (response.status === 200) {
-        yield delay(fetchWalletAsync(), 1000);
-      }
-    } catch (error) {
-      alert(error.response.data.message);
+  try {
+    const response = yield call(resetWalletApi);
+    if (response.status === 200) {
+      yield put(fetchUserAsync())
+      yield put(fetchWalletAsync())
+      yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
     }
-  } else {
-    alert("휴 당신은 털보와 함께한 시간을 버릴뻔 했습니다");
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 지갑 리셋 끝
@@ -187,7 +232,6 @@ function* rankingSaga() {
     const response = yield call(rankingApi);
     if (response.status === 200) {
       yield put(fetchRanking(response.data));
-      console.log("랭킹들어옴????", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -200,7 +244,6 @@ function* historySaga(action) {
     const response = yield call(historyApi, body);
     if (response.status === 200) {
       yield put(fetchHistory(response.data));
-      console.log("히스토리????", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -213,13 +256,13 @@ function* fetchOtherUserSaga(action) {
     const response = yield call(fetchOtherUserApi, body);
     if (response.status === 200) {
       yield put(fetchOtherUser(response.data));
-      console.log("다른사람정보?????", response.data);
     }
   } catch (error) {
     console.log(error);
   }
 }
 
+// 내 거래기록
 function* fetchMyHistorySaga(action) {
   try{
     const response = yield call(historyApi, action.meta)
@@ -230,6 +273,48 @@ function* fetchMyHistorySaga(action) {
     console.log(error)
   }
 }
+// 내 거래기록 끝
+
+// 관심코인 가져오기
+function* fetchLikedCoinSaga() {
+  try{
+    const response = yield call(fetchLikedCoinApi)
+    if (response.status === 200) {
+      yield put(fetchLikedCoin(response.data))
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 가져오기 끝
+
+// 관심코인 등록
+function* coinLikeSaga(action) {
+  const body = action.meta
+  try{
+    const response = yield call(coinLikeApi, body)
+    if (response.status === 200) {
+      yield put(fetchLikedCoinAsync())
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 등록 끝
+
+// 관심코인 삭제
+function* coinLikedDeleteSaga(action) {
+  const body = action.meta
+  try{
+    const response = yield call(coinLikeDeleteApi, body)
+    if (response.status === 200) {
+      yield put(fetchLikedCoinAsync())
+    }
+  } catch(error) {
+    console.log(error)
+  }
+}
+// 관심코인 삭제 끝
 
 export function* accountSaga() {
   // yield takeEvery(INCREASE_ASYNC, increaseSaga); // 모든 INCREASE_ASYNC 액션을 처리
@@ -246,4 +331,7 @@ export function* accountSaga() {
   yield takeLatest(HISTORY_ASYNC, historySaga); // 지갑 리셋
   yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
   yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga)
+  yield takeLatest(FETCH_LIKED_COIN_ASYNC, fetchLikedCoinSaga)
+  yield takeLatest(COIN_LIKE_ASYNC, coinLikeSaga)
+  yield takeLatest(COIN_LIKE_DELETE_ASYNC, coinLikedDeleteSaga)
 }
