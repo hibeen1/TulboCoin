@@ -24,10 +24,8 @@ const HomeBlock = styled.div`
   background-color: #f3f3f3;
 
   /* border: solid black 3px; */
-  width: 94vw;
+  width: 93.5vw;
   height: 100vh;
-  /* position: relative; */
-  /* display: flex; */
 `;
 
 const FirstPageBoard = styled.div`
@@ -36,29 +34,29 @@ const FirstPageBoard = styled.div`
   color: white;
   background-color: pink;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const SecondPageBoard = styled.div`
   width: 94vw;
   height: 100vh;
   background-color: skyblue;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const ThirdPageBoard = styled.div`
   width: 94vw;
   height: 100vh;
   /* color: white; */
   background-color: #adff45;
 
-  display: flex;   
+  display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const Cloud = styled.div`
   background: url(${CloudImg}) no-repeat center;
@@ -115,16 +113,14 @@ const WordCloudMsg = styled.div`
   padding: 0.1vh 1vw;
   margin-top: 2vh;
   margin-left: -1vw;
-`
+`;
 
-const TimeButton = styled.button`
-  
-`
+const TimeButton = styled.button``;
 
 const TimeButtonList = styled.div`
   margin-left: 34vw;
   margin-bottom: 1vh;
-`
+`;
 function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -149,23 +145,23 @@ function HomePage() {
       <NavBlock>
         <Navbar></Navbar>
       </NavBlock>
-      <div style={{display:'flex', flexDirection:'column'}}>
-      <HomeBlock>
-        <HomeMsg>
-          <WordCloudMsg>지난 {period}분간 가장 뜨거운 코인입니다</WordCloudMsg>
-          <TimeButtonList>
-            <TimeButton onClick={() => handlePeriod(10)}>10분</TimeButton>
-            <TimeButton onClick={() => handlePeriod(60)}>60분</TimeButton>
-            <TimeButton onClick={() => handlePeriod(180)}>180분</TimeButton>
-          </TimeButtonList>
-        </HomeMsg>
-        <Cloud>
-          <WordCloudBlock>
-            <WordCloud></WordCloud>
-          </WordCloudBlock>
-        </Cloud>
-      </HomeBlock>
-      
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+        <HomeBlock>
+          <HomeMsg>
+            <WordCloudMsg>지난 {period}분간 가장 뜨거운 코인입니다</WordCloudMsg>
+            <TimeButtonList>
+              <TimeButton onClick={() => handlePeriod(10)}>10분</TimeButton>
+              <TimeButton onClick={() => handlePeriod(60)}>60분</TimeButton>
+              <TimeButton onClick={() => handlePeriod(180)}>180분</TimeButton>
+            </TimeButtonList>
+          </HomeMsg>
+          <Cloud>
+            <WordCloudBlock>
+              <WordCloud></WordCloud>
+            </WordCloudBlock>
+          </Cloud>
+        </HomeBlock>
+
         <FirstPageBoard></FirstPageBoard>
         <SecondPageBoard></SecondPageBoard>
         <ThirdPageBoard></ThirdPageBoard>

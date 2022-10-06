@@ -76,7 +76,7 @@ const CoinSearchBar = styled.input`
   /* border-radius: 5px; */
   font-family: "Jua", sans-serif;
   font-size: 25px;
-`
+`;
 const AutoSearch = styled.div`
   width: 65.3vw;
   max-height: 40vh;
@@ -221,9 +221,8 @@ const NewsBlock = styled.div`
 const ChangeChartBtn = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   cursor: pointer;
-  :hover{
+  :hover {
     transform: scale(1.1);
   }
   /* border: 3px yellow solid; */
@@ -235,6 +234,9 @@ const ChangeChartBtn = styled.div`
   font-size: 2.5vmin;
   width: 7vw;
   height: 5vh;
+  align-items: center;
+  /* margin-inline: 0.5vw;
+  border-bottom: 2px solid black; */
 `;
 const CoinSummaryDealBlock = styled.div`
   display: flex;
@@ -398,7 +400,7 @@ function Sise() {
 
   const [searchWord, setSearchWord] = useState("");
   const [matchWord, setMatchWord] = useState([]);
-  const [ borderChange, setBorderChange] = useState(false)
+  const [borderChange, setBorderChange] = useState(false);
 
   useEffect(() => {
     if (searchWord) {
@@ -420,9 +422,9 @@ function Sise() {
   };
   useEffect(() => {
     if (matchWord.length > 0) {
-      setBorderChange(true)
-    } else setBorderChange(false)
-  }, [matchWord])
+      setBorderChange(true);
+    } else setBorderChange(false);
+  }, [matchWord]);
 
   const handleSearchForm = (e) => {
     e.preventDefault();
@@ -439,7 +441,6 @@ function Sise() {
     }
   };
 
-
   const handleSearchWordClick = (coin) => {
     selectDetailCoin(coin);
     setSearchWord("");
@@ -454,7 +455,11 @@ function Sise() {
         <SiseBlock>
           <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
           <SearchBlock onSubmit={handleSearchForm}>
-            <CoinSearchBar onChange={handleSearchInput} value={searchWord} borderChange={borderChange} />
+            <CoinSearchBar
+              onChange={handleSearchInput}
+              value={searchWord}
+              borderChange={borderChange}
+            />
             <BlueSearchButton />
             {/* 자동완성으로 추천되는 검색어(코인이름) */}
             {matchWord.length > 0 && (
