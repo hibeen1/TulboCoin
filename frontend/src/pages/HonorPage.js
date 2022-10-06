@@ -230,12 +230,16 @@ const RankAlram = styled.div`
   font-size: 2.5vmin;
 `;
 const ModalButton = styled.div`
-  position: absolute;
-  top: 4.5vh;
-  right: 6vw;
+  display: flex;
+  justify-content: center;
   button {
     width: 5vw;
-    background-color: red;
+    height: 4vh;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -375,21 +379,7 @@ function Honor() {
           )}
           {isOpenModal && (
             <Modal onClickToggleModal={onClickToggleModal}>
-              <h1>
-                {userInformation.user.userId}{" "}
-                <ModalButton>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (onClickToggleModal) {
-                        onClickToggleModal();
-                      }
-                    }}
-                  >
-                    X
-                  </button>
-                </ModalButton>
-              </h1>
+              <h1>{userInformation.user.userId} </h1>
               <h1>
                 <img
                   src={`${process.env.PUBLIC_URL}/profile/profile${userInformation.user.imagePath}.png`}
@@ -419,13 +409,25 @@ function Honor() {
                         </td>
                         <td className="HistoryCoin">{history.historyCoinName}</td>
                         <td className="HistoryAmount">{history.historyCoinAmount}</td>
-                        <td className="HistoryPrice">{history.historyCoinPrice}</td>
+                        <td className="HistoryPrice">{history.historyCoinPrice.toLocaleString('ko-KR')}</td>
                         <td className="HistoryType">{history.historyType}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </RankingModalTable>
+              <ModalButton>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onClickToggleModal) {
+                      onClickToggleModal();
+                    }
+                  }}
+                >
+                  X
+                </button>
+              </ModalButton>
             </Modal>
           )}
           <br />
@@ -445,7 +447,7 @@ function Honor() {
                   <tr key={rank.user.userId}>
                     <td className="RankIdx">{idx + 1} 등</td>
                     <td className="RankUser">{rank.user.userId}</td>
-                    <td className="RankBalance">{rank.expectedBalance}</td>
+                    <td className="RankBalance">{rank.expectedBalance.toLocaleString('ko-KR')}</td>
                     {/* <td className="RankPercent">{rank.percent}%</td> */}
                     <td className="RankPercent">{rank.percent.toFixed(2)}%</td>
                     <td className="RankHistory">

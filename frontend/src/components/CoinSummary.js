@@ -10,10 +10,11 @@ import ReactTooltip from "react-tooltip";
 
 const WholeCoinChartBlock = styled.div`
   width: 25vw;
-  height: 55vh;
+  height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1vw;
   /* border: solid skyblue 3px; */
   flex-direction: column;
 `;

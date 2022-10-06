@@ -1,32 +1,31 @@
 import { TagCloud } from "react-tagcloud";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useFetchMarketCode } from "use-upbit-api";
+import { selectCoin } from "../store/coin";
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
 
 const WordCloudBlock = styled.div``;
 
 function WordCloud() {
-  // const data = [
-  //   { value: 'jQuery', count: 250 },
-  //   { value: 'MongoDB', count: 180 },
-  //   { value: 'JavaScript', count: 380 },
-  //   { value: 'React', count: 300 },
-  //   { value: 'Nodejs', count: 280 },
-  //   { value: 'Express.js', count: 250 },
-  //   { value: 'HTML5', count: 330 },
-  //   { value: 'CSS3', count: 200 },
-  //   { value: 'Webpack', count: 220 },
-  //   { value: 'Babel.js', count: 70 },
-  //   { value: 'ECMAScript', count: 250 },
-  //   { value: 'Jest', count: 150 },
-  //   { value: 'Mocha', count: 170 },
-  //   { value: 'React Native', count: 270 },
-  //   { value: 'Angular.js', count: 300 },
-  //   { value: 'TypeScript', count: 150 },
-  //   { value: 'Flow', count: 300 },
-  //   { value: 'NPM', count: 11 },
-  //   { value: 'Flow', count: 300 },
-  //   { value: 'NPM', count: 11 },
-  // ]
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { isLoading, marketCodes } = useFetchMarketCode();
+  const [targetMarketCode, setTargetMarketCode] = useState([]);
+  useEffect(() => {
+    // 변경시 호출
+    if (!isLoading && marketCodes) {
+      setTargetMarketCode(marketCodes.filter((ele) => ele.market.includes("KRW")));
+    }
+    // 2번째 인자 [isLoading, marketCodes]  -> 상태변경을 감지할 애들
+  }, [isLoading, marketCodes]);
+
+  const handleClickTag = (tag) => {
+    const [coin] = targetMarketCode.filter(ele => ele.korean_name===tag.value)
+    dispatch(selectCoin({name: coin.korean_name, code: coin.market}))
+    navigate('/sise')
+  }
 
   const options = {
     // luminosity: 'light',
@@ -40,7 +39,7 @@ function WordCloud() {
       maxSize={90}
       colorOptions={options}
       tags={data}
-      onClick={(tag) => alert(`'${tag.value}'가 선택되었습니다`)}
+      onClick={(tag) => handleClickTag(tag)}
       style={{ width: 800, textAlign: "center" }}
       className="myTagCloud"
     />

@@ -204,13 +204,13 @@ const EmailMsg = styled.div`
   font-size: 3vmin;
 `;
 const ProfileImg = styled.div`
-width: 5vw; 
-height: 100%;
-display: flex;
-justify-content: end;
-align-items: center; 
-padding: 0.1vh 1vw;
-`
+  width: 5vw;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0.1vh 1vw;
+`;
 
 // 회원정보 수정하기 버튼
 const SettingButton = styled.div`
@@ -218,7 +218,7 @@ const SettingButton = styled.div`
   height: 5vmin;
   background: url(${GreySetting}) no-repeat center;
   background-size: 5vmin 5vmin;
-  width: 15vw; 
+  width: 15vw;
   height: 100%;
   display: flex;
   justify-content: end;
@@ -402,13 +402,11 @@ function MypagePage() {
             name: `${tmp.coinName}(${coin.code})`,
             code: coin.code,
             amount: tmp.coinAmount,
-            average: tmp.coinAverage,
-            percent: `${(
-              (coin.trade_price / tmp.coinAverage - 1) * 100
-            ).toFixed(2)} %`,
+            average: tmp.coinAverage.toLocaleString('ko-KR'),
+            percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
           };
         });
-        setCash(newCash);
+        setCash(newCash.toLocaleString('ko-KR'));
         setData(newData);
       } catch (e) {
         setCash(0);

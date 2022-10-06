@@ -4,25 +4,26 @@ import { deleteUserAsync, putUserAsync } from "../store/accountSaga";
 import styled from "styled-components";
 
 const StyledImg = styled.img`
-  width: 3vw;
-  height: 5vh;
+  width: 5vw;
+  height: 8vh;
   position: fixed;
-  margin-top: 1vh;
-  margin-left: 5vw;
+  /* margin-top: 1vh;
+  margin-left: 5vw; */
   display: inline;
   /* border: 3px red solid; */
 `;
 
 const StyledModal = styled.div`
-  width: 800px;
-  height: auto;
+  padding: 3vmin;
+  width: 40vw;
+  height: 65vh;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   /* background-color: gray; */
-  border: 1px solid black;
-  border-radius: 8px;
+  /* border: 1px solid black; */
+  border-radius: 20px;
   background-color: white;
   z-index: 1000;
 `;
@@ -32,7 +33,73 @@ const StyledModalDiv = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
 `;
+const ProfileChangeHeadMsg = styled.div`
+  /* border: 2px solid black; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    background-color: white;
+    width: 3.5vw;
+    height: 3vh;
+    border: 2px solid red;
+    border-radius: 5px;
+  }
+`;
 
+const ProfileImageSelect = styled.div`
+  width: 35vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 7vh;
+`;
+
+const BottomButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10vh;
+  button {
+    width: 5vw;
+    height: 4vh;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 25px;
+  }
+  /* border: 2px solid black; */
+`;
+const ErrorMsg = styled.div`
+  color: red;
+  margin-left: 4vw;
+`;
+const EmailChangeMsg = styled.div`
+  display: flex;
+  font-size: 20px;
+  align-items: center;
+  height: 5vh;
+  button {
+    width: 5vw;
+    height: 3vh;
+    padding: 0;
+    border-radius: 5px;
+    margin: 2vw;
+    font-family: "Jua", sans-serif;
+    font-size: 15px;
+  }
+  input {
+    height: 3vh;
+    margin-left: 1vw;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 25px;
+  }
+`;
 function ChangeMyInfoModal({ user, handlePageToForm }) {
   const dispatch = useDispatch();
 
@@ -112,34 +179,43 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
       <StyledModalDiv onClick={handlePageToForm}>
         <StyledModal onClick={(e) => e.stopPropagation()}>
           <form onSubmit={handleChangeInfo}>
-            <button onClick={handlePageToForm}>X</button>
-            {imagePath.map((item) => (
-              <p key={item.value}>
-                <label htmlFor={item.name}>
-                  <input
-                    type="radio"
-                    id={item.name}
-                    value={item.value}
-                    name="imagePath"
-                    checked={item.value === form.imagePath}
-                    onChange={handleForm}
-                  />
-                  <StyledImg
-                    src={`${process.env.PUBLIC_URL}/profile/profile${item.value}.png`}
-                    alt={`프로필 이미지${item.value}`}
-                  />
-                </label>
-              </p>
-            ))}
-            <br />
-            <label htmlFor="email">이메일 : </label>
-            <input type="text" name="email" value={form.email} onChange={handleForm} />
-            <br />
-            {error.email && <p>{error.email}</p>}
-            <button>수정하기</button>
+            <ProfileChangeHeadMsg>
+              <h1>프로필변경 페이지 입니다.</h1>
+              {/* <button onClick={handlePageToForm}>X</button> */}
+            </ProfileChangeHeadMsg>
+            <h2>변경할 프로필 사진을 선택하세요.</h2>
+            <ProfileImageSelect>
+              {imagePath.map((item) => (
+                <p key={item.value}>
+                  <label htmlFor={item.name}>
+                    <input
+                      type="radio"
+                      id={item.name}
+                      value={item.value}
+                      name="imagePath"
+                      checked={item.value === form.imagePath}
+                      onChange={handleForm}
+                    />
+                    <StyledImg
+                      src={`${process.env.PUBLIC_URL}/profile/profile${item.value}.png`}
+                      alt={`프로필 이미지${item.value}`}
+                    />
+                  </label>
+                </p>
+              ))}
+            </ProfileImageSelect>
+            <h2>이메일을 변경하세요</h2>
+            <EmailChangeMsg>
+              <label htmlFor="email">이메일 : </label>
+              <input type="text" name="email" value={form.email} onChange={handleForm} />
+              <button>수정하기</button>
+            </EmailChangeMsg>
+            <ErrorMsg>{error.email && <p>{error.email}</p>}</ErrorMsg>
           </form>
-          <button onClick={handlePageToForm}>취소</button>
-          <button onClick={handleDelete}>회원탈퇴</button>
+          <BottomButton>
+            <button onClick={handlePageToForm}>취소</button>
+            <button onClick={handleDelete}>회원탈퇴</button>
+          </BottomButton>
         </StyledModal>
       </StyledModalDiv>
     </>
