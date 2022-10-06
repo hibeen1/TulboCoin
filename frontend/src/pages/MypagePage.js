@@ -230,6 +230,7 @@ const SettingButton = styled.div`
   padding: 0.1vh 1vw;
   :hover {
     cursor: pointer;
+    transform: scale(1.1);
   }
 `;
 
@@ -446,7 +447,7 @@ function MypagePage() {
 
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
-    navigate('/exchange')
+    navigate("/exchange");
   }
 
   const customCoinColumns = useMemo(
@@ -586,8 +587,11 @@ function MypagePage() {
                 <div>
                   <p data-for="assets" data-tip>
                     자산 : {cash} 원
-                    <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
-                    </p>
+                    <ReactTooltip
+                      id="assets"
+                      getContent={(dataTip) => "현재 보유한 코인의 가격 총합"}
+                    />
+                  </p>
                 </div>
               </CashBlock>
             </BalanceMsg>
@@ -610,8 +614,13 @@ function MypagePage() {
             <hr />
             {data && (
               <>
-                <CustomTable data={data} columns={customCoinColumns} rowFunction={(row) => {
-                  selectDetailCoin({ code: row.code, name: row.name });}} />
+                <CustomTable
+                  data={data}
+                  columns={customCoinColumns}
+                  rowFunction={(row) => {
+                    selectDetailCoin({ code: row.code, name: row.name });
+                  }}
+                />
               </>
             )}
           </MyCoinBlock>

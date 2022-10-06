@@ -5,8 +5,8 @@ import { loginAsync } from "../store/accountSaga";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Swal from 'sweetalert2'
-import logo from "../media/images/TulboCoin.png"
+import Swal from "sweetalert2";
+import logo from "../media/images/TulboCoin.png";
 
 const LoginPageBlock = styled.div`
   display: flex;
@@ -23,8 +23,8 @@ const LoginPageBlock = styled.div`
   }
 `;
 
-
 const StyledInput = styled.input`
+  padding-left: 10px;
   border-radius: 40px;
   height: 5vh;
   border: 1px solid #7a7a7a;
@@ -77,17 +77,16 @@ const StyledText = styled.div`
 `;
 
 const LogoBlock = styled.div`
-width: 20vw;
-height: 10vh;
-margin-bottom: 78vh;
-margin-right: 1vw;
-background: url(${logo}) center no-repeat;
-background-size: 20vw 10vh;
-/* border: solid black 5px; */
-display: flex;
-position: absolute;
-  
-`
+  width: 20vw;
+  height: 10vh;
+  margin-bottom: 78vh;
+  margin-right: 1vw;
+  background: url(${logo}) center no-repeat;
+  background-size: 20vw 10vh;
+  /* border: solid black 5px; */
+  display: flex;
+  position: absolute;
+`;
 
 function LoginComponent() {
   // useSelector는 리덕스 스토어의 상태를 조회하는 Hook입니다.
@@ -126,16 +125,16 @@ function LoginComponent() {
     e.preventDefault();
     if (!loginForm.userId) {
       Swal.fire({
-        icon: 'error',
-        text: '아이디를 입력했나요?'
-      })
-      return
+        icon: "error",
+        text: "아이디를 입력했나요?",
+      });
+      return;
     } else if (!loginForm.password) {
       Swal.fire({
-        icon: 'error',
-        text: '비밀번호를 입력했나요?'
-      })
-      return
+        icon: "error",
+        text: "비밀번호를 입력했나요?",
+      });
+      return;
     }
     dispatch(loginAsync(loginForm));
   };
@@ -144,7 +143,6 @@ function LoginComponent() {
       <LoginPageBlock>
         <LogoBlock></LogoBlock>
         {/* <h1>TULBO COIN</h1> */}
-
 
         <form onSubmit={handleOnSubmit}>
           <StyledContext>
@@ -164,9 +162,10 @@ function LoginComponent() {
               <br />
               <br></br>
             </div>
-            
-              <Link to="/signup" style={{ textDecoration: 'none' }}><StyledText>아직 계정이 없나요? </StyledText></Link>
-           
+
+            <Link to="/signup" style={{ textDecoration: "none" }}>
+              <StyledText>아직 계정이 없나요? </StyledText>
+            </Link>
 
             <StyledButton>떠나볼까요?</StyledButton>
           </StyledContext>

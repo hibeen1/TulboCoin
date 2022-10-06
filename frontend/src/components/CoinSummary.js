@@ -51,6 +51,7 @@ const CoinDetails = styled.div`
   height: 45vh;
   /* border: 3px solid navy; */
   font-size: 2.5vmin;
+  font-weight: 130;
   div {
     padding-top: 0.4vw;
   }
@@ -71,6 +72,9 @@ const EmptyButton = styled.div`
   cursor: pointer;
   background: url(${EmptyHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 
 const FullButton = styled.div`
@@ -79,6 +83,9 @@ const FullButton = styled.div`
   cursor: pointer;
   background: url(${FullHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 const HighPriceMsg = styled.div`
   :hover {

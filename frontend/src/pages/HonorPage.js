@@ -141,6 +141,7 @@ const SearchButton = styled.div`
   :hover {
     background: url(${clickhover}) center no-repeat;
     background-size: 4.5vmin 4.5vmin;
+    transform: scale(1.1);
   }
 
   background: url(${click}) center no-repeat;
@@ -240,6 +241,9 @@ const ModalButton = styled.div`
     font-size: 25px;
     margin: 2vh;
     padding: 0;
+    :hover {
+      transform: scale(1.1);
+    }
   }
 `;
 

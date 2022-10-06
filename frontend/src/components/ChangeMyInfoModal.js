@@ -47,6 +47,9 @@ const ProfileChangeHeadMsg = styled.div`
     height: 3vh;
     border: 2px solid red;
     border-radius: 5px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
 `;
 
@@ -75,6 +78,9 @@ const BottomButton = styled.div`
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
   /* border: 2px solid black; */
 `;
@@ -97,6 +103,9 @@ const EmailChangeMsg = styled.div`
     margin: 2vw;
     font-family: "Jua", sans-serif;
     font-size: 15px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
   input {
     width: 25vw;
