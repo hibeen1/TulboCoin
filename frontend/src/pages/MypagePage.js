@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetWalletAsync, fetchMyHistoryAsync } from "../store/accountSaga";
+import { selectCoin } from "../store/coin";
 import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
 import Navbar from "../components/Navbar";
@@ -418,6 +419,7 @@ function MypagePage() {
       setCoinInWallet(tmp);
     }
   }, []);
+
   useEffect(() => {
     if (socketData && wallet) {
       try {
@@ -426,7 +428,7 @@ function MypagePage() {
           const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
           newCash += coin.trade_price * tmp.coinAmount;
           return {
-            name: `${tmp.coinName}(${coin.code})`,
+            name: tmp.coinName,
             code: coin.code,
             amount: tmp.coinAmount,
             average: tmp.coinAverage.toLocaleString("ko-KR"),
@@ -442,6 +444,11 @@ function MypagePage() {
     }
   }, [socketData, wallet]);
 
+  function selectDetailCoin(coin) {
+    dispatch(selectCoin(coin));
+    navigate('/exchange')
+  }
+
   const customCoinColumns = useMemo(
     () => [
       {
@@ -450,8 +457,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "15vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // columnStyle: {}
         // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
@@ -462,8 +467,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
@@ -473,8 +476,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "15vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
@@ -484,8 +485,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
     ],
@@ -500,8 +499,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "14vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -510,8 +507,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "10vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -520,8 +515,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "4vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -530,8 +523,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "8vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -539,8 +530,6 @@ function MypagePage() {
         header: "거래종류",
         columnStyle: {
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
           justifyContent: "center",
         },
       },
@@ -597,8 +586,8 @@ function MypagePage() {
                 <div>
                   <p data-for="assets" data-tip>
                     자산 : {cash} 원
-                    <ReactTooltip id="assets" getContent={(dataTip) => "현재 코인과 현금의 총합"} />
-                  </p>
+                    <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
+                    </p>
                 </div>
               </CashBlock>
             </BalanceMsg>
@@ -616,21 +605,13 @@ function MypagePage() {
         </BalanceAndGraphBlock>
         <br />
         <WalletBlock>
-          {/* <MyCoinBlock>
-            <p>나의 보유 코인</p>
-            <hr />
-            {data && (
-              <>
-                <CustomTable data={data} columns={customCoinColumns} />
-              </>
-            )}
-          </MyCoinBlock> */}
           <MyCoinBlock>
             <MyCoinMsg>나의 보유 코인</MyCoinMsg>
             <hr />
             {data && (
               <>
-                <CustomTable data={data} columns={customCoinColumns} />
+                <CustomTable data={data} columns={customCoinColumns} rowFunction={(row) => {
+                  selectDetailCoin({ code: row.code, name: row.name });}} />
               </>
             )}
           </MyCoinBlock>
@@ -647,19 +628,6 @@ function MypagePage() {
               </>
             )}
           </MyHistoryBlock>
-          {/* <MyHistoryBlock>
-            <p>나의 코인 거래 기록</p>
-            <hr />
-            {myHistory && (
-              <>
-                <CustomTable
-                  tableStyle={tableStyle}
-                  data={historyData}
-                  columns={customHistoryColumns}
-                />
-              </>
-            )}
-          </MyHistoryBlock> */}
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>

@@ -24,7 +24,7 @@ function WordCloud() {
   const handleClickTag = (tag) => {
     const [coin] = targetMarketCode.filter(ele => ele.korean_name===tag.value)
     dispatch(selectCoin({name: coin.korean_name, code: coin.market}))
-    navigate('/sise')
+    navigate('/exchange')
   }
 
   const options = {
