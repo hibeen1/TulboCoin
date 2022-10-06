@@ -3,7 +3,7 @@
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
 import { call, delay, put, takeLatest } from "redux-saga/effects";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import {
   signupApi,
   fetchUserApi,
@@ -17,7 +17,7 @@ import {
   fetchOtherUserApi,
   fetchLikedCoinApi,
   coinLikeApi,
-  coinLikeDeleteApi
+  coinLikeDeleteApi,
 } from "./api";
 import {
   logout,
@@ -29,7 +29,7 @@ import {
   fetchHistory,
   fetchOtherUser,
   fetchMyHistory,
-  fetchLikedCoin
+  fetchLikedCoin,
 } from "./account";
 
 // 액션의 타입
@@ -45,10 +45,10 @@ const RESET_WALLET_ASYNC = "RESET_WALLET_ASYNC";
 const RANKING_ASYNC = "RANKING_ASYNC";
 const HISTORY_ASYNC = "HISTORY_ASYNC";
 const FETCH_OTHER_USER_ASYNC = "FETCH_OTHER_USER_ASYNC";
-const FETCH_MY_HISTORY_ASYNC = 'FETCH_MY_HISTORY_ASYNC'
-const FETCH_LIKED_COIN_ASYNC = 'FETCH_LIKED_COIN_ASYNC'
-const COIN_LIKE_ASYNC = 'COIN_LIKE_ASYNC'
-const COIN_LIKE_DELETE_ASYNC = 'COIN_LIKE_DELETE_ASYNC'
+const FETCH_MY_HISTORY_ASYNC = "FETCH_MY_HISTORY_ASYNC";
+const FETCH_LIKED_COIN_ASYNC = "FETCH_LIKED_COIN_ASYNC";
+const COIN_LIKE_ASYNC = "COIN_LIKE_ASYNC";
+const COIN_LIKE_DELETE_ASYNC = "COIN_LIKE_DELETE_ASYNC";
 
 // 액션 생성 함수 만들기
 export const loginAsync = (form) => ({ type: LOGIN_ASYNC, meta: form });
@@ -63,11 +63,10 @@ export const resetWalletAsync = () => ({ type: RESET_WALLET_ASYNC });
 export const rankingAsync = () => ({ type: RANKING_ASYNC });
 export const historyAsync = (body) => ({ type: HISTORY_ASYNC, meta: body });
 export const fetchOtherUserAsync = (body) => ({ type: FETCH_OTHER_USER_ASYNC, meta: body });
-export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta:userId})
-export const fetchLikedCoinAsync = () => ({ type: FETCH_LIKED_COIN_ASYNC })
-export const coinLikeAsync = (body) => ({ type: COIN_LIKE_ASYNC, meta: body})
-export const coinLikeDeleteAsync = (body) => ({ type: COIN_LIKE_DELETE_ASYNC, meta: body})
-
+export const fetchMyHistoryAsync = (userId) => ({ type: FETCH_MY_HISTORY_ASYNC, meta: userId });
+export const fetchLikedCoinAsync = () => ({ type: FETCH_LIKED_COIN_ASYNC });
+export const coinLikeAsync = (body) => ({ type: COIN_LIKE_ASYNC, meta: body });
+export const coinLikeDeleteAsync = (body) => ({ type: COIN_LIKE_DELETE_ASYNC, meta: body });
 
 // 로그인 되었는지 확인
 function* catchLoginSaga() {
@@ -87,15 +86,15 @@ function* loginSaga(action) {
     if (response.status === 200) {
       yield put(token(response.data));
       yield put(fetchWalletAsync());
-      yield put(fetchLikedCoinAsync())
+      yield put(fetchLikedCoinAsync());
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
   yield put(catchLogin());
 }
@@ -115,17 +114,17 @@ function* signupSaga(action) {
     const response = yield call(signupApi, body);
     if (response.status === 200) {
       yield Swal.fire({
-        icon: 'success',
-        title: '회원가입 성공!',
-      })
-      yield put(loginAsync({userId: body.userId, password: body.password}))
+        icon: "success",
+        title: "회원가입 성공!",
+      });
+      yield put(loginAsync({ userId: body.userId, password: body.password }));
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 회원가입 끝
@@ -138,16 +137,16 @@ function* putUserSaga(action) {
     if (response.status === 200) {
       yield put(fetchUserAsync());
       yield Swal.fire({
-        icon: 'success',
-        title: '변신 완료!!',
-      })
+        icon: "success",
+        title: "변신 완료!!",
+      });
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 내 정보 수정 끝
@@ -161,10 +160,10 @@ function* fetchUserSaga() {
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 내 정보 받아오기 끝
@@ -175,22 +174,18 @@ function* deleteUserSaga() {
     const response = yield call(deleteApi);
     if (response.status === 200) {
       yield put(logoutAsync());
-      yield Swal.fire(
-        '탈퇴완료',
-        '회원탈퇴되었습니다',
-        'success'
-        )
-      }
+      yield Swal.fire("탈퇴완료", "회원탈퇴되었습니다", "success");
+    }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 회원탈퇴 끝
-  
+
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
   try {
@@ -200,10 +195,10 @@ function* fetchWalletSaga() {
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 지갑 정보 가져오기 끝
@@ -213,16 +208,16 @@ function* resetWalletSaga() {
   try {
     const response = yield call(resetWalletApi);
     if (response.status === 200) {
-      yield put(fetchUserAsync())
-      yield put(fetchWalletAsync())
-      yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
+      yield put(fetchUserAsync());
+      yield put(fetchWalletAsync());
+      yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem("user")).userId));
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 // 지갑 리셋 끝
@@ -264,54 +259,74 @@ function* fetchOtherUserSaga(action) {
 
 // 내 거래기록
 function* fetchMyHistorySaga(action) {
-  try{
-    const response = yield call(historyApi, action.meta)
+  try {
+    const response = yield call(historyApi, action.meta);
     if (response.status === 200) {
-      yield put(fetchMyHistory(response.data))
+      yield put(fetchMyHistory(response.data));
     }
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }
 // 내 거래기록 끝
 
 // 관심코인 가져오기
 function* fetchLikedCoinSaga() {
-  try{
-    const response = yield call(fetchLikedCoinApi)
+  try {
+    const response = yield call(fetchLikedCoinApi);
     if (response.status === 200) {
-      yield put(fetchLikedCoin(response.data))
+      yield put(fetchLikedCoin(response.data));
     }
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }
 // 관심코인 가져오기 끝
 
 // 관심코인 등록
 function* coinLikeSaga(action) {
-  const body = action.meta
-  try{
-    const response = yield call(coinLikeApi, body)
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+  });
+  const body = action.meta;
+  try {
+    const response = yield call(coinLikeApi, body);
     if (response.status === 200) {
-      yield put(fetchLikedCoinAsync())
+      yield put(fetchLikedCoinAsync());
+      Toast.fire({
+        icon: "success",
+        title: "관심코인 등록 완료",
+      });
     }
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }
 // 관심코인 등록 끝
 
 // 관심코인 삭제
 function* coinLikedDeleteSaga(action) {
-  const body = action.meta
-  try{
-    const response = yield call(coinLikeDeleteApi, body)
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+  });
+  const body = action.meta;
+  try {
+    const response = yield call(coinLikeDeleteApi, body);
     if (response.status === 200) {
-      yield put(fetchLikedCoinAsync())
+      yield put(fetchLikedCoinAsync());
+      Toast.fire({
+        icon: "success",
+        title: "관심코인 삭제 완료",
+      });
     }
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }
 // 관심코인 삭제 끝
@@ -330,8 +345,8 @@ export function* accountSaga() {
   yield takeLatest(RANKING_ASYNC, rankingSaga); // 지갑 리셋
   yield takeLatest(HISTORY_ASYNC, historySaga); // 지갑 리셋
   yield takeLatest(FETCH_OTHER_USER_ASYNC, fetchOtherUserSaga); // 지갑 리셋
-  yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga)
-  yield takeLatest(FETCH_LIKED_COIN_ASYNC, fetchLikedCoinSaga)
-  yield takeLatest(COIN_LIKE_ASYNC, coinLikeSaga)
-  yield takeLatest(COIN_LIKE_DELETE_ASYNC, coinLikedDeleteSaga)
+  yield takeLatest(FETCH_MY_HISTORY_ASYNC, fetchMyHistorySaga);
+  yield takeLatest(FETCH_LIKED_COIN_ASYNC, fetchLikedCoinSaga);
+  yield takeLatest(COIN_LIKE_ASYNC, coinLikeSaga);
+  yield takeLatest(COIN_LIKE_DELETE_ASYNC, coinLikedDeleteSaga);
 }

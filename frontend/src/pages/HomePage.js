@@ -67,6 +67,9 @@ const HomeMsg = styled.div`
     font-size: 25px;
     margin: 2vh;
     padding: 0;
+    :hover {
+      transform: scale(1.1);
+    }
   }
 `;
 function HomePage() {
@@ -96,9 +99,9 @@ function HomePage() {
       <HomeBlock>
         <HomeMsg>
           <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
-          <button onClick={() => handlePeriod(10)}>10</button>
-          <button onClick={() => handlePeriod(60)}>60</button>
-          <button onClick={() => handlePeriod(180)}>180</button>
+          <button onClick={() => handlePeriod(10)}>10분</button>
+          <button onClick={() => handlePeriod(60)}>60분</button>
+          <button onClick={() => handlePeriod(180)}>180분</button>
         </HomeMsg>
         <Cloud>
           <WordCloudBlock>

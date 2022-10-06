@@ -2,7 +2,7 @@ import { call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { buyApi, sellApi, newsApi, wordCloudApi } from "./api";
 import { fetchWalletAsync, fetchUserAsync } from "./accountSaga";
 import { selectNews, wordCloud } from "./coin";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 const BUY_ASYNC = "BUY_ASYNC";
 const SELL_ASYNC = "SELL_ASYNC";
 const NEWS_ASYNC = "NEWS_ASYNC";
@@ -17,49 +17,49 @@ function* buySaga(action) {
   const body = action.meta;
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: "top-end",
     showConfirmButton: false,
     timer: 1000,
-  })
+  });
   try {
     const response = yield call(buyApi, body);
     if (response.status === 200) {
-      yield 
+      yield;
       Toast.fire({
-        icon: 'success',
-        title: '구매 성공'
-      })
+        icon: "success",
+        title: "구매 성공",
+      });
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 function* sellSaga(action) {
   const body = action.meta;
   const Toast = Swal.mixin({
     toast: true,
-    position: 'top-end',
+    position: "top-end",
     showConfirmButton: false,
     timer: 1000,
-  })
+  });
   try {
     const response = yield call(sellApi, body);
     if (response.status === 200) {
       yield Toast.fire({
-        icon: 'success',
-        title: '판매 성공'
-      })
+        icon: "success",
+        title: "판매 성공",
+      });
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: '오류!!',
+      icon: "error",
+      title: "오류!!",
       text: `${error.response.data.message}`,
-    })
+    });
   }
 }
 function* newsSaga(action) {
