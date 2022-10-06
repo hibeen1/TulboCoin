@@ -10,44 +10,51 @@ import ReactTooltip from "react-tooltip";
 
 const WholeCoinChartBlock = styled.div`
   width: 25vw;
-  height: 45vh;
+  height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1vw;
+  padding-left: 1vw;
+  padding-top: 1vw;
   /* border: solid skyblue 3px; */
   flex-direction: column;
 `;
 const LogoAndName = styled.div`
   width: 25vw;
   height: 10vh;
+  margin-left: 2vw;
   /* border: solid yellow 3px; */
   flex-direction: row;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 `;
 const CoinLogo = styled.div`
   width: 10vmin;
-  height: 10vmin;
+  height: 8vmin;
   /* max-width: 10vmin;
   max-height: 10vmin; */
   /* border: 3px solid grey; */
 `;
 const CoinName = styled.div`
-  width: 70%;
+  width: 50%;
   height: 10vmin;
   /* border: 3px solid grey; */
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 `;
 
 const CoinDetails = styled.div`
+  margin-left: 3vw;
   width: 25vw;
   height: 45vh;
   /* border: 3px solid navy; */
   font-size: 2.5vmin;
+  font-weight: 130;
+  div {
+    padding-top: 0.4vw;
+  }
 `;
 
 // const LikeButton = styled.div`
@@ -65,6 +72,9 @@ const EmptyButton = styled.div`
   cursor: pointer;
   background: url(${EmptyHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 
 const FullButton = styled.div`
@@ -73,6 +83,9 @@ const FullButton = styled.div`
   cursor: pointer;
   background: url(${FullHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 const HighPriceMsg = styled.div`
   :hover {
@@ -114,8 +127,8 @@ function CoinSummary({ socketData, detailCoinData }) {
           <img
             src={`https://static.upbit.com/logos/${detailCoinData.code.split("-")[1]}.png`}
             alt=""
-            // width={`10vmin`}
-            // height={`10vmin`}
+            width={`50vw`}
+            height={`50vh`}
           />
         </CoinLogo>
         <CoinName>{detailCoinData.name}</CoinName>
@@ -136,29 +149,31 @@ function CoinSummary({ socketData, detailCoinData }) {
           />
           {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
           {targetSocketData.signed_change_price > 0 ? "+" : null}
-          {targetSocketData.signed_change_price}
+          {targetSocketData.signed_change_price &&
+            `${targetSocketData.signed_change_price.toLocaleString("ko-KR")} 원`
+          }
         </div>
         {targetSocketData.trade_price && (
           <>
-            <p data-for="tradePrice" data-tip>
+            <div data-for="tradePrice" data-tip>
               현재가 : {targetSocketData.trade_price.toLocaleString("ko-KR")} 원
               <ReactTooltip id="tradePrice" getContent={(dataTip) => "현재 해당 코인의 가격"} />
-            </p>
-            <p data-for="highPrice" data-tip>
+            </div>
+            <div data-for="highPrice" data-tip>
               고가 : {targetSocketData.high_price.toLocaleString("ko-KR")} 원
               <ReactTooltip
                 id="highPrice"
                 getContent={(dataTip) => "하루 중 가장 높은 가격을 뜻하는 용어"}
               />
-            </p>
-            <p data-for="lowPrice" data-tip>
+            </div>
+            <div data-for="lowPrice" data-tip>
               저가 : {targetSocketData.low_price.toLocaleString("ko-KR")} 원
               <ReactTooltip
                 id="lowPrice"
                 getContent={(dataTip) => "하루 중 가장 낮은 가격을 뜻하는 용어"}
               />
-            </p>
-            <p data-for="tradeAmount" data-tip>
+            </div>
+            <div data-for="tradeAmount" data-tip>
               거래대금 :{" "}
               {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString(
                 "ko-KR"
@@ -168,14 +183,14 @@ function CoinSummary({ socketData, detailCoinData }) {
                 id="tradeAmount"
                 getContent={(dataTip) => "하루동안 거래된 금액의 양"}
               />
-            </p>
-            <p data-for="tradeCoinAmount" data-tip>
-              거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}
+            </div>
+            <div data-for="tradeCoinAmount" data-tip>
+              거래량 : {Number((targetSocketData.acc_trade_volume_24h * 1).toFixed(0)).toLocaleString("ko-KR")}
               <ReactTooltip
                 id="tradeCoinAmount"
                 getContent={(dataTip) => "하루동안 거래된 코인의 수량"}
               />
-            </p>
+            </div>
           </>
         )}
       </CoinDetails>

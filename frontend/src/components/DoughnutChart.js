@@ -10,7 +10,7 @@ const DoughnutBlock = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 10;
   /* margin-left: 10vw;
   margin-top: 5vh; */
   /* border: 3px solid black; */
@@ -54,6 +54,12 @@ function DoughnutChart({ socketData, wallet }) {
     plugins: {
       legend: {
         position: "bottom",
+        labels: {
+          // This more specific font property overrides the global property
+          font: {
+              family: "jua"}
+          }
+
       },
     },
     scales: {
