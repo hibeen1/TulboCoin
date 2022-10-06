@@ -63,6 +63,7 @@ const StyledImg = styled.img`
 
 const WalletBlock = styled.div`
   /* border: solid red 3px; */
+  margin-bottom: 4vh;
   width: 91vw;
   height: 41vh;
   display: flex;
@@ -158,6 +159,7 @@ const GraphBackground = styled.div`
   align-items: center;
   width: 40vw;
   height: 40vh;
+  margin-right: 3vw;
   /* border: 2px solid red; */
   background-color: #d0e8fa;
   border-radius: 20px;
@@ -306,6 +308,7 @@ const MyHistoryMsg = styled.div`
   font-size: 20px;
 `;
 const MyHistoryBlock = styled.div`
+  margin-right: 3vw;
   width: 40vw;
   padding-top: 3vh;
   display: flex;
@@ -544,13 +547,7 @@ function MypagePage() {
             />
           </ProfileImg>
         </ProfileBlock>
-        <div>
-          <GreetingProfitMsg>
-            <br />
-            {/* {user.userId}님의 수익률은 현재{" "}
-            {(((user.balance + cash - 10000000) / 10000000) * 100).toFixed(2)}%입니다 */}
-          </GreetingProfitMsg>
-        </div>
+        <br />
 
         <BalanceAndGraphBlock>
           <BalanceBackGround>
