@@ -3,6 +3,7 @@
 // takeEvery : 특정 액션 타입에 대하여 디스패치되는 모든 액션들을 처리
 // takeLatest : 특정 액션 타입에 대하여 디스패치된 가장 마지막 액션만을 처리
 import { call, delay, put, takeLatest } from "redux-saga/effects";
+import Swal from 'sweetalert2'
 import {
   signupApi,
   fetchUserApi,

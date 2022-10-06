@@ -122,22 +122,23 @@ function CoinSummary({ socketData, detailCoinData }) {
           <FullButton onClick={handleLike}></FullButton>
         )}
       </LogoAndName>
-
+      
       <CoinDetails>
         전일대비 : {targetSocketData.signed_change_rate > 0 ? "+" : null}
         {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
         {targetSocketData.signed_change_price > 0 ? "+" : null}
         {targetSocketData.signed_change_price}
-        <HighPriceMsg>
-          고가 : {targetSocketData.high_price.toLocaleString('ko-KR')}
-          <div className="hiddenMsg">
-            아아아아아ssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-          </div>
-        </HighPriceMsg>
-        <p>저가 : {targetSocketData.low_price.toLocaleString('ko-KR')}</p>
-        <p>거래대금 : {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString('ko-KR')}</p>
-        <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+        {targetSocketData.trade_price &&
+          <>
+            <p>현재가 : {targetSocketData.trade_price.toLocaleString('ko-KR')} KRW</p>
+            <p>고가 : {targetSocketData.high_price.toLocaleString('ko-KR')} KRW</p>
+            <p>저가 : {targetSocketData.low_price.toLocaleString('ko-KR')} KRW</p>
+            <p>거래대금 : {Number((targetSocketData.acc_trade_price_24h * 1).toFixed(0)).toLocaleString('ko-KR')} KRW</p>
+            <p>거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}</p>
+          </>
+        }
       </CoinDetails>
+      
     </WholeCoinChartBlock>
   );
 }
