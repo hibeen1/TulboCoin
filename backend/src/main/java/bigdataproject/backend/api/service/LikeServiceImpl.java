@@ -40,13 +40,9 @@ public class LikeServiceImpl implements LikeService{
     @Transactional
     public LikeCoinRes postLikeCoin(User user, CoinReq coinReq) {
         Coin coin = coinRepository.findByCoinName(coinReq.getCoinName());
+
         if (coin == null){
-            Coin newCoin = Coin.builder()
-                    .coinName(coinReq.getCoinName())
-                    .coinCode(coinReq.getCoinCode())
-                    .build();
-            coinRepository.save(newCoin);
-            coin = newCoin;
+            return null;
         }
         LikeCoin likeCoin = LikeCoin.builder()
                 .user(user)
