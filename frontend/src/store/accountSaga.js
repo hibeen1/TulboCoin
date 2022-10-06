@@ -91,7 +91,11 @@ function* loginSaga(action) {
       yield put(fetchUser(response.data)); // put은 특정 액션을 디스패치 해줍니다.
     }
   } catch (error) {
-    alert(error.response.data.message)
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
   yield put(catchLogin());
 }
@@ -110,11 +114,18 @@ function* signupSaga(action) {
   try {
     const response = yield call(signupApi, body);
     if (response.status === 200) {
-      yield alert("회원가입 성공");
+      yield Swal.fire({
+        icon: 'success',
+        title: '회원가입 성공!',
+      })
       yield put(loginAsync({userId: body.userId, password: body.password}))
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 회원가입 끝
@@ -126,11 +137,17 @@ function* putUserSaga(action) {
     const response = yield call(putUserApi, body);
     if (response.status === 200) {
       yield put(fetchUserAsync());
-      yield alert('변신 완료!')
+      yield Swal.fire({
+        icon: 'success',
+        title: '변신 완료!!',
+      })
     }
   } catch (error) {
-    alert(error.response.data.message);
-    // console.log(error)
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 내 정보 수정 끝
@@ -143,29 +160,37 @@ function* fetchUserSaga() {
       yield put(fetchUser(response.data));
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 내 정보 받아오기 끝
 
 // 회원탈퇴
 function* deleteUserSaga() {
-  if (window.confirm("정말로 회원탈퇴 하시겠습니까?")) {
-    try {
-      const response = yield call(deleteApi);
-      if (response.status === 200) {
-        yield put(logoutAsync());
-        yield alert("회원탈퇴되었습니다");
+  try {
+    const response = yield call(deleteApi);
+    if (response.status === 200) {
+      yield put(logoutAsync());
+      yield Swal.fire(
+        '탈퇴완료',
+        '회원탈퇴되었습니다',
+        'success'
+        )
       }
-    } catch (error) {
-      alert(error.response.data.message);
-    }
-  } else {
-    alert("휴 당신이 방금 털보를 배신하는 줄 알았습니다");
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 회원탈퇴 끝
-
+  
 // 지갑 정보 가져오기
 function* fetchWalletSaga() {
   try {
@@ -174,26 +199,30 @@ function* fetchWalletSaga() {
       yield put(fetchWallet(response.data));
     }
   } catch (error) {
-    alert(error.response.data.message);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 지갑 정보 가져오기 끝
 
 // 지갑 리셋
 function* resetWalletSaga() {
-  if (window.confirm("지금까지의 투자를 초기화하겠습니까?(다시는 되돌릴 수 없습니다)")) {
-    try {
-      const response = yield call(resetWalletApi);
-      if (response.status === 200) {
-        yield put(fetchUserAsync())
-        yield put(fetchWalletAsync())
-        yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
-      }
-    } catch (error) {
-      alert(error.response.data.message);
+  try {
+    const response = yield call(resetWalletApi);
+    if (response.status === 200) {
+      yield put(fetchUserAsync())
+      yield put(fetchWalletAsync())
+      yield put(fetchMyHistoryAsync(JSON.parse(localStorage.getItem('user')).userId))
     }
-  } else {
-    alert("휴 당신은 털보와 함께한 시간을 버릴뻔 했습니다");
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 // 지갑 리셋 끝
@@ -203,7 +232,6 @@ function* rankingSaga() {
     const response = yield call(rankingApi);
     if (response.status === 200) {
       yield put(fetchRanking(response.data));
-      console.log("랭킹들어옴????", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -216,7 +244,6 @@ function* historySaga(action) {
     const response = yield call(historyApi, body);
     if (response.status === 200) {
       yield put(fetchHistory(response.data));
-      console.log("히스토리????", response.data);
     }
   } catch (error) {
     console.log(error);
@@ -229,7 +256,6 @@ function* fetchOtherUserSaga(action) {
     const response = yield call(fetchOtherUserApi, body);
     if (response.status === 200) {
       yield put(fetchOtherUser(response.data));
-      console.log("다른사람정보?????", response.data);
     }
   } catch (error) {
     console.log(error);

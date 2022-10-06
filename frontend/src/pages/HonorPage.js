@@ -2,7 +2,6 @@ import { useEffect, useMemo, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { historyAsync, rankingAsync } from "../store/accountSaga";
 import { useSelector } from "react-redux";
-import MaterialReactTable from "material-react-table";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { fetchOtherUser } from "../store/account";
@@ -459,21 +458,6 @@ function Honor() {
             </table>
           </RankingTable>
           {/* {rankinglist && <CustomTable data={rankinglist} columns={customcolumns} />} */}
-          {/* {rankinglist && (
-            <MaterialReactTable
-              muiTableBodyRowProps={({ row }) => ({
-                onClick: (event) => onClickToggleModal(row.original),
-              })}
-              columns={columns}
-              data={rankinglist}
-              enableFullScreenToggle={false}
-              enableGlobalFilter={false} //turn off a feature
-              enableDensityToggle={false}
-              enableHiding={false}
-              enablePagination={false}
-              initialState={{ density: "compact" }}
-            />
-          )} */}
         </HonorBlock>
       </HonorPageBlock>
     </>

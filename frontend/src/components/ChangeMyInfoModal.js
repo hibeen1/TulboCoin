@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUserAsync, putUserAsync } from "../store/accountSaga";
+import Swal from 'sweetalert2'
 import styled from "styled-components";
 
 const StyledImg = styled.img`
@@ -171,7 +172,23 @@ function ChangeMyInfoModal({ user, handlePageToForm }) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteUserAsync());
+    Swal.fire({
+      title: '정말로 회원탈퇴 하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '네!!!!',
+      cancelButtonText: '아니요',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteUserAsync());
+      } else {
+        Swal.fire({
+          text: "휴 당신이 방금 털보를 배신하는 줄 알았습니다",
+        })
+      }
+      })
   };
 
   return (
