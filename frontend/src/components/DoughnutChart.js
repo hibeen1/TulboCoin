@@ -54,6 +54,12 @@ function DoughnutChart({ socketData, wallet }) {
     plugins: {
       legend: {
         position: "bottom",
+        labels: {
+          // This more specific font property overrides the global property
+          font: {
+              family: "jua"}
+          }
+
       },
     },
     scales: {

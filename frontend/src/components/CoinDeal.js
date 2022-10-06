@@ -11,7 +11,8 @@ const StyledModal = styled.div`
   position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-60%, -50%);
+  /* margin-right: 30vw; */
   /* background-color: gray; */
   /* border: 1px solid black; */
   border-radius: 8px;
@@ -30,6 +31,7 @@ const StyledModalBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
 `;
 const InputBlock = styled.div`
   display: flex;
@@ -160,7 +162,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
               {deal === "sell" ? (
                 <>
                   <div>
-                    <label>판매가능수량 : </label>
+                    <label>판매가능수량 </label>
                     <label>
                       {wallet &&
                         wallet.map((coin) =>

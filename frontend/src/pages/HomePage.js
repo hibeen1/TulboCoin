@@ -9,13 +9,14 @@ import CloudImg from "../media/images/Cloud.png";
 
 const HomePageBlock = styled.div`
   display: flex;
+  /* height: 400vh; */
 `;
 
 const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  position: relative;
+  /* position: relative; */
   display: flex;
 `;
 
@@ -24,10 +25,40 @@ const HomeBlock = styled.div`
 
   /* border: solid black 3px; */
   width: 94vw;
-  height: 300vh;
-  position: relative;
+  height: 100vh;
+  /* position: relative; */
   /* display: flex; */
 `;
+
+const FirstPageBoard = styled.div`
+  width: 94vw;
+  height: 100vh;
+  color: white;
+  background-color: pink;
+
+  display: flex;   
+  justify-content: center;
+  align-items: center;
+`
+const SecondPageBoard = styled.div`
+  width: 94vw;
+  height: 100vh;
+  background-color: skyblue;
+
+  display: flex;   
+  justify-content: center;
+  align-items: center;
+`
+const ThirdPageBoard = styled.div`
+  width: 94vw;
+  height: 100vh;
+  /* color: white; */
+  background-color: #adff45;
+
+  display: flex;   
+  justify-content: center;
+  align-items: center;
+`
 
 const Cloud = styled.div`
   background: url(${CloudImg}) no-repeat center;
@@ -54,8 +85,8 @@ const WordCloudBlock = styled.div`
   justify-content: center;
   align-items: center;
   /* border: red solid 3px; */
-  /* margin-top: 55vh;
-  margin-left: 5vw; */
+  margin-top: -7vh;
+  /* margin-left: 5vw; */
 `;
 const HomeMsg = styled.div`
   margin-left: 3vmin;
@@ -72,6 +103,28 @@ const HomeMsg = styled.div`
     }
   }
 `;
+
+const WordCloudMsg = styled.div`
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 4vmin;
+  font-weight: bold;
+  padding: 0.1vh 1vw;
+  margin-top: 2vh;
+  margin-left: -1vw;
+`
+
+const TimeButton = styled.button`
+  
+`
+
+const TimeButtonList = styled.div`
+  margin-left: 34vw;
+  margin-bottom: 1vh;
+`
 function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,12 +149,15 @@ function HomePage() {
       <NavBlock>
         <Navbar></Navbar>
       </NavBlock>
+      <div style={{display:'flex', flexDirection:'column'}}>
       <HomeBlock>
         <HomeMsg>
-          <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
-          <button onClick={() => handlePeriod(10)}>10분</button>
-          <button onClick={() => handlePeriod(60)}>60분</button>
-          <button onClick={() => handlePeriod(180)}>180분</button>
+          <WordCloudMsg>지난 {period}분간 가장 뜨거운 코인입니다</WordCloudMsg>
+          <TimeButtonList>
+            <TimeButton onClick={() => handlePeriod(10)}>10분</TimeButton>
+            <TimeButton onClick={() => handlePeriod(60)}>60분</TimeButton>
+            <TimeButton onClick={() => handlePeriod(180)}>180분</TimeButton>
+          </TimeButtonList>
         </HomeMsg>
         <Cloud>
           <WordCloudBlock>
@@ -109,6 +165,11 @@ function HomePage() {
           </WordCloudBlock>
         </Cloud>
       </HomeBlock>
+      
+        <FirstPageBoard></FirstPageBoard>
+        <SecondPageBoard></SecondPageBoard>
+        <ThirdPageBoard></ThirdPageBoard>
+      </div>
     </HomePageBlock>
   );
 }

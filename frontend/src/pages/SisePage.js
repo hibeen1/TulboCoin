@@ -29,11 +29,10 @@ const NavBlock = styled.div`
 const SiseBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 `;
 // 궁금한 코인을 검색해보세요
 const GreetingMsg = styled.div`
@@ -224,6 +223,9 @@ const ChangeChartBtn = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  :hover{
+    transform: scale(1.1);
+  }
   /* border: 3px yellow solid; */
   /* color:white; */
   /* border-radius: 5px; */
@@ -487,16 +489,6 @@ function Sise() {
                 </MoneyAmountChart>
               </div>
             </CenterLeftBlock>
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* <div>코인 그래프</div> */}
             {selectedCoin && socketData ? (
               <>
                 {modal && (
