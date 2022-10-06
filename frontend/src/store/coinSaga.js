@@ -31,7 +31,11 @@ function* buySaga(action) {
       })
     }
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 function* sellSaga(action) {
@@ -51,7 +55,11 @@ function* sellSaga(action) {
       })
     }
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      icon: 'error',
+      title: '오류!!',
+      text: `${error.response.data.message}`,
+    })
   }
 }
 function* newsSaga(action) {
