@@ -340,7 +340,7 @@ function Honor() {
         </NavBlock>
         <HonorBlock>
           <ProfileBlock>
-            <GreetingMsg>랭킹페이지 입니다. 고수들의 픽을 확인하세요</GreetingMsg>
+            <GreetingMsg>명예의 전당입니다. 고수들의 픽을 확인하세요</GreetingMsg>
             <RankAlram>
               {rankinglist.map(
                 (data, idx) =>
