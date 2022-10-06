@@ -67,7 +67,16 @@ const CoinSearchBar = styled.input`
   align-items: center;
   flex-direction: row;
   border: solid #061e8c 3px;
-  border-radius: 50px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  /* border-bottom-left-radius: ${(props) => (true ? "0px" : "10px")};
+  border-bottom-right-radius: ${(props) => (true ? "0px" : "10px")}; */
+  /* border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px; */
+  /* border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px; */
   margin-left: 10vw;
   background-color: #f0f6fc;
   /* width: 5vw;
@@ -75,6 +84,31 @@ const CoinSearchBar = styled.input`
   /* border-radius: 5px; */
   font-family: "Jua", sans-serif;
   font-size: 25px;
+`;
+const AutoSearch = styled.div`
+  width: 65.3vw;
+  max-height: 40vh;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+    background-color: #f0f6fc;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    border-radius: 5px;
+    background-color: #697ed9;
+  }
+  border-left: 3px solid #061e8c;
+  border-right: 3px solid #061e8c;
+  border-bottom: 3px solid #061e8c;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: #f0f6fc;
+  position: absolute;
+  top: 19.2vh;
+  left: 16.5vw;
+  z-index: 100;
 `;
 // 검색 버튼
 const BlueSearchButton = styled.button`
@@ -98,7 +132,7 @@ const CenterBlock = styled.div`
   width: 91vw;
   height: 55vh;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   font-size: 4vmin;
   font-weight: bold;
@@ -108,12 +142,15 @@ const CenterBlock = styled.div`
 `;
 const CenterLeftBlock = styled.div`
   width: 20vw;
-  height: 55vh;
+  height: 50vh;
+  border-radius: 20px;
   display: flex;
+  margin-left: 1vw;
   justify-content: start;
   align-items: center;
   /* border: solid orange 3px; */
   flex-direction: column;
+  background-color: white;
 `;
 // 이름순 거래대금순 코인이름순을 묶은 디브
 const ChangeChartBtnBlock = styled.div`
@@ -124,7 +161,8 @@ const ChangeChartBtnBlock = styled.div`
   align-items: center;
   /* border: solid blue 3px; */
   flex-direction: row;
-  margin-bottom: 2vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
 `;
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
@@ -133,14 +171,18 @@ const MoneyAmountChart = styled.div`
   display: flex;
   justify-content: start;
   align-items: start;
+  margin-bottom: 1vw;
   /* border: solid purple 3px; */
   flex-direction: column;
   font-size: 3vmin;
   overflow: auto;
+  :hover {
+    cursor: pointer;
+  }
   &::-webkit-scrollbar {
     width: 10px;
     border-radius: 5px;
-    background-color: #f3f3f3;
+    background-color: white;
   }
   &::-webkit-scrollbar-thumb {
     width: 10px;
@@ -190,14 +232,16 @@ const ChangeChartBtn = styled.div`
   align-items: center;
   cursor: pointer;
   /* border: 3px yellow solid; */
-  font-size: 3vmin;
+  font-size: 2.5vmin;
   width: 7vw;
   height: 5vh;
 `;
 const CoinSummaryDealBlock = styled.div`
   display: flex;
-  height: 55vh;
+  height: 50vh;
+  border-radius: 20px;
   flex-direction: column;
+  background-color: white;
   /* border: 2px solid blue; */
 `;
 const CoinDealButton = styled.div`
@@ -209,14 +253,18 @@ const CoinDealButton = styled.div`
     height: 4vh;
     border-radius: 5px;
     font-family: "Jua", sans-serif;
-    font-size: 20px;
+    font-size: 15px;
   }
 `;
 const NewsItem = styled.div`
-  /* margin-left: 1vw; */
+  margin-left: 1vw;
   font-size: 13px;
   width: 28vw;
-  padding-left: 2vw;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
+  /* border: 2px solid black; */
+  border-radius: 20px;
+  background-color: white;
 `;
 const NewsMsg = styled.div`
   font-size: 30px;
@@ -242,7 +290,6 @@ function Sise() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const { socketData } = useUpbitWebSocket(targetMarketCode, "ticker", webSocketOptions);
   const dispatch = useDispatch();
-
   const [data, setData] = useState();
   const [modal, setModal] = useState("");
   const selectedCoin = useSelector((state) => state.coinReducer.selectedCoin);
@@ -401,11 +448,11 @@ function Sise() {
             <BlueSearchButton />
             {/* 자동완성으로 추천되는 검색어(코인이름) */}
             {matchWord.length > 0 && (
-              <div>
+              <AutoSearch>
                 {matchWord.map((coin) => {
                   return <div onClick={(e) => handleSearchWordClick(coin)}>{coin.name}</div>;
                 })}
-              </div>
+              </AutoSearch>
             )}
           </SearchBlock>
           <CenterBlock>

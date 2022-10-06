@@ -3,7 +3,7 @@ import styled from "styled-components";
 const CustomTableStyle = styled.div`
   tbody {
     :hover {
-      cursor: pointer;
+      /* cursor: pointer; */
     }
   }
 `;

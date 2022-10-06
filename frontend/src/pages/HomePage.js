@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import WordCloud from "../utils/WordCloud";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { wordCouldAsync } from "../store/coinSaga";
 import CloudImg from "../media/images/Cloud.png";
 
@@ -57,25 +57,36 @@ const WordCloudBlock = styled.div`
   /* margin-top: 55vh;
   margin-left: 5vw; */
 `;
-
+const HomeMsg = styled.div`
+  margin-left: 3vmin;
+  button {
+    width: 5vw;
+    height: 5vh;
+    border-radius: 5px;
+    font-family: "Jua", sans-serif;
+    font-size: 25px;
+    margin: 2vh;
+    padding: 0;
+  }
+`;
 function HomePage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const isLoggedin = useSelector(state => state.account.isLoggedin)
-  const [ period, setPeriod ] = useState(10)
+  const navigate = useNavigate();
+  const isLoggedin = useSelector((state) => state.account.isLoggedin);
+  const [period, setPeriod] = useState(10);
   useEffect(() => {
     if (!isLoggedin) {
-      navigate('/')
+      navigate("/");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     dispatch(wordCouldAsync(period));
   }, [period]);
 
   const handlePeriod = (period) => {
-    setPeriod(period)
-  }
+    setPeriod(period);
+  };
 
   return (
     <HomePageBlock>
@@ -83,10 +94,12 @@ function HomePage() {
         <Navbar></Navbar>
       </NavBlock>
       <HomeBlock>
-        <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
-        <button onClick={() => handlePeriod(10)}>10</button>
-        <button onClick={() => handlePeriod(60)}>60</button>
-        <button onClick={() => handlePeriod(180)}>180</button>
+        <HomeMsg>
+          <h1>지난 {period}분간 가장 뜨거운 코인입니다</h1>
+          <button onClick={() => handlePeriod(10)}>10</button>
+          <button onClick={() => handlePeriod(60)}>60</button>
+          <button onClick={() => handlePeriod(180)}>180</button>
+        </HomeMsg>
         <Cloud>
           <WordCloudBlock>
             <WordCloud></WordCloud>
