@@ -36,15 +36,15 @@ function WordCloud() {
 
   const options = {
     // luminosity: 'light',
-    hue: "blue",
+    hue: "pink",
   };
   const selectedWordCloud = useSelector((state) => state.coinReducer.selectedWordCloud);
   const data = selectedWordCloud;
   return (
     <TagCloudBlock>
     <TagCloud
-      minSize={15}
-      maxSize={90}
+      minSize={18}
+      maxSize={70}
       colorOptions={options}
       tags={data}
       onClick={(tag) => handleClickTag(tag)}

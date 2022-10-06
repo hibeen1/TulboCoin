@@ -474,11 +474,11 @@ function Sise() {
             {/* 차트 두개 세로로 나열 */}
             <CenterLeftBlock>
               <ChangeChartBtnBlock>
-                <ChangeChartBtn onClick={() => handleWhatTable("name")}>이름순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("amount")}>
+                <ChangeChartBtn onClick={() => handleWhatTable("name")} style={whatTable==="name" ? {borderBottom: 'solid'} : null}>이름순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("amount")} style={whatTable==="amount" ? {borderBottom: 'solid'} : null}>
                   거래대금순
                 </ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("like")}>관심코인</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("like")} style={whatTable==="like" ? {borderBottom: 'solid'} : null}>관심코인</ChangeChartBtn>
               </ChangeChartBtnBlock>
               <div>
                 <MoneyAmountChart>
