@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetWalletAsync, fetchMyHistoryAsync } from "../store/accountSaga";
+import { selectCoin } from "../store/coin";
 import React, { memo, useMemo } from "react";
 import { useUpbitWebSocket } from "use-upbit-api";
 import Navbar from "../components/Navbar";
@@ -436,6 +437,11 @@ function MypagePage() {
     }
   }, [socketData, wallet]);
 
+  function selectDetailCoin(coin) {
+    dispatch(selectCoin(coin));
+    navigate('/exchange')
+  }
+
   const customCoinColumns = useMemo(
     () => [
       {
@@ -444,8 +450,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "15vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // columnStyle: {}
         // muiTableHeadCellProps: { sx: { color: 'green' } }, //custom props
@@ -456,8 +460,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
@@ -467,8 +469,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "15vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
         // Header: <span style={{ color: 'red' }}>수량</span>, //optional custom markup
       },
@@ -478,8 +478,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
     ],
@@ -494,8 +492,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "14vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -504,8 +500,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "10vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -514,8 +508,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "4vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -524,8 +516,6 @@ function MypagePage() {
         columnStyle: {
           textAlign: "center",
           width: "8vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
         },
       },
       {
@@ -533,8 +523,6 @@ function MypagePage() {
         header: "거래종류",
         columnStyle: {
           width: "5vw",
-          // border: "1px solid black",
-          borderRadius: "5px",
           justifyContent: "center",
         },
       },
@@ -621,7 +609,8 @@ function MypagePage() {
             <hr />
             {data && (
               <>
-                <CustomTable data={data} columns={customCoinColumns} />
+                <CustomTable data={data} columns={customCoinColumns} rowFunction={(row) => {
+                  selectDetailCoin({ code: row.code, name: row.name });}} />
               </>
             )}
           </MyCoinBlock>

@@ -137,7 +137,7 @@ function Navbar() {
       </Link>
 
       {/* 시세 */}
-      <Link to="/sise">
+      <Link to="/exchange">
         <NavItem className="sise"></NavItem>
       </Link>
       {/* 명예의 전당 */}
