@@ -1,14 +1,18 @@
+/* 시세페이지 그래프 디자인 */
 .container {
   display: flex;
   flex-direction: column;
-  margin: 15px;
-  margin-bottom: 100px;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-left: 2vw;
+  /* margin-bottom: 100px; */
+  border-radius: 20px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
   background-color: #ffffff;
-  width: 620px;
-  height: 480px;
-  padding: 16px 6px 16px 16px;
+
+  width: 42vw;
+  height: 50vh;
+  /* justify-content: start; */
+  /* align-items: end; */
+  /* padding: 16px 6px 16px 16px; */
 }
 .title {
   margin: 0;
@@ -18,7 +22,9 @@
 }
 .chart {
   display: flex;
-  flex: 1;
+  width: 42vw;
+  height: 52vh;
+  /* flex: 1; */
 }
 .menu {
   display: flex;
@@ -30,10 +36,12 @@
   color: #606060;
 }
 button {
+  /* position: absolute; */
   cursor: pointer;
-  background-color: #2196f3;
+  background-color: #243ead;
   border-radius: 2px;
-  margin-right: 8px;
+  margin-left: 2vw;
+  margin-top: 1vh;
   height: 24px;
   line-height: 26px;
   padding: 0 6px;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CoinRepository extends JpaRepository<Coin, Long> {
-
     Coin findByCoinName(String coinName);
+
+    Coin findCoinByCoinCode(String coinCode);
 }
