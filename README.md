@@ -207,6 +207,16 @@
 
 - 첫번째 숫자가 PID이다.
 
+
+## 업비트 웹소켓 연결파일
+
+### upbit socket
+
+ - 업비트 서버와 소켓 연결하여 모든 실시간 거래 내역을 저장하는 역할을 하는 파이썬 파일을 백그라운드에서 실행해야 한다.
+ - ```bash
+   nohup python3 /home/ubuntu/COININFO/upbit_websocket.py &
+   ```
+
 ## 워드 클라우드를 위한 코인 거래 데이터 저장 위치
 
 ### SparkServiceImpl
