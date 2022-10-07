@@ -29,11 +29,10 @@ const NavBlock = styled.div`
 const SiseBlock = styled.div`
   background-color: #f3f3f3;
   /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 `;
 // 궁금한 코인을 검색해보세요
 const GreetingMsg = styled.div`
@@ -58,7 +57,6 @@ const SearchBlock = styled.form`
   flex-direction: row;
   /* border: solid red 3px; */
 `;
-
 const CoinSearchBar = styled.input`
   width: 65vw;
   height: 5vh;
@@ -69,14 +67,8 @@ const CoinSearchBar = styled.input`
   border: solid #061e8c 3px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  border-bottom-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  /* border-bottom-left-radius: ${(props) => (true ? "0px" : "10px")};
-  border-bottom-right-radius: ${(props) => (true ? "0px" : "10px")}; */
-  /* border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px; */
-  /* border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px; */
+  border-bottom-left-radius: ${(props) => (props.borderChange ? "0px" : "10px")};
+  border-bottom-right-radius: ${(props) => (props.borderChange ? "0px" : "10px")};
   margin-left: 10vw;
   background-color: #f0f6fc;
   /* width: 5vw;
@@ -86,7 +78,7 @@ const CoinSearchBar = styled.input`
   font-size: 25px;
 `;
 const AutoSearch = styled.div`
-  width: 65.3vw;
+  width: 65.2vw;
   max-height: 40vh;
   overflow: auto;
   &::-webkit-scrollbar {
@@ -106,8 +98,8 @@ const AutoSearch = styled.div`
   border-bottom-right-radius: 10px;
   background-color: #f0f6fc;
   position: absolute;
-  top: 19.2vh;
-  left: 16.5vw;
+  top: 18.1vh;
+  left: 15.7vw;
   z-index: 100;
 `;
 // 검색 버튼
@@ -229,12 +221,22 @@ const NewsBlock = styled.div`
 const ChangeChartBtn = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   cursor: pointer;
+  :hover {
+    transform: scale(1.1);
+  }
   /* border: 3px yellow solid; */
+  /* color:white; */
+  /* border-radius: 5px; */
+  /* margin-left: 0.5vw; */
+  /* margin-right: 0.5vw; */
+  /* background-color: #061e8c; */
   font-size: 2.5vmin;
   width: 7vw;
   height: 5vh;
+  align-items: center;
+  /* margin-inline: 0.5vw;
+  border-bottom: 2px solid black; */
 `;
 const CoinSummaryDealBlock = styled.div`
   display: flex;
@@ -254,14 +256,17 @@ const CoinDealButton = styled.div`
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 15px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
 `;
 const NewsItem = styled.div`
   margin-left: 1vw;
   font-size: 13px;
   width: 28vw;
-  padding-left: 0.5vw;
-  padding-right: 0.5vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
   /* border: 2px solid black; */
   border-radius: 20px;
   background-color: white;
@@ -395,6 +400,7 @@ function Sise() {
 
   const [searchWord, setSearchWord] = useState("");
   const [matchWord, setMatchWord] = useState([]);
+  const [borderChange, setBorderChange] = useState(false);
 
   useEffect(() => {
     if (searchWord) {
@@ -414,6 +420,11 @@ function Sise() {
     const searchWord = e.target.value;
     setSearchWord(searchWord);
   };
+  useEffect(() => {
+    if (matchWord.length > 0) {
+      setBorderChange(true);
+    } else setBorderChange(false);
+  }, [matchWord]);
 
   const handleSearchForm = (e) => {
     e.preventDefault();
@@ -444,7 +455,11 @@ function Sise() {
         <SiseBlock>
           <GreetingMsg>궁금한 코인을 검색해보세요!</GreetingMsg>
           <SearchBlock onSubmit={handleSearchForm}>
-            <CoinSearchBar onChange={handleSearchInput} value={searchWord} />
+            <CoinSearchBar
+              onChange={handleSearchInput}
+              value={searchWord}
+              borderChange={borderChange}
+            />
             <BlueSearchButton />
             {/* 자동완성으로 추천되는 검색어(코인이름) */}
             {matchWord.length > 0 && (
@@ -459,11 +474,11 @@ function Sise() {
             {/* 차트 두개 세로로 나열 */}
             <CenterLeftBlock>
               <ChangeChartBtnBlock>
-                <ChangeChartBtn onClick={() => handleWhatTable("name")}>이름순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("amount")}>
+                <ChangeChartBtn onClick={() => handleWhatTable("name")} style={whatTable==="name" ? {borderBottom: 'solid'} : null}>이름순</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("amount")} style={whatTable==="amount" ? {borderBottom: 'solid'} : null}>
                   거래대금순
                 </ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("like")}>관심코인</ChangeChartBtn>
+                <ChangeChartBtn onClick={() => handleWhatTable("like")} style={whatTable==="like" ? {borderBottom: 'solid'} : null}>관심코인</ChangeChartBtn>
               </ChangeChartBtnBlock>
               <div>
                 <MoneyAmountChart>
@@ -479,16 +494,6 @@ function Sise() {
                 </MoneyAmountChart>
               </div>
             </CenterLeftBlock>
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* coinChart Block */}
-            {/* <CoinChartBlock> */}
-            {/* <CoinList></CoinList> */}
-
-            {/* <div>코인 그래프</div> */}
             {selectedCoin && socketData ? (
               <>
                 {modal && (

@@ -20,6 +20,7 @@ import BlueCoin from "../media/images/icons/BlueCoin.png";
 import buy from "../media/images/buy.png";
 import sell from "../media/images/sell.png";
 import ReactTooltip from "react-tooltip";
+import MoneyImg from "../media/images/MoneyImg.png";
 
 const MyPageBlock = styled.div`
   display: flex;
@@ -29,16 +30,13 @@ const NavBlock = styled.div`
   /* border: solid yellow 3px; */
   width: 6vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
 `;
 
 const MyBlock = styled.div`
   background-color: #f3f3f3;
-  /* border: solid black 3px; */
-  max-width: 94vw;
+  width: 100vw;
   height: 100vh;
-  /* position: relative; */
   display: flex;
   flex-direction: column;
 `;
@@ -100,11 +98,19 @@ const CashBlock = styled.div`
   align-items: center;
 `;
 const PiggyBankImg = styled.div`
-  width: 8.5vmin;
-  height: 8.5vmin;
+  width: 10vw;
+  height: 8vh;
   background: url(${PiggyBank}) no-repeat center;
   background-size: 8.5vmin 8.5vmin;
-  margin-left: 1vw;
+  /* margin-right: 1vw; */
+`;
+
+const MoneyBlock = styled.div`
+  width: 10vw;
+  height: 8vh;
+  background: url(${MoneyImg}) no-repeat center;
+  background-size: 8.5vmin 8.5vmin;
+  /* margin-right: 1vw; */
 `;
 
 const TulboCoinImg = styled.div`
@@ -116,12 +122,13 @@ const TulboCoinImg = styled.div`
 `;
 
 const BalanceRefreshBtn = styled.button`
-  width: 1.5vmin;
-  height: 2vmin;
+  width: 1.5vw;
+  height: 3vh;
   background: url(${GreyRefresh}) no-repeat center;
   background-size: 1.5vw 3vh;
-  margin-left: 3vw;
-  display: inline;
+  margin-left: 1vw;
+  margin-bottom: 1.5vh;
+  /* display: inline; */
   /* border: 3px black solid; */
   :hover {
     /* background: url(${BlueRefresh}) center no-repeat;
@@ -129,6 +136,17 @@ const BalanceRefreshBtn = styled.button`
     transform: scale(1.1);
   }
 `;
+
+const EmptySpace = styled.div`
+  width: 1.5vw;
+  height: 3vh;
+  /* background: url(${GreyRefresh}) no-repeat center; */
+  background-size: 1.5vw 3vh;
+  margin-left: 1vw;
+  /* display: inline; */
+  /* border: solid 1px red; */
+  
+`
 //  원그래프 블럭
 const GraphBlock = styled.div`
   background-color: #ffffff;
@@ -198,7 +216,7 @@ const GreetingProfitMsg = styled.div`
   font-weight: bold;
   padding: 0.1vh 1vw;
 `;
-
+// email
 const EmailMsg = styled.div`
   width: 20vw;
   height: 100%;
@@ -230,6 +248,7 @@ const SettingButton = styled.div`
   padding: 0.1vh 1vw;
   :hover {
     cursor: pointer;
+    transform: scale(1.1);
   }
 `;
 
@@ -304,7 +323,7 @@ const MyCoinMsg = styled.div`
 `;
 const MyHistoryMsg = styled.div`
   width: 30vw;
-  height: 5vh;
+  height: 2.9vh;
   padding-top: 1vh;
   padding-bottom: 1vh;
   /* border: 2px solid black; */
@@ -341,6 +360,11 @@ const MyHistoryBlock = styled.div`
   }
 `;
 
+const BalanceText = styled.div`
+font-size: 20px;
+  
+`
+
 function MypagePage() {
   const tableStyle = { tableStyle: { backgroundColor: "red" }, theadStyle: {} };
   const dispatch = useDispatch();
@@ -366,28 +390,34 @@ function MypagePage() {
       if (ele.historyType === "BUY") {
         return {
           ...ele,
+          historyCoinAmount: ele.historyCoinAmount.toLocaleString("ko-KR"),
+          historyCoinPrice: ele.historyCoinPrice.toLocaleString("ko-KR"),
           historyTime: ele.historyTime.substring(0, 10) + " " + ele.historyTime.substring(11, 16),
-          historyType: <img src={buy} alt="" width="100%" height="100%" />,
+          historyType: <img src={buy} alt="" width="60%" height="60%" />,
         };
       } else {
         return {
           ...ele,
+          historyCoinAmount: ele.historyCoinAmount.toLocaleString("ko-KR"),
+          historyCoinPrice: ele.historyCoinPrice.toLocaleString("ko-KR"),
           historyTime: ele.historyTime.substring(0, 10) + " " + ele.historyTime.substring(11, 16),
-          historyType: <img src={sell} alt="" width="100%" height="100%" />,
+          historyType: <img src={sell} alt="" width="60%" height="60%" />,
         };
       }
     });
     setHistoryData(historyData);
   }, [myHistory]);
-
+  
   // 수정하기 버튼 누르면 모달창이 뜸
   const handlePageToForm = () => {
     setIsChangeForm(!isChangeForm);
   };
-
+  
   const wallet = JSON.parse(useSelector((state) => state.account.wallet));
-  const [data, setData] = useState(null);
-  const [cash, setCash] = useState(0);
+  // const [data, setData] = useState(null);
+  // const [cash, setCash] = useState(0);
+
+
   const handleBalanceReset = () => {
     Swal.fire({
       title: "투자 초기화",
@@ -412,41 +442,41 @@ function MypagePage() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
   const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
-
+  
   useEffect(() => {
     if (wallet) {
       const tmp = wallet.map((ele) => ({ market: ele.coinCode }));
       setCoinInWallet(tmp);
     }
   }, []);
+  let data = null
+  let cash = 0
 
-  useEffect(() => {
-    if (socketData && wallet) {
-      try {
-        let newCash = 0;
-        const newData = socketData.map((coin) => {
-          const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
-          newCash += coin.trade_price * tmp.coinAmount;
-          return {
-            name: tmp.coinName,
-            code: coin.code,
-            amount: tmp.coinAmount,
-            average: tmp.coinAverage.toLocaleString("ko-KR"),
-            percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
-          };
-        });
-        setCash(newCash.toLocaleString("ko-KR"));
-        setData(newData);
-      } catch (e) {
-        setCash(0);
-        setData(null);
-      }
+  if (socketData && wallet) {
+    try {
+      let newCash = 0;
+      const newData = socketData.map((coin) => {
+        const [tmp] = wallet.filter((ele) => ele.coinCode === coin.code);
+        newCash += coin.trade_price * tmp.coinAmount;
+        return {
+          name: tmp.coinName,
+          code: coin.code,
+          amount: tmp.coinAmount.toLocaleString("ko-KR"),
+          average: tmp.coinAverage.toLocaleString("ko-KR"),
+          percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
+        };
+      });
+      cash = newCash
+      data = newData
+    } catch (e) {
+      cash = 0;
+      data = null;
     }
-  }, [socketData, wallet]);
+  }
 
   function selectDetailCoin(coin) {
     dispatch(selectCoin(coin));
-    navigate('/exchange')
+    navigate("/exchange");
   }
 
   const customCoinColumns = useMemo(
@@ -503,7 +533,7 @@ function MypagePage() {
       },
       {
         name: "historyCoinName", //simple recommended way to define a column
-        header: "이름",
+        header: "코인 이름",
         columnStyle: {
           textAlign: "center",
           width: "10vw",
@@ -530,6 +560,7 @@ function MypagePage() {
         header: "거래종류",
         columnStyle: {
           width: "5vw",
+          paddingLeft: "2.5vw",
           justifyContent: "center",
         },
       },
@@ -537,7 +568,8 @@ function MypagePage() {
     []
   );
 
-  return (
+  return (<>
+  
     <MyPageBlock>
       <NavBlock>
         <Navbar></Navbar>
@@ -567,27 +599,32 @@ function MypagePage() {
             <BalanceMsg>
               <CashBlock>
                 <PiggyBankImg></PiggyBankImg>
-                <div>
-                  <p data-for="balance" data-tip>
-                    잔고 : {user.balance} 원
-                    <ReactTooltip
-                      id="balance"
-                      getContent={(dataTip) => "현재 보유하고 있는 현금"}
-                    />
-                  </p>
-                </div>
+                {user.balance &&
+                  <div>
+                    <BalanceText data-for="balance" data-tip>
+                      보유 현금 자산 : {user.balance.toLocaleString("ko-KR")} 원
+                      <ReactTooltip
+                        id="balance"
+                        getContent={(dataTip) => "현재 보유하고 있는 현금"}
+                      />
+                    </BalanceText>
+                  </div>
+                }
                 {/* 잔액 초기화 버튼 */}
                 <div>
                   <BalanceRefreshBtn onClick={handleBalanceReset}></BalanceRefreshBtn>
                 </div>
               </CashBlock>
               <CashBlock>
-                <TulboCoinImg></TulboCoinImg>
+              <MoneyBlock></MoneyBlock>
                 <div>
-                  <p data-for="assets" data-tip>
-                    자산 : {cash} 원
+                  <BalanceText data-for="assets" data-tip>
+                    전체 평가 금액 : {cash.toLocaleString("ko-KR")} 원
                     <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
-                    </p>
+                    </BalanceText>
+                </div>
+                <div>
+                  <EmptySpace onClick={handleBalanceReset}></EmptySpace>
                 </div>
               </CashBlock>
             </BalanceMsg>
@@ -610,8 +647,13 @@ function MypagePage() {
             <hr />
             {data && (
               <>
-                <CustomTable data={data} columns={customCoinColumns} rowFunction={(row) => {
-                  selectDetailCoin({ code: row.code, name: row.name });}} />
+                <CustomTable
+                  data={data}
+                  columns={customCoinColumns}
+                  rowFunction={(row) => {
+                    selectDetailCoin({ code: row.code, name: row.name });
+                  }}
+                />
               </>
             )}
           </MyCoinBlock>
@@ -631,6 +673,6 @@ function MypagePage() {
         </WalletBlock>
       </MyBlock>
     </MyPageBlock>
-  );
+    </>);
 }
 export default MypagePage;

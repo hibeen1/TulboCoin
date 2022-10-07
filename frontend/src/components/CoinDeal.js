@@ -11,7 +11,8 @@ const StyledModal = styled.div`
   position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-60%, -50%);
+  /* margin-right: 30vw; */
   /* background-color: gray; */
   /* border: 1px solid black; */
   border-radius: 8px;
@@ -30,6 +31,7 @@ const StyledModalBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
 `;
 const InputBlock = styled.div`
   display: flex;
@@ -64,6 +66,9 @@ const BottomButton = styled.div`
     border-radius: 5px;
     font-family: "Jua", sans-serif;
     font-size: 25px;
+    :hover {
+      transform: scale(1.1);
+    }
   }
   /* border: 2px solid black; */
 `;
@@ -117,12 +122,12 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
   const handleDeal = function (e) {
     e.preventDefault();
     const { CoinAmount, CoinName, CoinCode, CoinPrice } = dealForm;
-    if (CoinAmount*CoinPrice < 5000) {
+    if (CoinAmount * CoinPrice < 5000) {
       Swal.fire({
-        icon: 'warning',
-        title: '5000원 이상만 거래 가능합니다'
-      })
-      return
+        icon: "warning",
+        title: "5000원 이상만 거래 가능합니다",
+      });
+      return;
     }
     let body = {};
     if (deal === "sell") {
@@ -157,18 +162,18 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
               {deal === "sell" ? (
                 <>
                   <div>
-                    <label>판매가능수량 : </label>
+                    <label>판매가능수량 </label>
                     <label>
                       {wallet &&
                         wallet.map((coin) =>
-                          coin.coinName === detailCoinData.name ? coin.coinAmount : null
+                          coin.coinName === detailCoinData.name ? coin.coinAmount.toLocaleString("ko-KR") : null
                         )}
                     </label>
                   </div>
                   <br />
                   <div>
                     <label>판매가격(KRW)</label> <br />
-                    <label>{targetSocketData.trade_price}</label>
+                    <label>{targetSocketData.trade_price.toLocaleString("ko-KR")}</label>
                   </div>
                   <br />
                   <InputBlock>
@@ -186,7 +191,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                   <div>
                     <div htmlFor="sellCoinPrice">판매총액</div>
                     <div id="CoinPrice" name="CoinPrice" onChange={handleChange}>
-                      {dealForm.CoinAmount * targetSocketData.trade_price}
+                      {(dealForm.CoinAmount * targetSocketData.trade_price).toLocaleString("ko-KR")}
                     </div>
                   </div>
                   <BottomButton>
@@ -198,12 +203,12 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                 <>
                   <div>
                     <label>주문가능 : </label>
-                    <label>{user.balance}KRW</label>
+                    <label>{user.balance.toLocaleString("ko-KR")}KRW</label>
                   </div>
                   <br />
                   <div>
                     <label>매수가격(KRW)</label> <br />
-                    <label>{targetSocketData.trade_price}</label>
+                    <label>{targetSocketData.trade_price.toLocaleString("ko-KR")}</label>
                   </div>
                   <br />
                   <InputBlock>
@@ -221,7 +226,7 @@ const CoinDeal = memo(function CoinDeal({ socketData, detailCoinData, modalClose
                   <div>
                     <div htmlFor="CoinPrice">주문총액</div>
                     <div id="CoinPrice" name="CoinPrice" onChange={handleChange}>
-                      {dealForm.CoinAmount * targetSocketData.trade_price}
+                      {(dealForm.CoinAmount * targetSocketData.trade_price).toLocaleString("ko-KR")}
                     </div>
                     <BottomButton>
                       <button onClick={modalClose}>닫기</button>

@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAsync } from "../store/accountSaga";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Swal from 'sweetalert2'
 import styled from "styled-components";
 import GreyHome from "../media/images/icons/GreyHome.png";
 import BlueHome from "../media/images/icons/BlueHome.png";
@@ -14,7 +16,6 @@ import BlueSetting from "../media/images/icons/BlueSetting.png";
 import GreyPerson from "../media/images/icons/GreyPerson.png";
 import BluePerson from "../media/images/icons/BluePerson.png";
 import Exit from "../media/images/icons/Exit.png";
-import { useEffect } from "react";
 
 const NavBlock = styled.div`
   width: 4vw;
@@ -46,7 +47,7 @@ const NavItem = styled.div`
 
   /* 홈 */
   &.home {
-    background: url(${GreyHome}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueHome}) center no-repeat` : `url(${GreyHome}) center no-repeat`)};
     background-size: 3vw 6vh;
     :hover {
       background: url(${BlueHome}) center no-repeat;
@@ -56,7 +57,7 @@ const NavItem = styled.div`
 
   /* 시세 */
   &.sise {
-    background: url(${GreyCoin}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueCoin}) center no-repeat` : `url(${GreyCoin}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueCoin}) center no-repeat;
@@ -66,7 +67,7 @@ const NavItem = styled.div`
 
   /* 명예의 전당 */
   &.honor {
-    background: url(${GreyGraph}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BlueGraph}) center no-repeat` : `url(${GreyGraph}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     :hover {
       background: url(${BlueGraph}) center no-repeat;
@@ -76,7 +77,7 @@ const NavItem = styled.div`
 
   /* 마이페이지 */
   &.myPage {
-    background: url(${GreyPerson}) center no-repeat;
+    background: ${(props) => (props.isActive ? `url(${BluePerson}) center no-repeat` : `url(${GreyPerson}) center no-repeat`)};
     background-size: 6vmin 6vmin;
     &:hover {
       background: url(${BluePerson}) center no-repeat;
@@ -95,13 +96,13 @@ const NavItem = styled.div`
 `;
 
 const LoginOutItem = styled.div`
-  width: 3.5vw;
-  height: 6.5vh;
+  width: 4.5vw;
+  height: 7.5vh;
   background: url(${Exit}) center no-repeat;
-  background-size: 6vmin 6vmin;
+  background-size: 7vmin 7vmin;
   /* border: solid red 3px; */
-  margin-top: 23vh;
-  margin-left: 0.2vw;
+  margin-top: 35vh;
+  margin-left: -0.3vw;
   cursor: pointer;
   &:hover {
     transform: scale(1.1);
@@ -115,12 +116,27 @@ function Navbar() {
     isLoggedin: state.account.isLoggedin,
   }));
   const navigate = useNavigate();
-
   // useDispatch 는 리덕스 스토어의 dispatch 를 함수에서 사용 할 수 있게 해주는 Hook 입니다.
   const dispatch = useDispatch();
   // 각 액션들을 디스패치하는 함수들을 만드세요
   const onLogout = () => {
-    dispatch(logoutAsync());
+    Swal.fire({
+      title: "정말로 로그아웃 하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네!!!!",
+      cancelButtonText: "아니요",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(logoutAsync());
+      } else {
+        Swal.fire({
+          text: "휴 당신이 방금 로그아웃 하는 줄 알았습니다",
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -132,28 +148,25 @@ function Navbar() {
   return (
     <NavBlock>
       <Link to="/home">
-        <NavItem className="home"></NavItem>
+        <NavItem className="home" isActive={window.location.pathname==="/home"}></NavItem>
         {/* <img style={{ width: "5vw", height: "7vh" }} src={Logo} alt="" /> */}
       </Link>
 
       {/* 시세 */}
       <Link to="/exchange">
-        <NavItem className="sise"></NavItem>
+        <NavItem className="sise" isActive={window.location.pathname==="/exchange"}></NavItem>
       </Link>
       {/* 명예의 전당 */}
       <Link to="/honor">
-        <NavItem className="honor"></NavItem>
+        <NavItem className="honor" isActive={window.location.pathname==="/honor"}></NavItem>
       </Link>
 
       {isLoggedin ? (
         <>
           {/* 마이페이지 */}
           <Link to="/mypage">
-            <NavItem className="myPage"></NavItem>
+            <NavItem className="myPage" isActive={window.location.pathname==="/mypage"}></NavItem>
           </Link>
-
-          {/* 세팅 페이지 만들기 */}
-          <NavItem className="setting"></NavItem>
 
           <LoginOutItem onClick={onLogout}>{/* 로그아웃 */}</LoginOutItem>
         </>

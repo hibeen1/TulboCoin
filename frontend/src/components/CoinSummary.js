@@ -51,6 +51,7 @@ const CoinDetails = styled.div`
   height: 45vh;
   /* border: 3px solid navy; */
   font-size: 2.5vmin;
+  font-weight: 130;
   div {
     padding-top: 0.4vw;
   }
@@ -71,6 +72,9 @@ const EmptyButton = styled.div`
   cursor: pointer;
   background: url(${EmptyHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 
 const FullButton = styled.div`
@@ -79,6 +83,9 @@ const FullButton = styled.div`
   cursor: pointer;
   background: url(${FullHeart}) center no-repeat;
   background-size: 2.5vw 5vmin;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 const HighPriceMsg = styled.div`
   :hover {
@@ -142,7 +149,9 @@ function CoinSummary({ socketData, detailCoinData }) {
           />
           {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
           {targetSocketData.signed_change_price > 0 ? "+" : null}
-          {targetSocketData.signed_change_price}
+          {targetSocketData.signed_change_price &&
+            `${targetSocketData.signed_change_price.toLocaleString("ko-KR")} 원`
+          }
         </div>
         {targetSocketData.trade_price && (
           <>
@@ -176,7 +185,7 @@ function CoinSummary({ socketData, detailCoinData }) {
               />
             </div>
             <div data-for="tradeCoinAmount" data-tip>
-              거래량 : {(targetSocketData.acc_trade_volume_24h * 1).toFixed(0)}
+              거래량 : {Number((targetSocketData.acc_trade_volume_24h * 1).toFixed(0)).toLocaleString("ko-KR")}
               <ReactTooltip
                 id="tradeCoinAmount"
                 getContent={(dataTip) => "하루동안 거래된 코인의 수량"}

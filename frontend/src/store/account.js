@@ -58,10 +58,10 @@ export default function account(state = initialState, action) {
         wallet: JSON.stringify(action.meta)
       };
     case LOGOUT:
-      localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("wallet");
       localStorage.removeItem("likedCoin");
+      localStorage.removeItem("token");
       return {
         ...state,
         user: '{}',
