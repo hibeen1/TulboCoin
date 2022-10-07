@@ -40,8 +40,8 @@ function DoughnutChart({ socketData, wallet }) {
     datasets: [
       {
         label: "나의 코인 지갑",
-        backgroundColor: ["#aabfea", "#697ed9", "#243ead"],
-        borderColor: ["#aabfea", "#697ed9", "#243ead"],
+        backgroundColor: ["#98a8ea", "#3a53c0", "#061e8c", "#aabfea", "#697ed9", "#243ead"],
+        borderColor: ["#98a8ea", "#3a53c0", "#061e8c", "#aabfea", "#697ed9", "#243ead"],
         data: amount,
         borderWidth: 5,
       },
@@ -57,9 +57,9 @@ function DoughnutChart({ socketData, wallet }) {
         labels: {
           // This more specific font property overrides the global property
           font: {
-              family: "jua"}
-          }
-
+            family: "jua",
+          },
+        },
       },
     },
     scales: {

@@ -34,6 +34,7 @@ const StyledInput = styled.input`
     font-size: 1.2rem;
     color: #7a7a7a;
   }
+  font-family: "Jua", sans-serif;
 `;
 // 떠나볼까요
 const StyledButton = styled.button`
@@ -69,7 +70,7 @@ const StyledContext = styled.div`
 `;
 // 아직 계정이 없나요
 const StyledText = styled.div`
-  margin-top: 10vh;
+  /* margin-top: 10vh; */
   font-size: 3vmin;
   margin-left: 0.5vw;
   color: #7a7a7a;
@@ -165,7 +166,12 @@ function LoginComponent() {
               <br />
               <br></br>
             </div>
-
+            <div>
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
             <Link to="/signup" style={{ textDecoration: "none" }}>
               <StyledText>아직 계정이 없나요? </StyledText>
             </Link>
