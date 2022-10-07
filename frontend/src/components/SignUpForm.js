@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import logo from "../media/images/TulboCoin.png"
-import alert from "../media/images/Alert.png"
+import logo from "../media/images/TulboCoin.png";
+import alert from "../media/images/Alert.png";
 
 const SignUpPageBlock = styled.div`
   display: flex;
@@ -23,7 +23,6 @@ const SignUpPageBlock = styled.div`
   }
 `;
 
-
 const StyledInput = styled.input`
   border-radius: 40px;
   height: 5vh;
@@ -34,6 +33,7 @@ const StyledInput = styled.input`
     font-size: 1.2rem;
     color: #7a7a7a;
   }
+  font-family: "Jua", sans-serif;
 `;
 // 떠나볼까요
 const StyledButton = styled.button`
@@ -55,7 +55,7 @@ const StyledButton = styled.button`
 `;
 // 이미 계정이 있어요
 const StyledText = styled.div`
-  margin-top: 10vh;
+  /* margin-top: 10vh; */
   font-size: 3vmin;
   color: #7a7a7a;
   cursor: pointer;
@@ -79,50 +79,48 @@ const StyledContext = styled.div`
 `;
 
 const LogoBlock = styled.div`
-width: 20vw;
-height: 10vh;
-margin-bottom: 78vh;
-margin-right: 1vw;
-background: url(${logo}) center no-repeat;
-background-size: 20vw 10vh;
-/* border: solid black 5px; */
-display: flex;
-position: absolute;
- `
+  width: 20vw;
+  height: 10vh;
+  margin-bottom: 78vh;
+  margin-right: 1vw;
+  background: url(${logo}) center no-repeat;
+  background-size: 20vw 10vh;
+  /* border: solid black 5px; */
+  display: flex;
+  position: absolute;
+`;
 
 const ErrorBlock = styled.div`
-display: flex;
-position: absolute;
-width: 20vw;
-height: 35vh;
-margin-right: 35vw;
-margin-bottom: 12vh;
-/* background: url(${alert}) center no-repeat; */
-/* background-color: #faa2c2; */
-background-size: 20vw 35vh;
-flex-direction: column;
-border-radius: 40px;
-padding: 10px;
-color: #f25b96;
-`
-
-
+  display: flex;
+  position: absolute;
+  width: 20vw;
+  height: 35vh;
+  margin-right: 35vw;
+  margin-bottom: 12vh;
+  /* background: url(${alert}) center no-repeat; */
+  /* background-color: #faa2c2; */
+  background-size: 20vw 35vh;
+  flex-direction: column;
+  border-radius: 40px;
+  padding: 10px;
+  color: #f25b96;
+`;
 
 function SignupForm() {
-  const isLoggedin = useSelector(state => state.account.isLoggedin)
-  const navigate = useNavigate()
+  const isLoggedin = useSelector((state) => state.account.isLoggedin);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate(-1, true)
+      navigate(-1, true);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate('/home', true)
+      navigate("/home", true);
     }
-  }, [isLoggedin])
+  }, [isLoggedin]);
 
   const [signupForm, setSignupForm] = useState({
     userId: "",
@@ -130,9 +128,9 @@ function SignupForm() {
     passwordCheck: "",
     email: "",
     balance: 10000000,
-    imagePath: '1',
-  })
-  const dispatch = useDispatch()
+    imagePath: "1",
+  });
+  const dispatch = useDispatch();
 
   const [error, setError] = useState({
     userId: "",
@@ -148,26 +146,30 @@ function SignupForm() {
     });
   };
 
-  const eng = /[a-g]/g
-  const num = /[0-9]/g
-  const special = /[`~!@#$%^&*()_+\-=/?<>|\\]/g
+  const eng = /[a-g]/g;
+  const num = /[0-9]/g;
+  const special = /[`~!@#$%^&*()_+\-=/?<>|\\]/g;
   const passwordCheck = () => {
     if (signupForm.password.length < 8) {
-      return false
+      return false;
     } else if (signupForm.password.length > 15) {
-      return false
-    } else if (!!!signupForm.password.match(eng) || !!!signupForm.password.match(special) || !!!signupForm.password.match(num)) {
-      return false
+      return false;
+    } else if (
+      !!!signupForm.password.match(eng) ||
+      !!!signupForm.password.match(special) ||
+      !!!signupForm.password.match(num)
+    ) {
+      return false;
     } else {
-      return true
+      return true;
     }
-  }
-  
+  };
+
   const userIdCheck = () => {
     if (signupForm.userId.length < 2 || signupForm.userId.length > 10) {
-      return false
+      return false;
     } else if (!!signupForm.userId.match(special)) {
-      return false
+      return false;
     } else {
       return true;
     }
@@ -176,16 +178,16 @@ function SignupForm() {
   const mail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
   const vaildate = () => {
     const error = {
-      userId: '',
-      password: '',
-      passwordCheck: '',
-      email: ''
-    }
+      userId: "",
+      password: "",
+      passwordCheck: "",
+      email: "",
+    };
     if (!userIdCheck()) {
-      error.userId = '아이디는 2~10자의 영어, 숫자, 한글만 가능해요.'
+      error.userId = "아이디는 2~10자의 영어, 숫자, 한글만 가능해요.";
     }
     if (!passwordCheck()) {
-        error.password = '비밀번호는 영어, 숫자, 특수문자를 포함한 8 ~ 15자여야 해요.'
+      error.password = "비밀번호는 영어, 숫자, 특수문자를 포함한 8 ~ 15자여야 해요.";
     }
     if (signupForm.password !== signupForm.passwordCheck) {
       error.passwordCheck = "비밀번호를 한번 더 입력해 주세요";
@@ -197,8 +199,8 @@ function SignupForm() {
   };
 
   const handleSubmit = function (e) {
-    e.preventDefault()
-    const error = vaildate()
+    e.preventDefault();
+    const error = vaildate();
     setError(error);
     if (Object.values(error).some((v) => v)) {
       return;
@@ -209,52 +211,64 @@ function SignupForm() {
     }
   };
 
-  return <>
-    <SignUpPageBlock>
-      {/* <h1>TULBO COIN</h1> */}
-      <LogoBlock></LogoBlock>
-      {/* <h3>가입하세요!</h3> */}
-      
-      <form>
-      <StyledContext>
-      <div>
-        <Styledlabel htmlFor="userId" placeholder="2~10자의 영어, 숫자, 한글">아이디</Styledlabel>
-        <br />
-        <StyledInput id="userId" type="text" name="userId" onChange={handleChange} /><br />
-        
-        
-        <Styledlabel htmlFor="email">이메일</Styledlabel>
-        <br />
-        <StyledInput id="email" type="text" name="email" onChange={handleChange} /><br />
+  return (
+    <>
+      <SignUpPageBlock>
+        {/* <h1>TULBO COIN</h1> */}
+        <LogoBlock></LogoBlock>
+        {/* <h3>가입하세요!</h3> */}
 
+        <form>
+          <StyledContext>
+            <div>
+              <Styledlabel htmlFor="userId" placeholder="2~10자의 영어, 숫자, 한글">
+                아이디
+              </Styledlabel>
+              <br />
+              <StyledInput id="userId" type="text" name="userId" onChange={handleChange} />
+              <br />
 
-        <Styledlabel htmlFor="password">비밀번호</Styledlabel>
-        <br />
-        <StyledInput id="password" type="password" name="password" onChange={handleChange} /><br />
+              <Styledlabel htmlFor="email">이메일</Styledlabel>
+              <br />
+              <StyledInput id="email" type="text" name="email" onChange={handleChange} />
+              <br />
 
+              <Styledlabel htmlFor="password">비밀번호</Styledlabel>
+              <br />
+              <StyledInput id="password" type="password" name="password" onChange={handleChange} />
+              <br />
 
-        <Styledlabel htmlFor="password-check">비밀번호 확인</Styledlabel>
-        <br />
-        <StyledInput id="password-check" type="password" name="passwordCheck" onChange={handleChange} /><br />
+              <Styledlabel htmlFor="password-check">비밀번호 확인</Styledlabel>
+              <br />
+              <StyledInput
+                id="password-check"
+                type="password"
+                name="passwordCheck"
+                onChange={handleChange}
+              />
+              <br />
+            </div>
+            <ErrorBlock>
+              {error.userId && <p>{error.userId}</p>}
+              {error.email && <p>{error.email}</p>}
 
-        </div>
-        <ErrorBlock>
-          {error.userId && <p>{error.userId}</p>}
-          {error.email && <p>{error.email}</p>}
-
-          {error.password && <p>{error.password}</p>}
-          {error.passwordCheck && <p>{error.passwordCheck}</p>}
-        </ErrorBlock>
-        <Link to="/" style={{ textDecoration: 'none', marginLeft: '0.8vw'}}><StyledText>나는 이미 계정이 있어요!!</StyledText></Link>
-        <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
-        </StyledContext>
-      </form>
-      
-
-
-    </SignUpPageBlock>
-  </>
+              {error.password && <p>{error.password}</p>}
+              {error.passwordCheck && <p>{error.passwordCheck}</p>}
+            </ErrorBlock>
+            <div>
+              <br />
+              <br />
+              <br />
+            </div>
+            <Link to="/" style={{ textDecoration: "none", marginLeft: "0.8vw" }}>
+              <StyledText>나는 이미 계정이 있어요!!</StyledText>
+            </Link>
+            <StyledButton onClick={handleSubmit}>떠나볼까요?</StyledButton>
+          </StyledContext>
+        </form>
+      </SignUpPageBlock>
+    </>
+  );
 }
-
 
 export default SignupForm;
