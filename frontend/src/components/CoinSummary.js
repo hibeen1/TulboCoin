@@ -37,7 +37,8 @@ const CoinLogo = styled.div`
   /* border: 3px solid grey; */
 `;
 const CoinName = styled.div`
-  width: 50%;
+  /* width: 50%; */
+  width: 30vmin;
   height: 10vmin;
   /* border: 3px solid grey; */
   display: flex;
@@ -150,8 +151,7 @@ function CoinSummary({ socketData, detailCoinData }) {
           {(targetSocketData.signed_change_rate * 100).toFixed(2)}% <br />
           {targetSocketData.signed_change_price > 0 ? "+" : null}
           {targetSocketData.signed_change_price &&
-            `${targetSocketData.signed_change_price.toLocaleString("ko-KR")} 원`
-          }
+            `${targetSocketData.signed_change_price.toLocaleString("ko-KR")} 원`}
         </div>
         {targetSocketData.trade_price && (
           <>
@@ -185,7 +185,10 @@ function CoinSummary({ socketData, detailCoinData }) {
               />
             </div>
             <div data-for="tradeCoinAmount" data-tip>
-              거래량 : {Number((targetSocketData.acc_trade_volume_24h * 1).toFixed(0)).toLocaleString("ko-KR")}
+              거래량 :{" "}
+              {Number((targetSocketData.acc_trade_volume_24h * 1).toFixed(0)).toLocaleString(
+                "ko-KR"
+              )}
               <ReactTooltip
                 id="tradeCoinAmount"
                 getContent={(dataTip) => "하루동안 거래된 코인의 수량"}
