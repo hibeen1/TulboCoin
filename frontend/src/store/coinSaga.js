@@ -1,6 +1,6 @@
 import { call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { buyApi, sellApi, newsApi, wordCloudApi } from "./api";
-import { fetchWalletAsync, fetchUserAsync } from "./accountSaga";
+import { fetchLikedCoinAsync } from "./accountSaga";
 import { selectNews, wordCloud } from "./coin";
 import Swal from "sweetalert2";
 const BUY_ASYNC = "BUY_ASYNC";
@@ -24,7 +24,8 @@ function* buySaga(action) {
   try {
     const response = yield call(buyApi, body);
     if (response.status === 200) {
-      yield;
+      yield put(fetchLikedCoinAsync())
+      yield 
       Toast.fire({
         icon: "success",
         title: "구매 성공",

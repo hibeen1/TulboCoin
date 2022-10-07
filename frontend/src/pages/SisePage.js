@@ -79,8 +79,9 @@ const CoinSearchBar = styled.input`
 `;
 const AutoSearch = styled.div`
   width: 65.2vw;
-  max-height: 40vh;
+  max-height: 41vh;
   overflow: auto;
+  font-size: 20px;
   &::-webkit-scrollbar {
     width: 10px;
     border-radius: 5px;
@@ -159,7 +160,7 @@ const ChangeChartBtnBlock = styled.div`
 // 거래대금 순 차트
 const MoneyAmountChart = styled.div`
   width: 18vw;
-  height: 40vh;
+  height: 39vh;
   display: flex;
   justify-content: start;
   align-items: start;
@@ -167,6 +168,7 @@ const MoneyAmountChart = styled.div`
   /* border: solid purple 3px; */
   flex-direction: column;
   font-size: 3vmin;
+  font-weight: normal;
   overflow: auto;
   :hover {
     cursor: pointer;
@@ -263,7 +265,6 @@ const CoinDealButton = styled.div`
 `;
 const NewsItem = styled.div`
   margin-left: 1vw;
-  font-size: 13px;
   width: 28vw;
   padding-left: 1vw;
   padding-right: 1vw;
@@ -272,8 +273,24 @@ const NewsItem = styled.div`
   background-color: white;
 `;
 const NewsMsg = styled.div`
-  font-size: 30px;
+  font-size: 25px;
   margin-left: 2vw;
+`;
+const NewsItemHeader = styled.div`
+  font-size: 18px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+const NewsItemDescription = styled.div`
+  font-size: 15px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 function Sise() {
@@ -474,11 +491,24 @@ function Sise() {
             {/* 차트 두개 세로로 나열 */}
             <CenterLeftBlock>
               <ChangeChartBtnBlock>
-                <ChangeChartBtn onClick={() => handleWhatTable("name")} style={whatTable==="name" ? {borderBottom: 'solid'} : null}>이름순</ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("amount")} style={whatTable==="amount" ? {borderBottom: 'solid'} : null}>
+                <ChangeChartBtn
+                  onClick={() => handleWhatTable("name")}
+                  style={whatTable === "name" ? { borderBottom: "solid" } : null}
+                >
+                  이름순
+                </ChangeChartBtn>
+                <ChangeChartBtn
+                  onClick={() => handleWhatTable("amount")}
+                  style={whatTable === "amount" ? { borderBottom: "solid" } : null}
+                >
                   거래대금순
                 </ChangeChartBtn>
-                <ChangeChartBtn onClick={() => handleWhatTable("like")} style={whatTable==="like" ? {borderBottom: 'solid'} : null}>관심코인</ChangeChartBtn>
+                <ChangeChartBtn
+                  onClick={() => handleWhatTable("like")}
+                  style={whatTable === "like" ? { borderBottom: "solid" } : null}
+                >
+                  관심코인
+                </ChangeChartBtn>
               </ChangeChartBtnBlock>
               <div>
                 <MoneyAmountChart>
@@ -535,10 +565,12 @@ function Sise() {
                     return (
                       <div>
                         <NewsItem>
-                          <a href={news.link}>{news.title}</a>
-                          {/* <p>{news.title}</p> */}
-                          <p>{news.description}</p>
-                          {/* <a href={news.link}>링크</a> */}
+                          <NewsItemHeader>
+                            <a href={news.link}>{news.title}</a>
+                          </NewsItemHeader>
+                          <NewsItemDescription>
+                            <p>{news.description}</p>
+                          </NewsItemDescription>
                         </NewsItem>
                       </div>
                     );

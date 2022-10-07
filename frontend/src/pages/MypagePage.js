@@ -145,8 +145,7 @@ const EmptySpace = styled.div`
   margin-left: 1vw;
   /* display: inline; */
   /* border: solid 1px red; */
-  
-`
+`;
 //  원그래프 블럭
 const GraphBlock = styled.div`
   background-color: #ffffff;
@@ -361,10 +360,8 @@ const MyHistoryBlock = styled.div`
 `;
 
 const BalanceText = styled.div`
-font-size: 20px;
-  
-`
-
+  font-size: 20px;
+`;
 function MypagePage() {
   const tableStyle = { tableStyle: { backgroundColor: "red" }, theadStyle: {} };
   const dispatch = useDispatch();
@@ -407,16 +404,15 @@ function MypagePage() {
     });
     setHistoryData(historyData);
   }, [myHistory]);
-  
+
   // 수정하기 버튼 누르면 모달창이 뜸
   const handlePageToForm = () => {
     setIsChangeForm(!isChangeForm);
   };
-  
+
   const wallet = JSON.parse(useSelector((state) => state.account.wallet));
   // const [data, setData] = useState(null);
   // const [cash, setCash] = useState(0);
-
 
   const handleBalanceReset = () => {
     Swal.fire({
@@ -442,15 +438,15 @@ function MypagePage() {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
   const [coinInWallet, setCoinInWallet] = useState([]);
   const { socketData } = useUpbitWebSocket(coinInWallet, "ticker", webSocketOptions);
-  
+
   useEffect(() => {
     if (wallet) {
       const tmp = wallet.map((ele) => ({ market: ele.coinCode }));
       setCoinInWallet(tmp);
     }
   }, []);
-  let data = null
-  let cash = 0
+  let data = null;
+  let cash = 0;
 
   if (socketData && wallet) {
     try {
@@ -466,8 +462,8 @@ function MypagePage() {
           percent: `${((coin.trade_price / tmp.coinAverage - 1) * 100).toFixed(2)} %`,
         };
       });
-      cash = newCash
-      data = newData
+      cash = newCash;
+      data = newData;
     } catch (e) {
       cash = 0;
       data = null;
@@ -568,111 +564,115 @@ function MypagePage() {
     []
   );
 
-  return (<>
-  
-    <MyPageBlock>
-      <NavBlock>
-        <Navbar></Navbar>
-      </NavBlock>
-      <MyBlock>
-        {isChangeForm && (
-          <>
-            <ChangeMyInfoModal user={user} handlePageToForm={handlePageToForm} />
-          </>
-        )}
-        <ProfileBlock>
-          <GreetingMsg>좋은 하루 되세요 {user.userId}님!</GreetingMsg>
-          <EmailMsg>{user.email}</EmailMsg>
-          {/* 회원정보 수정하기 버튼 */}
-          <SettingButton onClick={handlePageToForm}></SettingButton>
-          <ProfileImg>
-            <StyledImg
-              src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`}
-              alt={`프로필 이미지${user.imagePath}`}
-            />
-          </ProfileImg>
-        </ProfileBlock>
-        <br />
+  return (
+    <>
+      <MyPageBlock>
+        <NavBlock>
+          <Navbar></Navbar>
+        </NavBlock>
+        <MyBlock>
+          {isChangeForm && (
+            <>
+              <ChangeMyInfoModal user={user} handlePageToForm={handlePageToForm} />
+            </>
+          )}
+          <ProfileBlock>
+            <GreetingMsg>좋은 하루 되세요 {user.userId}님!</GreetingMsg>
+            <EmailMsg>{user.email}</EmailMsg>
+            {/* 회원정보 수정하기 버튼 */}
+            <SettingButton onClick={handlePageToForm}></SettingButton>
+            <ProfileImg>
+              <StyledImg
+                src={`${process.env.PUBLIC_URL}/profile/profile${user.imagePath}.png`}
+                alt={`프로필 이미지${user.imagePath}`}
+              />
+            </ProfileImg>
+          </ProfileBlock>
+          <br />
 
-        <BalanceAndGraphBlock>
-          <BalanceBackGround>
-            <BalanceMsg>
-              <CashBlock>
-                <PiggyBankImg></PiggyBankImg>
-                {user.balance &&
+          <BalanceAndGraphBlock>
+            <BalanceBackGround>
+              <BalanceMsg>
+                <CashBlock>
+                  <PiggyBankImg></PiggyBankImg>
+                  {user.balance && (
+                    <div>
+                      <BalanceText data-for="balance" data-tip>
+                        보유 현금 자산 : {user.balance.toLocaleString("ko-KR")} 원
+                        <ReactTooltip
+                          id="balance"
+                          getContent={(dataTip) => "현재 보유하고 있는 현금"}
+                        />
+                      </BalanceText>
+                    </div>
+                  )}
+                  {/* 잔액 초기화 버튼 */}
                   <div>
-                    <BalanceText data-for="balance" data-tip>
-                      보유 현금 자산 : {user.balance.toLocaleString("ko-KR")} 원
+                    <BalanceRefreshBtn onClick={handleBalanceReset}></BalanceRefreshBtn>
+                  </div>
+                </CashBlock>
+                <CashBlock>
+                  <MoneyBlock></MoneyBlock>
+                  <div>
+                    <BalanceText data-for="assets" data-tip>
+                      전체 평가 금액 : {cash.toLocaleString("ko-KR")} 원
                       <ReactTooltip
-                        id="balance"
-                        getContent={(dataTip) => "현재 보유하고 있는 현금"}
+                        id="assets"
+                        getContent={(dataTip) => "현재 보유한 코인의 가격 총합"}
                       />
                     </BalanceText>
                   </div>
-                }
-                {/* 잔액 초기화 버튼 */}
-                <div>
-                  <BalanceRefreshBtn onClick={handleBalanceReset}></BalanceRefreshBtn>
-                </div>
-              </CashBlock>
-              <CashBlock>
-              <MoneyBlock></MoneyBlock>
-                <div>
-                  <BalanceText data-for="assets" data-tip>
-                    전체 평가 금액 : {cash.toLocaleString("ko-KR")} 원
-                    <ReactTooltip id="assets" getContent={dataTip => "현재 보유한 코인의 가격 총합"} />
-                    </BalanceText>
-                </div>
-                <div>
-                  <EmptySpace onClick={handleBalanceReset}></EmptySpace>
-                </div>
-              </CashBlock>
-            </BalanceMsg>
-          </BalanceBackGround>
+                  <div>
+                    <EmptySpace onClick={handleBalanceReset}></EmptySpace>
+                  </div>
+                </CashBlock>
+              </BalanceMsg>
+            </BalanceBackGround>
 
-          <GraphBackground>
-            <GraphBlock>
-              {data ? (
-                <DoughnutChart socketData={socketData} wallet={wallet} />
-              ) : (
-                <div>아무것도 없음</div>
+            <GraphBackground>
+              <GraphBlock>
+                {data ? (
+                  <DoughnutChart socketData={socketData} wallet={wallet} />
+                ) : (
+                  <div>아무것도 없음</div>
+                )}
+              </GraphBlock>
+            </GraphBackground>
+          </BalanceAndGraphBlock>
+          <br />
+          <WalletBlock>
+            <MyCoinBlock>
+              <MyCoinMsg>나의 보유 코인</MyCoinMsg>
+              <hr />
+              {data && (
+                <>
+                  <CustomTable
+                    data={data}
+                    columns={customCoinColumns}
+                    rowFunction={(row) => {
+                      selectDetailCoin({ code: row.code, name: row.name });
+                    }}
+                  />
+                </>
               )}
-            </GraphBlock>
-          </GraphBackground>
-        </BalanceAndGraphBlock>
-        <br />
-        <WalletBlock>
-          <MyCoinBlock>
-            <MyCoinMsg>나의 보유 코인</MyCoinMsg>
-            <hr />
-            {data && (
-              <>
-                <CustomTable
-                  data={data}
-                  columns={customCoinColumns}
-                  rowFunction={(row) => {
-                    selectDetailCoin({ code: row.code, name: row.name });
-                  }}
-                />
-              </>
-            )}
-          </MyCoinBlock>
-          <MyHistoryBlock>
-            <MyHistoryMsg>나의 코인 거래 기록</MyHistoryMsg>
-            <hr />
-            {myHistory && (
-              <>
-                <CustomTable
-                  tableStyle={tableStyle}
-                  data={historyData}
-                  columns={customHistoryColumns}
-                />
-              </>
-            )}
-          </MyHistoryBlock>
-        </WalletBlock>
-      </MyBlock>
-    </MyPageBlock>
-    </>);
+            </MyCoinBlock>
+            <MyHistoryBlock>
+              <MyHistoryMsg>나의 코인 거래 기록</MyHistoryMsg>
+              <hr />
+              {myHistory && (
+                <>
+                  <CustomTable
+                    tableStyle={tableStyle}
+                    data={historyData}
+                    columns={customHistoryColumns}
+                  />
+                </>
+              )}
+            </MyHistoryBlock>
+          </WalletBlock>
+        </MyBlock>
+      </MyPageBlock>
+    </>
+  );
 }
 export default MypagePage;
